@@ -1,0 +1,25 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Ping_PD0">
+    <executeOn computingNode="machine0" computingPlatform="Thales0"/>
+    <deployedModuleInstance componentName="demoPing" moduleInstanceName="myDemoPing_AM_I" modulePriority="30"/>
+    <deployedTriggerInstance componentName="demoPing" triggerInstanceName="Heart_Beat" triggerPriority="10"/>
+    <deployedTriggerInstance componentName="demoPing" triggerInstanceName="Dyn_Heart_Beat" triggerPriority="10"/>
+  </protectionDomain>
+
+  <protectionDomain name="Pong_PD1">
+    <executeOn computingNode="machine1" computingPlatform="Thales1"/>
+    <deployedModuleInstance componentName="demoPong" moduleInstanceName="myDemoPong_AM_I" modulePriority="30"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Thales0" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+  <platformConfiguration computingPlatform="Thales1" faultHandlerNotificationMaxNumber="4">
+    <computingNodeConfiguration computingNode="machine1" />
+  </platformConfiguration>
+
+</deployment>

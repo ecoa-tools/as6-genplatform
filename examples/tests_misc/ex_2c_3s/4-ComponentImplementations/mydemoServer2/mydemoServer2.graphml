@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:y="http://www.yworks.com/xml/graphml">
+  <key attr.name="color" attr.type="string" for="node" id="d1">
+    <default>red</default>
+  </key>
+  <key attr.name="Text" attr.type="string" for="node" id="d2"/>
+  <key id="d3" yfiles.type="nodegraphics"/>
+  <key attr.name="color" attr.type="string" for="edge" id="d4">
+    <default>red</default>
+  </key>
+  <key attr.name="Text" attr.type="string" for="edge" id="d5"/>
+  <key for="edge" id="d6" yfiles.type="edgegraphics"/>
+  <graph edgedefault="undirected" id="Graph">
+    <node id="Iserver">
+      <data key="d3">
+        <y:GenericNode configuration="com.yworks.flowchart.userMessage">
+          <y:Fill color="#99CC00" transparent="false"/>
+          <y:NodeLabel>Iserver</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="mydemoServer2_AM_I">
+      <data key="d3">
+        <y:ShapeNode>
+          <y:Fill color="#FFFFFF" transparent="false"/>
+          <y:NodeLabel>mydemoServer2_AM_I</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge id="4event_Pong" source="Iserver" target="mydemoServer2_AM_I">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" textColor="#000000" visible="true">event_Pong</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+  </graph>
+</graphml>
+

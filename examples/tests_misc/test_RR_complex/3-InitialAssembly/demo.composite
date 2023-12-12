@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="demo"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="demoClient0">
+    <ecoa-sca:instance componentType="client_comp"/>
+    <csa:reference name="svc_PingPong"/>
+    <csa:reference name="svc_PingPong"/>
+    <csa:reference name="svc_final"/>
+  </csa:component>
+
+  <csa:component name="demoClient1">
+    <ecoa-sca:instance componentType="client_comp"/>
+    <csa:reference name="svc_PingPong"/>
+    <csa:reference name="svc_PingPong"/>
+    <csa:reference name="svc_final"/>
+  </csa:component>
+
+  <csa:component name="demoServer0">
+    <ecoa-sca:instance componentType="server_comp"/>
+    <csa:service name="svc_PingPong"/>
+  </csa:component>
+
+  <csa:component name="demoServer1">
+    <ecoa-sca:instance componentType="server_comp"/>
+    <csa:service name="svc_PingPong"/>
+  </csa:component>
+
+  <csa:component name="demoFinal">
+    <ecoa-sca:instance componentType="fianl_comp"/>
+    <csa:service name="svc_final"/>
+  </csa:component>
+
+  <csa:wire source="demoClient0/PingPong0" target="demoServer0/PingPong" />
+  <csa:wire source="demoClient0/PingPong1" target="demoServer1/PingPong" />
+
+  <csa:wire source="demoClient1/PingPong0" target="demoServer0/PingPong" />
+  <csa:wire source="demoClient1/PingPong1" target="demoServer1/PingPong" />
+
+
+  <csa:wire source="demoClient0/finish" target="demoFinal/finish"/>
+  <csa:wire source="demoClient1/finish" target="demoFinal/finish"/>
+
+</csa:composite>

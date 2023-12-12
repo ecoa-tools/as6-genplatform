@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="lib"/>
+
+  <operations>
+
+    <!--requestresponse name="PingPong">
+      <input name="Ping_Target" type="pingpong:T_Target_Position"/>
+      <output name="Pong_Target" type="pingpong:T_Target_Position"/>
+    </requestresponse-->
+
+    <event direction="RECEIVED_BY_PROVIDER"  name="Ping_simple">
+		<input name="param1" type="lib:Test_simple"/>
+	</event>
+
+
+	
+    <event direction="RECEIVED_BY_PROVIDER"  name="Ping_record">
+		<input name="record1" type="lib:Test_record"/>	
+	</event>
+
+	<event direction="RECEIVED_BY_PROVIDER"  name="Ping_array">
+		<input name="array1" type="lib:Test_array"/>	
+	</event>
+
+	<event direction="RECEIVED_BY_PROVIDER"  name="Ping_fixed_array">
+		<input name="array1" type="lib:Test_fixed_array"/>	
+	</event>
+
+	<event direction="RECEIVED_BY_PROVIDER"  name="Ping_enum">
+		<input name="array1" type="lib:Test_enum"/>	
+	</event>
+
+	<event direction="RECEIVED_BY_PROVIDER"  name="Ping_variant_record">
+		<input name="var_record" type="lib:Test_variant_record"/>	
+	</event>
+	
+    <event direction="RECEIVED_BY_PROVIDER"  name="Ping_multi_param">
+		<input name="param1" type="lib:Test_simple"/>	
+		<input name="param2" type="ECOA:uint32"/>
+		<input name="param3" type="lib:Test_array"/>			
+	</event>
+	
+
+    <event direction="SENT_BY_PROVIDER"  name="Pong"/>
+
+  </operations>
+
+</serviceDefinition>

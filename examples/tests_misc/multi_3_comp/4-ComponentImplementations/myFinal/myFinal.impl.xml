@@ -1,0 +1,42 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Final">
+	
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoFinal_AM_t">
+    <operations>
+
+    	<eventReceived name="Finish"/>
+		<eventSent name="Run">
+			<input type="pingpong:T_Target_Position" name="position" />	
+		</eventSent>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myFinal_AM" language="C" moduleType="myDemoFinal_AM_t"/>
+
+  <moduleInstance name="myFinal_AM_I" implementationName="myFinal_AM" relativePriority="100"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <eventLink>
+    <senders>
+      <reference instanceName="Ipong" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myFinal_AM_I" operationName="Finish"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myFinal_AM_I" operationName="Run"/>
+    </senders>
+    <receivers>
+      <service instanceName="Irun" operationName="Run"/>
+    </receivers>
+  </eventLink>
+</componentImplementation>

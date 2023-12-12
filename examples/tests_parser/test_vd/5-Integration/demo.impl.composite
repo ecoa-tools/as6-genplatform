@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0" 
+	       name="demo" 
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="compMaster">
+    <ecoa-sca:instance componentType="Master">
+      <ecoa-sca:implementation name="mycompMaster"/>
+    </ecoa-sca:instance>
+    <csa:reference name="svc_master_0"/>
+    <csa:reference name="svc_master_1"/>
+  </csa:component>
+
+  <csa:component name="compWriter0">
+    <ecoa-sca:instance componentType="Writer">
+      <ecoa-sca:implementation name="mycompWriter"/>
+    </ecoa-sca:instance>
+    <csa:service name="svc_writer"/>
+  </csa:component>
+
+  <csa:component name="compWriter1">
+    <ecoa-sca:instance componentType="Writer">
+      <ecoa-sca:implementation name="mycompWriter"/>
+    </ecoa-sca:instance>
+    <csa:service name="svc_writer"/>
+  </csa:component>
+
+  <csa:wire source="compMaster/svc_master_0" target="compWriter0/svc_writer" />
+  <csa:wire source="compMaster/svc_master_1" target="compWriter1/svc_writer" />
+
+</csa:composite>

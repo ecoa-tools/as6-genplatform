@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+    <types>
+        <simple type="uint32" name="simple2A"/>
+    </types>
+</library>

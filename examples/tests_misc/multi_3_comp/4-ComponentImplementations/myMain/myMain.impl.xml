@@ -1,0 +1,80 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Main">
+	
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+	<!--moduleType name="Supervisor_AM_t"> 
+<operations></operations>
+</moduleType-->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="Sender_AM_t">
+    <operations>
+    	<eventSent name="Ping">
+			<input name="nb_msg" type="ECOA:uint32"/>	
+		</eventSent>
+    	<eventReceived name="Run">
+			<input type="pingpong:T_Target_Position" name="position" />	
+		</eventReceived>
+    </operations>
+  </moduleType>
+
+
+  <moduleType name="Receiver_AM_t">
+	<operations>
+		<eventReceived name="Ping">
+			<input name="nb_msg" type="ECOA:uint32"/>	
+		</eventReceived>
+		<eventSent name="Pong"/>
+   	 </operations>
+   </moduleType>
+
+ <!--moduleImplementation name="Supervisor_AM" language="C" moduleType="Supervisor_AM_t"/-->
+  <moduleImplementation name="Sender_AM" language="C" moduleType="Sender_AM_t"/>
+  <moduleImplementation name="Receiver_AM" language="C" moduleType="Receiver_AM_t"/>
+
+  <!--moduleInstance name="Supervisor_AM_I" implementationName="Supervisor_AM" moduleDeadline="160"/-->
+  <moduleInstance name="Sender_AM_I0" implementationName="Sender_AM" relativePriority="100"/>
+  <moduleInstance name="Sender_AM_I1" implementationName="Sender_AM" relativePriority="100"/>
+  <moduleInstance name="Sender_AM_I2" implementationName="Sender_AM" relativePriority="100"/>
+  <moduleInstance name="Receiver_AM_I0" implementationName="Receiver_AM" relativePriority="110"/>
+  <moduleInstance name="Receiver_AM_I1" implementationName="Receiver_AM" relativePriority="110"/>
+  <moduleInstance name="Receiver_AM_I2" implementationName="Receiver_AM" relativePriority="110"/>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="Sender_AM_I0" operationName="Ping"/>
+      <moduleInstance instanceName="Sender_AM_I1" operationName="Ping"/>
+      <moduleInstance instanceName="Sender_AM_I2" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="Receiver_AM_I0" operationName="Ping"/>
+      <moduleInstance instanceName="Receiver_AM_I1" operationName="Ping"/>
+      <moduleInstance instanceName="Receiver_AM_I2" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="Receiver_AM_I0" operationName="Pong"/>
+      <moduleInstance instanceName="Receiver_AM_I1" operationName="Pong"/>
+      <moduleInstance instanceName="Receiver_AM_I2" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <service instanceName="Ipong" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+	
+
+  <eventLink>
+    <senders>
+      <reference instanceName="Irun" operationName="Run"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="Sender_AM_I0" operationName="Run"/>
+      <moduleInstance instanceName="Sender_AM_I1" operationName="Run"/>
+      <moduleInstance instanceName="Sender_AM_I2" operationName="Run"/>
+    </receivers>
+  </eventLink>
+</componentImplementation>

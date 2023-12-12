@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="demo"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="demoPingPong_0">
+    <ecoa-sca:instance componentType="PingPong">
+      <ecoa-sca:implementation name="myDemoPingPong"/>
+    </ecoa-sca:instance>
+    <csa:property name="comp_prop1"><csa:value>10</csa:value></csa:property>
+    <csa:property name="ref_p_ass_array" source="$p_ass_array"/>
+  </csa:component>
+
+  <csa:component name="demoPingPong_1">
+    <ecoa-sca:instance componentType="PingPong">
+      <ecoa-sca:implementation name="myDemoPingPong"/>
+    </ecoa-sca:instance>
+    <csa:property name="comp_prop1"><csa:value>11</csa:value></csa:property>
+    <csa:property name="ref_p_ass_array" source="$p_ass_array"/>
+  </csa:component>
+
+  <csa:property name="p_ass_array" ecoa-sca:type="lib:Test_array"><csa:value>[0,1,2,3,4]</csa:value></csa:property>
+</csa:composite>

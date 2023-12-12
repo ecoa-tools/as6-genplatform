@@ -1,0 +1,16 @@
+Wait 2 s
+
+Initialize demoPing Heart_Beat #trigger of demoPing
+Initialize demoPong * #All component demoPong
+Initialize demoPing myDemoPing_AM_I #modules of demoPing one by one
+Initialize demoPing myDemoPong2_AM_I
+Initialize demoPing myDemoPong3_AM_I
+
+#Everything is initialized
+
+Wait 2 s
+
+### Start Pong_PD and then Ping_PD
+Start *PD Pong_PD
+Wait 500ms
+Start demoPing *

@@ -1,0 +1,76 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Master">
+
+  <!-- list of used libraries -->
+  <use library="VD_lib"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myCompWritter_mod_t">
+    <properties>
+      <property name="mod_id" type="uint32"/>
+    </properties>
+    <operations>
+      <dataWritten type="VD_lib:vector_data" name="written_vector" maxVersions="2"/>
+      <eventReceived name="trigger"/>
+    </operations>
+  </moduleType>
+
+  <moduleType name="myCompReader_mod_t">
+    <operations>
+      <dataRead type="VD_lib:vector_data" name="read_vector" notifying="true" maxVersions="2"/>
+      <eventSent name="finish"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myCompWritter_mod" language="C" moduleType="myCompWritter_mod_t"/>
+  <moduleImplementation name="myCompReader_mod" language="C" moduleType="myCompReader_mod_t"/>
+
+  <moduleInstance name="myCompWritter_mod_inst0" implementationName="myCompWritter_mod" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="mod_id">0</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+  <moduleInstance name="myCompWritter_mod_inst1" implementationName="myCompWritter_mod" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="mod_id">1</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+  <moduleInstance name="myCompReader_mod_inst" implementationName="myCompReader_mod" relativePriority="100"/>
+
+  <triggerInstance name="Heart_Beat" relativePriority="10"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <eventLink>
+    <senders>
+      <trigger instanceName="Heart_Beat" period="0.10"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myCompWritter_mod_inst0" operationName="trigger"/>
+      <moduleInstance instanceName="myCompWritter_mod_inst1" operationName="trigger"/>
+    </receivers>
+  </eventLink>
+
+  <dataLink controlled="false">
+    <writers>
+      <moduleInstance instanceName="myCompWritter_mod_inst0" operationName="written_vector"/>
+      <moduleInstance instanceName="myCompWritter_mod_inst1" operationName="written_vector"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCompReader_mod_inst" operationName="read_vector"/>
+    </readers>
+  </dataLink>
+
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myCompReader_mod_inst" operationName="finish"/>
+    </senders>
+    <receivers>
+      <reference instanceName="svc_finish" operationName="finish"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

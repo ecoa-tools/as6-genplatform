@@ -1,0 +1,55 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Worker">
+	
+    <!-- list of used libraries -->
+  	<use library="pingpong"/>
+
+  	<!-- supervision module -->
+
+  	<!-- module AM to implement provided operations -->
+  	<moduleType name="myDemoWorker_AM_t">
+    	<operations>
+		    <eventSent name="Finish"/>  
+    		<eventReceived name="TriggerEvent0"/>
+    		<eventReceived name="TriggerEvent1"/>
+    	</operations>
+  	</moduleType>
+	
+
+  	<moduleImplementation name="myDemoWorker_AM" language="C" moduleType="myDemoWorker_AM_t"/>
+
+  	<moduleInstance name="myDemoWorker_AM_I" implementationName="myDemoWorker_AM" relativePriority="160"/>
+
+
+
+
+  	<!-- Definition of module operation links for Supervision Module -->
+
+  	<!-- Definition of module operation links for AM module -->
+
+ 	<eventLink>
+  	  	<senders>
+  		    <reference instanceName="trigger_r0" operationName="trigger"/>
+  	  	</senders>
+  	  	<receivers>
+  	    	<moduleInstance instanceName="myDemoWorker_AM_I" operationName="TriggerEvent0"/>
+  		</receivers>
+  	</eventLink>
+	<eventLink>
+  	  	<senders>
+  		    <service instanceName="trigger2_s0" operationName="trigger2"/>
+  	  	</senders>
+  	  	<receivers>
+  	    	<moduleInstance instanceName="myDemoWorker_AM_I" operationName="TriggerEvent1"/>
+  		</receivers>
+  	</eventLink>
+  	<eventLink>
+  	  	<senders>
+  	    	<moduleInstance instanceName="myDemoWorker_AM_I" operationName="Finish"/>
+  	  	</senders>
+  	  	<receivers>
+  		    <service instanceName="final_s0" operationName="Finish"/>
+  		</receivers>
+  	</eventLink>
+
+</componentImplementation>

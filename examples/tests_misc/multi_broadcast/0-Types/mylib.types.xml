@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+
+	<types>
+
+		<constant name="N" type="int32" value="55" comment="xyz" />
+		
+	</types>
+
+</library>

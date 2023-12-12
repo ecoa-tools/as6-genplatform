@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0" 
+	       name="demo" 
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="demoClient">
+    <ecoa-sca:instance componentType="Client">
+      <ecoa-sca:implementation name="myDemoClient"/>
+    </ecoa-sca:instance>
+    <csa:reference name="client_r0"/>
+    <csa:reference name="client_r1"/>
+  </csa:component>
+
+  <csa:component name="demoServer0">
+    <ecoa-sca:instance componentType="Server">
+      <ecoa-sca:implementation name="myDemoServer"/>
+    </ecoa-sca:instance>
+    <csa:service name="server_s0"/>
+    <csa:service name="server_s1"/>
+    <csa:reference name="server_r0"/>
+  </csa:component>
+
+  <csa:component name="demoServer1">
+    <ecoa-sca:instance componentType="Server">
+      <ecoa-sca:implementation name="myDemoServer"/>
+    </ecoa-sca:instance>
+    <csa:service name="server_s0"/>
+    <csa:service name="server_s1"/>
+    <csa:reference name="server_r0"/>
+  </csa:component>
+
+  <csa:component name="demoServer0_Layer2">
+    <ecoa-sca:instance componentType="Server_layer2">
+      <ecoa-sca:implementation name="myDemoServer_layer2"/>
+    </ecoa-sca:instance>
+    <csa:service name="server_s0"/>
+    <csa:reference name="server_r0"/>
+  </csa:component>
+
+  <csa:component name="demoServer1_Layer2">
+    <ecoa-sca:instance componentType="Server_layer2">
+      <ecoa-sca:implementation name="myDemoServer_layer2"/>
+    </ecoa-sca:instance>
+    <csa:service name="server_s0"/>
+    <csa:reference name="server_r0"/>
+  </csa:component>
+
+
+
+  <csa:component name="demoFinal">
+    <ecoa-sca:instance componentType="Final">
+      <ecoa-sca:implementation name="myDemoFinal"/>
+    </ecoa-sca:instance>
+    <csa:service name="final_s0"/>
+  </csa:component>
+
+  <csa:wire source="demoClient/client_r0" target="demoServer0/server_s0"   />
+  <csa:wire source="demoClient/client_r0" target="demoServer1/server_s0"    />
+
+  <csa:wire source="demoClient/client_r1" target="demoServer0/server_s1"  />
+  <csa:wire source="demoClient/client_r1" target="demoServer1/server_s1"   />
+
+
+	<csa:wire source="demoServer0/server_r0" target="demoServer0_Layer2/server_s0"   />
+ 	<csa:wire source="demoServer0/server_r0" target="demoServer1_Layer2/server_s0"   />
+	<csa:wire source="demoServer1/server_r0" target="demoServer0_Layer2/server_s0"   />
+ 	<csa:wire source="demoServer1/server_r0" target="demoServer1_Layer2/server_s0"  />
+ 
+ <csa:wire source="demoServer0_Layer2/server_r0" target="demoFinal/final_s0" />
+  <csa:wire source="demoServer1_Layer2/server_r0" target="demoFinal/final_s0" />
+</csa:composite>

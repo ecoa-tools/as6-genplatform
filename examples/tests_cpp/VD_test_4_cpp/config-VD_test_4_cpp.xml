@@ -1,0 +1,10 @@
+<config xmlns="http://www.dassault-aviation.com/parsec-config-1.0">
+	<composite filename="VD_test_4_cpp/5-Integration/demo.impl.composite"/>
+	<components directory="VD_test_4_cpp/2-ComponentDefinitions"/>
+	<services directory="VD_test_4_cpp/1-Services"/>
+	<types directory="VD_test_4_cpp/0-Types"/>
+	<component_implementations directory="VD_test_4_cpp/4-ComponentImplementations"/>
+	<logical_system filename="VD_test_4_cpp/5-Integration/logical-system.xml"/>
+	<integration directory="VD_test_4_cpp/5-Integration"/>
+	<deployment filename="VD_test_4_cpp/5-Integration/deployment.xml"/>
+</config>

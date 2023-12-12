@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- XSD Catalog usable within Eclipse -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <uri name="http://www.ecoa.technology/types-2.0" uri="platform:/resource/Model/Schemas/ecoa-types-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/interface-2.0" uri="platform:/resource/Model/Schemas/ecoa-interface-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/interface-qos-2.0" uri="platform:/resource/Model/Schemas/ecoa-interface-qos-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/sca-extension-2.0" uri="platform:/resource/Model/Schemas/sca/ecoa-sca-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/bin-desc-2.0" uri="platform:/resource/Model/Schemas/ecoa-bin-desc-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/implementation-2.0" uri="platform:/resource/Model/Schemas/ecoa-implementation-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/logicalsystem-2.0" uri="platform:/resource/Model/Schemas/ecoa-logicalsystem-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/deployment-2.0" uri="platform:/resource/Model/Schemas/ecoa-deployment-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/cross-platforms-view-2.0" uri="platform:/resource/Model/Schemas/ecoa-cross-platforms-view-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/project-2.0" uri="platform:/resource/Model/Schemas/ecoa-project-2.0.xsd"></uri>
+  <uri name="http://docs.oasis-open.org/ns/opencsa/sca/200912" uri="platform:/resource/Model/Schemas/sca/sca-1.1-cd06-subset-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/udpbinding-2.0" uri="platform:/resource/Model/Schemas/ecoa-udpbinding-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/uid-2.0" uri="platform:/resource/Model/Schemas/ecoa-uid-2.0.xsd"></uri>
+
+  <uri name="http://www.ecoa.technology/udpbinding-2.0" uri="platform:/resource/Model/Schemas/guidance/ecoa-udpbinding-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/module-behaviour-2.0" uri="platform:/resource/Model/Schemas/guidance/ecoa-module-behaviour-2.0.xsd"></uri>
+  <uri name="http://www.ecoa.technology/insertion-policy-2.0" uri="platform:/resource/Model/Schemas/guidance/ecoa-insertion-policy-2.0.xsd"></uri>
+
+</catalog>

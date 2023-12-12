@@ -1,0 +1,45 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Server_layer2">
+	
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoServer_AM_t">
+    <operations>
+    <eventReceived name="pong"/>
+      
+    <eventSent name="finish"/>
+
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoServer_L2_AM" language="C" moduleType="myDemoServer_AM_t"/>
+
+  <moduleInstance name="myDemoServer_AM_I" implementationName="myDemoServer_L2_AM" relativePriority="100"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <eventLink>
+    <senders>
+      <service instanceName="server_s0" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoServer_AM_I" operationName="pong"/>
+    </receivers>
+  </eventLink>
+
+
+<eventLink>
+    <senders>
+		<moduleInstance instanceName="myDemoServer_AM_I" operationName="finish"/>
+
+    </senders>
+    <receivers>      
+		<reference instanceName="server_r0" operationName="Finish"/>
+    </receivers>
+  </eventLink>
+</componentImplementation>

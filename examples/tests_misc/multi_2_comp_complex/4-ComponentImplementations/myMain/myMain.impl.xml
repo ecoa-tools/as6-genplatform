@@ -1,0 +1,67 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Main">
+	
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="mySender_AM_t">
+    <operations>
+		<eventReceived name="Trig"/>
+    	<eventSent name="Pong"/>
+    </operations>
+  </moduleType>
+
+
+  <moduleType name="receiver_mod_AM_t">
+	<operations>
+		<eventReceived name="Ping"/>
+		<eventSent name="Trig"/>
+   	 </operations>
+   </moduleType>
+
+  <moduleImplementation name="receiver_mod_AM" language="C" moduleType="receiver_mod_AM_t"/>
+  <moduleImplementation name="mySender_AM" language="C" moduleType="mySender_AM_t"/>
+
+
+  <moduleInstance name="receiver_mod_AM_I0" implementationName="receiver_mod_AM" relativePriority="100"/>
+
+  <moduleInstance name="mySender_AM_I" implementationName="mySender_AM" relativePriority="120"/>
+  <moduleInstance name="receiver_mod_AM_I1" implementationName="receiver_mod_AM" relativePriority="110"/>
+
+
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="mySender_AM_I" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <reference instanceName="Main_r" operationName="Pong_RbP"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="receiver_mod_AM_I0" operationName="Trig"/>
+      <moduleInstance instanceName="receiver_mod_AM_I1" operationName="Trig"/>
+    </senders>
+    <receivers>
+		<moduleInstance instanceName="mySender_AM_I" operationName="Trig"/>
+    </receivers>
+  </eventLink>
+
+
+ <eventLink>
+    <senders>
+      <reference instanceName="Main_r" operationName="Ping_SbP"/>
+      <service instanceName="Main_s" operationName="Ping_RbP"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="receiver_mod_AM_I0" operationName="Ping"/>
+      <moduleInstance instanceName="receiver_mod_AM_I1" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+
+
+</componentImplementation>

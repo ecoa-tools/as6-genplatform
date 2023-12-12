@@ -1,0 +1,12 @@
+<project name="Demo1B_Stage2">
+
+  <property name="USER_CFLAGS" value="-ggdb -O0"/>
+  <property name="USER_CPPFLAGS" value="-ggdb -O0"/>
+  <property name="USER_LDFLAGS" value=""/>
+
+  <import file="${ecoa_home}/ecoalib.ant"/>
+
+  <property name="deployment" value="deployment"></property>
+
+</project>
+

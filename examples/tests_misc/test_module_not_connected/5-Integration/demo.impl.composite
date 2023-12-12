@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="demo"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="demoTestComponent">
+    <ecoa-sca:instance componentType="TestComponent">
+      <ecoa-sca:implementation name="myTestComponent"/>
+    </ecoa-sca:instance>
+    <csa:reference name="Finish"/>
+    <csa:reference name="Extern"/>
+    <csa:service name="Extern_Data"/>
+  </csa:component>
+
+  <csa:component name="demoTestComponent_Cpp">
+    <ecoa-sca:instance componentType="TestComponent">
+      <ecoa-sca:implementation name="myTestComponent_cpp"/>
+    </ecoa-sca:instance>
+    <csa:reference name="Finish"/>
+    <csa:reference name="Extern"/>
+    <csa:service name="Extern_Data"/>
+  </csa:component>
+
+  <csa:component name="demoDummyComponent">
+    <ecoa-sca:instance componentType="DummyComp">
+      <ecoa-sca:implementation name="myDummyComponent"/>
+    </ecoa-sca:instance>
+    <csa:service name="Service"/>
+    <csa:reference name="Reference"/>
+  </csa:component>
+
+  <csa:component name="demoDummyComponent_2">
+    <ecoa-sca:instance componentType="DummyComp">
+      <ecoa-sca:implementation name="myDummyComponent_no_link"/>
+    </ecoa-sca:instance>
+    <csa:service name="Service"/>
+    <csa:reference name="Reference"/>
+  </csa:component>
+
+  <csa:component name="demoTestFinish">
+    <ecoa-sca:instance componentType="TestFinish">
+      <ecoa-sca:implementation name="myTestFinish"/>
+    </ecoa-sca:instance>
+    <csa:service name="Finish"/>
+  </csa:component>
+
+  <csa:wire source="demoTestComponent/Finish" target="demoTestFinish/Finish" />
+  <csa:wire source="demoTestComponent_Cpp/Finish" target="demoTestFinish/Finish" />
+
+<!--   <csa:wire target="demoDummyComponent/Extern" source="demoTestComponent/Extern" />
+  <csa:wire target="demoTestComponent/Extern_Data" source="demoDummyComponent/Extern_Data" /> -->
+
+  <csa:wire target="demoDummyComponent_2/Service" source="demoDummyComponent/Reference" />
+  <csa:wire target="demoDummyComponent/Service" source="demoDummyComponent_2/Reference" />
+
+</csa:composite>

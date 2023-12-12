@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ID_map xmlns="http://www.ecoa.technology/uid-2.0">
+  <ID key="compMaster/svc_master_0:compWriter0/svc_writer:some_data_0" value="1747785406"/>
+  <ID key="compMaster/svc_master_0:compWriter0/svc_writer:some_data_1" value="786628299"/>
+  <ID key="compMaster/svc_master_1:compWriter1/svc_writer:some_data_0" value="1489866841"/>
+  <ID key="compMaster/svc_master_1:compWriter1/svc_writer:some_data_1" value="433480630"/>
+</ID_map>
+

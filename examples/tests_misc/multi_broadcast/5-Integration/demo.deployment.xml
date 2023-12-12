@@ -1,0 +1,23 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Main_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoMain" moduleInstanceName="receiver_mod_AM_I0" modulePriority="30"/>
+	<deployedModuleInstance componentName="demoMain" moduleInstanceName="receiver_mod_AM_I1" modulePriority="40"/>
+
+	<deployedModuleInstance componentName="demoMain" moduleInstanceName="mySender_AM_I" modulePriority="50"/>
+	
+	<deployedModuleInstance componentName="demoFinal" moduleInstanceName="mydemoFinal_AM_I" modulePriority="60"/>
+
+    <deployedModuleInstance componentName="Reciever0" moduleInstanceName="myReceiverCom_AM_AM_I" modulePriority="70"/>
+
+    <deployedModuleInstance componentName="Reciever1" moduleInstanceName="myReceiverCom_AM_AM_I" modulePriority="71"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Thales" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

@@ -1,0 +1,72 @@
+<fineGrainDeployment>
+	<platformTechnicalDeployment>
+		<technicalProcessingResource computingNode="machine0"  computingPlatform="Thales" coreId="0"/>
+		<technicalProcessingResource computingNode="machine0"  computingPlatform="Thales" coreId="1"/>
+	</platformTechnicalDeployment>
+
+	<protectionDomainDeployment>
+		<mapping protectionDomainName="PongPing_intern_PD" computingNode="machine0" computingPlatform="Thales"/>
+
+		<schedulingPolicy>FIFO</schedulingPolicy>
+		<defaultAffinity>
+			<core id="1"/>
+			<core id="3"/>
+		</defaultAffinity>
+		<affinity>
+			<deployedModuleInstance componentName="demoPong" moduleInstanceName="myDemoPong_AM_I">
+				<core id="1"/>
+				<core id="2"/>
+			</deployedModuleInstance>
+			<deployedModuleInstance componentName="demoPing" moduleInstanceName="myDemoPing_AM_I">
+				<core id="3"/>
+			</deployedModuleInstance>
+			<deployedTriggerInstance componentName="demoPing" triggerInstanceName="Heart_Beat">
+				<core id="0"/>
+			</deployedTriggerInstance>
+		</affinity>
+	</protectionDomainDeployment>
+
+ 	<protectionDomainDeployment>
+		<mapping protectionDomainName="Pong_ext_PD" computingNode="machine0" computingPlatform="Thales"/>
+
+		<schedulingPolicy>FIFO</schedulingPolicy>
+		<defaultAffinity>
+			<core id="1"/>
+			<core id="3"/>
+		</defaultAffinity>
+		<affinity>
+			<deployedModuleInstance componentName="demoPong_ext" moduleInstanceName="myDemoPong_AM_I">
+				<core id="1"/>
+				<core id="2"/>
+			</deployedModuleInstance>
+		</affinity>
+	</protectionDomainDeployment>
+
+	<protectionDomainDeployment>
+		<mapping protectionDomainName="Ping_ext_PD" computingNode="machine0" computingPlatform="Thales"/>
+
+		<schedulingPolicy>FIFO</schedulingPolicy>
+		<defaultAffinity>
+			<core id="1"/>
+			<core id="3"/>
+		</defaultAffinity>
+		<affinity>
+			<deployedModuleInstance componentName="demoPing_ext" moduleInstanceName="myDemoPing_AM_I">
+				<core id="3"/>
+			</deployedModuleInstance>
+			<deployedTriggerInstance componentName="demoPing_ext" triggerInstanceName="Heart_Beat">
+				<core id="0"/>
+			</deployedTriggerInstance>
+		</affinity>
+	</protectionDomainDeployment>
+
+	<protectionDomainDeployment>
+		<mapping protectionDomainName="PongPing_intern_comp_PD" computingNode="machine0" computingPlatform="Thales"/>
+
+		<schedulingPolicy>FIFO</schedulingPolicy>
+		<defaultAffinity>
+			<core id="3"/>
+		</defaultAffinity>
+		<affinity></affinity>
+	</protectionDomainDeployment>
+</fineGrainDeployment>

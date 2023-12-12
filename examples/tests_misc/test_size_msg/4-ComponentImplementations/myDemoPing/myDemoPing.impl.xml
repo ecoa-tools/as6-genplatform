@@ -1,0 +1,123 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Ping">
+	
+    <!-- list of used libraries -->
+  <use library="lib"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPing_AM_t">
+    <operations>
+
+	<eventSent name="Ping_array_10">
+		<input name="array1" type="lib:Test_array_10"/>	
+	</eventSent>
+	<eventSent name="Ping_array_11">
+		<input name="array1" type="lib:Test_array_11"/>	
+	</eventSent>
+	<eventSent name="Ping_array_12">
+		<input name="array1" type="lib:Test_array_12"/>	
+	</eventSent>
+	<eventSent name="Ping_array_13">
+		<input name="array1" type="lib:Test_array_13"/>	
+	</eventSent>
+	<eventSent name="Ping_array_14">
+		<input name="array1" type="lib:Test_array_14"/>	
+	</eventSent>
+	<eventSent name="Ping_array_15">
+		<input name="array1" type="lib:Test_array_15"/>	
+	</eventSent>
+	<eventSent name="Ping_array_16">
+		<input name="array1" type="lib:Test_array_16"/>	
+	</eventSent>
+	
+    <eventReceived name="Pong"/>
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPing_AM" language="C" moduleType="myDemoPing_AM_t"/>
+
+  <moduleInstance name="myDemoPing_AM_I" implementationName="myDemoPing_AM" relativePriority="100"/>
+
+  <!--triggerInstance name="Heart_Beat" moduleDeadline="0"/-->
+
+
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <!-- Definition of module operation links for AM module -->
+ 
+
+
+  
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping_array_10"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping_array_10"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping_array_11"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping_array_11"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping_array_12"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping_array_12"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping_array_13"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping_array_13"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping_array_14"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping_array_14"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping_array_15"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping_array_15"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping_array_16"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping_array_16"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <reference instanceName="PingPong" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

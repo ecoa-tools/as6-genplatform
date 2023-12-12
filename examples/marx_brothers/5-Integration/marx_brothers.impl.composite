@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="marx_brothers"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:property name="assembly_public_PINFO_1" ecoa-sca:type="ECOA:pinfo_filename">
+    <csa:value>"example_public_PINFO_1.txt"</csa:value> <!-- PINFO in "5-Integration/Pinfo" folder -->
+  </csa:property>
+  <csa:property name="assembly_public_PINFO_2" ecoa-sca:type="ECOA:pinfo_filename">
+    <csa:value>"subfold/example_public_PINFO_2.txt"</csa:value> <!-- PINFO in "5-Integration/Pinfo/subfold" folder -->
+  </csa:property>
+
+  <csa:component name="Chico">
+    <ecoa-sca:instance componentType="Elder">
+      <ecoa-sca:implementation name="myElder"/>
+    </ecoa-sca:instance>
+    <csa:property name="ID"><csa:value>42</csa:value></csa:property>
+    <csa:property name="elder_public_PINFO_1" source="$assembly_public_PINFO_1" />
+    <csa:property name="elder_public_PINFO_2" source="$assembly_public_PINFO_2" />
+    <csa:reference name="younger_1"/>
+    <csa:reference name="younger_2"/>
+  </csa:component>
+
+  <csa:component name="Harpo">
+    <ecoa-sca:instance componentType="Elder">
+      <ecoa-sca:implementation name="myElder"/>
+    </ecoa-sca:instance>
+    <csa:property name="ID"><csa:value>84</csa:value></csa:property>
+    <csa:property name="elder_public_PINFO_1" source="$assembly_public_PINFO_1" />
+    <csa:property name="elder_public_PINFO_2" source="$assembly_public_PINFO_2" />
+    <csa:reference name="younger_1"/>
+    <csa:reference name="younger_2"/>
+  </csa:component>
+
+  <csa:component name="Groucho">
+    <ecoa-sca:instance componentType="Cadet">
+      <ecoa-sca:implementation name="myCadet"/>
+    </ecoa-sca:instance>
+    <csa:property name="ID"><csa:value>420</csa:value></csa:property>
+    <csa:service name="older"/>
+    <csa:reference name="younger"/>
+  </csa:component>
+
+  <csa:component name="Gummo">
+    <ecoa-sca:instance componentType="Cadet">
+      <ecoa-sca:implementation name="myCadet"/>
+    </ecoa-sca:instance>
+    <csa:property name="ID"><csa:value>840</csa:value></csa:property>
+    <csa:service name="older"/>
+    <csa:reference name="younger"/>
+  </csa:component>
+
+  <csa:component name="Zeppo">
+    <ecoa-sca:instance componentType="Junior">
+      <ecoa-sca:implementation name="myJunior"/>
+    </ecoa-sca:instance>
+    <csa:property name="ID"><csa:value>4200</csa:value></csa:property>
+    <csa:service name="older"/>
+  </csa:component>
+
+  <csa:wire source="Chico/younger_1" target="Groucho/older" />
+  <csa:wire source="Chico/younger_2" target="Gummo/older" />
+
+  <csa:wire source="Harpo/younger_1" target="Groucho/older" />
+  <csa:wire source="Harpo/younger_2" target="Gummo/older" />
+
+  <csa:wire source="Groucho/younger" target="Zeppo/older" />
+  <csa:wire source="Gummo/younger" target="Zeppo/older" />
+
+</csa:composite>

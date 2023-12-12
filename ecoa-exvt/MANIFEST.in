@@ -1,0 +1,4 @@
+# Copyright 2023 Dassault Aviation
+# MIT License (see LICENSE.txt)
+
+recursive-include src/ecoa/XSD *.xml *.xsd

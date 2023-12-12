@@ -1,0 +1,72 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Main">
+	
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="Sender_AM_t">
+    <operations>
+    	<eventSent name="Ping">
+			<input name="nb_msg" type="ECOA:uint32"/>	
+		</eventSent>
+    	<eventReceived name="Run"/>
+    </operations>
+  </moduleType>
+
+
+  <moduleType name="Receiver_AM_t">
+	<operations>
+		<eventReceived name="Ping">
+			<input name="nb_msg" type="ECOA:uint32"/>	
+		</eventReceived>
+
+		<eventReceived name="Ping2">
+			<input name="nb_msg" type="ECOA:uint32"/>	
+		</eventReceived>
+		<eventSent name="Pong"/>
+   	 </operations>
+   </moduleType>
+
+  <moduleImplementation name="Sender_AM" language="C" moduleType="Sender_AM_t"/>
+  <moduleImplementation name="Receiver_AM" language="C" moduleType="Receiver_AM_t"/>
+
+  <moduleInstance name="Receiver_AM_I0" implementationName="Receiver_AM" relativePriority="150"/>
+  <moduleInstance name="Sender_AM_I" implementationName="Sender_AM" relativePriority="100"/>
+  <moduleInstance name="Receiver_AM_I1" implementationName="Receiver_AM" relativePriority="150"/>
+  <moduleInstance name="Receiver_AM_I2" implementationName="Receiver_AM" relativePriority="150"/>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="Sender_AM_I" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="Receiver_AM_I0" operationName="Ping"/>
+      <moduleInstance instanceName="Receiver_AM_I1" operationName="Ping"/>
+      <moduleInstance instanceName="Receiver_AM_I2" operationName="Ping2"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="Receiver_AM_I0" operationName="Pong"/>
+      <moduleInstance instanceName="Receiver_AM_I1" operationName="Pong"/>
+      <moduleInstance instanceName="Receiver_AM_I2" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <service instanceName="PingPong" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+	
+
+  <eventLink>
+    <senders>
+      <service instanceName="PingPong" operationName="Run"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="Sender_AM_I" operationName="Run"/>
+    </receivers>
+  </eventLink>
+</componentImplementation>

@@ -1,0 +1,76 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Writer">
+
+  <!-- list of used libraries -->
+  <use library="VD_lib"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myWriter_mod_t">
+    <properties>
+      <property name="mod_id" type="uint32"/>
+    </properties>
+    <operations>
+      <dataWritten type="VD_lib:vector_data" name="write_vector" maxVersions="3"/>
+      <eventReceived name="TriggerEvent"/>
+    </operations>
+  </moduleType>
+
+  <moduleType name="myReader_mod_t">
+    <operations>
+      <dataRead type="VD_lib:vector_data" name="read_vector" notifying="true" maxVersions="2"/>
+      <eventSent name="finish"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myWriter_mod" language="C" moduleType="myWriter_mod_t"/>
+  <moduleImplementation name="myReader_mod" language="C" moduleType="myReader_mod_t"/>
+
+  <moduleInstance name="myReader_mod_inst1" implementationName="myReader_mod" relativePriority="100"/>
+  <moduleInstance name="myReader_mod_inst2" implementationName="myReader_mod" relativePriority="100"/>
+  <moduleInstance name="myWriter_mod_inst1" implementationName="myWriter_mod" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="mod_id">1</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <moduleInstance name="myWriter_mod_inst2" implementationName="myWriter_mod" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="mod_id">2</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <triggerInstance name="Heart_Beat" relativePriority="10"/>
+
+  <!--  -->
+  <eventLink>
+      <senders>
+          <trigger instanceName="Heart_Beat" period="0.050"/>
+      </senders>
+      <receivers>
+          <moduleInstance instanceName="myWriter_mod_inst2" operationName="TriggerEvent"/>
+          <moduleInstance instanceName="myWriter_mod_inst1" operationName="TriggerEvent"/>
+      </receivers>
+  </eventLink>
+
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="myWriter_mod_inst1" operationName="write_vector" />
+      <moduleInstance instanceName="myWriter_mod_inst2" operationName="write_vector" />
+    </writers>
+    <readers>
+      <service instanceName="svc_writer1" operationName="some_data"/>
+      <service instanceName="svc_writer2" operationName="some_data"/>
+      <moduleInstance instanceName="myReader_mod_inst1" operationName="read_vector" fifoSize="10"/>
+      <moduleInstance instanceName="myReader_mod_inst2" operationName="read_vector"/>
+    </readers>
+  </dataLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myReader_mod_inst1" operationName="finish"/>
+      <moduleInstance instanceName="myReader_mod_inst2" operationName="finish"/>
+    </senders>
+    <receivers>
+      <reference instanceName="svc_finish" operationName="finish"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

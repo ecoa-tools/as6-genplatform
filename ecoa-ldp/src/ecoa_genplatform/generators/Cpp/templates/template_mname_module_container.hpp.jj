@@ -1,0 +1,104 @@
+/**
+* @file {{mname}}_container.hpp
+* @brief This is the Module Container header for Module / Container Interface Class Header
+*
+*/
+
+#if !defined(_{{mname.upper()}}_CONTAINER_HPP)
+#define _{{mname.upper()}}_CONTAINER_HPP
+
+ /* Standard types */
+#include <ECOA.hpp>
+
+
+/*Additionnaly created types*/
+{% for lib in libraries %}
+#include "{{fix_libname(lib)}}.hpp"
+{% endfor %}
+
+/*Container types*/
+#include "{{mname}}_container_types.hpp"
+
+/* User context */
+{%if not mimpl.is_binary_module() %}
+#include "{{mname}}_user_context.hpp"
+{% endif %}
+namespace {{mname}}
+{
+
+class Container
+{
+	public:
+
+		/* Logging and fault management API */
+	{% for i in ["log_trace","log_debug","log_info","log_warning","raise_error","raise_fatal_error"] %}
+        void  {{i}} (const ECOA::log &log);
+    {% endfor %}
+
+    	/*Time services API */
+        void get_relative_local_time(ECOA::hr_time& relative_local_time);
+
+    {% for i in ["UTC_time","absolute_system_time"] %}
+        ECOA::return_status get_{{i}}(ECOA::global_time& {{i.lower()}});
+    {% endfor %}
+
+    	/* Time resolution services API */
+    {% for i in ["relative_local_time_resolution","UTC_time_resolution","absolute_system_time_resolution"] %}
+        void get_{{i}}(ECOA::duration& {{i.lower()}});
+    {% endfor %}
+
+    	/* Optional API for saving the warm start context */
+    	void save_warm_start_context();
+
+    	/* APIs generated */
+    	{% for (opname, op) in mtype.operations.items() %}
+
+    	{% if op.type=="ES" %}
+        void {{op.name}}__send({{generate_header_fct_cpp(op, with_input=True, is_first_arg=True)}});{% endif %}
+    	{% if op.type=="SRS" %}
+        ECOA::return_status {{op.name}}__request_sync({{generate_header_fct_cpp(op, with_input=True, with_output=True, is_first_arg=True)}});{% endif %}
+    	{% if op.type=="ARS" %}
+        ECOA::return_status {{op.name}}__request_async(ECOA::uint32& ID{{generate_header_fct_cpp(op, with_input=True)}});{% endif %}
+    	{% if op.type=="RR" %}
+        ECOA::return_status {{op.name}}__response_send(const ECOA::uint32 ID{{generate_header_fct_cpp(op, with_output=True, is_output_const=True, output_mode=False)}});{% endif %}
+    	{% if op.type=="DW" %}
+    	ECOA::return_status {{op.name}}__get_write_access({{op.name}}_handle& data_handle);
+    	ECOA::return_status {{op.name}}__cancel_write_access({{op.name}}_handle& data_handle);
+    	ECOA::return_status {{op.name}}__publish_write_access({{op.name}}_handle& data_handle);
+    	{% endif %}
+    	{% if op.type=="DR" or op.type=="DRN" %}
+    	ECOA::return_status {{op.name}}__get_read_access({{op.name}}_handle& data_handle);
+    	ECOA::return_status {{op.name}}__release_read_access({{op.name}}_handle& data_handle);
+    	{% endif %}
+    	{% endfor %}
+    	/* Properties API */
+    	{% for (key,prop) in mtype.properties.items() %}
+    	void get_{{prop.name}}_value({{fix_Cpp_data_type(prop.get_type())}}& value);
+    	{% endfor %}
+
+        /* PINFO API */
+		{% for pinfo_name in mtype.private_pinfo+mtype.public_pinfo %}
+        ECOA::return_status seek_{{pinfo_name}}(ECOA::int32 offset, ECOA::seek_whence_type whence, ECOA::uint32 *new_position);
+        ECOA::return_status read_{{pinfo_name}}(ECOA::byte *memory_address, ECOA::uint32 in_size, ECOA::uint32 *out_size);
+
+        {% endfor %}
+
+        // If this is a Fault Handler module, then an additional API is declared: Recovery Action API
+        ECOA::return_status recovery_action(ECOA::recovery_action_type recovery_action, ECOA::asset_id asset_id, ECOA::asset_type asset_type);
+
+        // Other container technical data will accessible through the incomplete structured defined here
+        struct platform_hook;
+
+        // The constructor of the Container shall have the following signature
+        Container(platform_hook* hook);
+
+    private:
+
+        // private data for this container implementation is declared as a private struct within the implementation
+        platform_hook* hook;
+
+}; /* Class Container */
+
+} /* namespace {{mname}}*/
+
+#endif /* {{mname.upper()}}_CONTAINER_HPP */

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0" 
+	       name="marx_brothers"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <!-- Chico, Harpo, Groucho, Gummo, Zeppo -->
+
+  <csa:component name="Chico">
+    <ecoa-sca:instance componentType="Elder"/>
+    <csa:reference name="younger_1"/>
+    <csa:reference name="younger_2"/>
+  </csa:component>
+
+  <csa:component name="Harpo">
+    <ecoa-sca:instance componentType="Elder"/>
+    <csa:reference name="younger_1"/>
+    <csa:reference name="younger_2"/>
+  </csa:component>
+
+  <csa:component name="Groucho">
+    <ecoa-sca:instance componentType="Cadet"/>
+    <csa:service name="older"/>
+    <csa:reference name="younger"/>
+  </csa:component>
+
+  <csa:component name="Gummo">
+    <ecoa-sca:instance componentType="Cadet"/>
+    <csa:service name="older"/>
+    <csa:reference name="younger"/>
+  </csa:component>
+
+  <csa:component name="Zeppo">
+    <ecoa-sca:instance componentType="Junior"/>
+    <csa:service name="older"/>
+  </csa:component>
+
+  <csa:wire source="Chico/younger_1" target="Groucho/older" />
+  <csa:wire source="Chico/younger_2" target="Gummo/older" />
+
+  <csa:wire source="Harpo/younger_1" target="Groucho/older" />
+  <csa:wire source="Harpo/younger_2" target="Gummo/older" />
+
+  <csa:wire source="Groucho/younger" target="Zeppo/older" />
+  <csa:wire source="Gummo/younger" target="Zeppo/older" />
+
+</csa:composite>

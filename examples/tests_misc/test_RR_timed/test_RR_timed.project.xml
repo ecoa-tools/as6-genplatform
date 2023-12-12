@@ -1,0 +1,29 @@
+<ECOAProject xmlns="http://www.ecoa.technology/project-2.0" name="test_RR_timed">
+
+    <types>
+        <file>0-Types/pingpong.types.xml</file>
+    </types>
+
+    <serviceDefinitions>
+        <file>1-Services/svc_0.interface.xml</file>
+    </serviceDefinitions>
+
+    <componentDefinitions>
+        <file>2-ComponentDefinitions/Server/Server.componentType</file>
+        <file>2-ComponentDefinitions/Master/Master.componentType</file>
+    </componentDefinitions>
+
+    <initialAssembly></initialAssembly>
+
+    <componentImplementations>
+        <file>4-ComponentImplementations/myDemoMaster/myDemoMaster.impl.xml</file>
+        <file>4-ComponentImplementations/myDemoServer/myDemoServer.impl.xml</file>
+    </componentImplementations>
+
+    <implementationAssembly>5-Integration/demo.impl.composite</implementationAssembly>
+    <deploymentSchema>5-Integration/demo.deployment.xml</deploymentSchema>
+    <logicalSystem>5-Integration/cs1.logical-system.xml</logicalSystem>
+
+    <outputDirectory>6-output</outputDirectory>
+</ECOAProject>
+

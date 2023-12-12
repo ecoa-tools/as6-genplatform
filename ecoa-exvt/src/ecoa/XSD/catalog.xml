@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- XSD Catalog usable within Eclipse -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <uri name="http://www.dassault-aviation.com/parsec-config-1.0" uri="platform:/resource/Extras/parsec-config-1.0.xsd"></uri>
+  <uri name="http://www.ecos.eu/physicalsystem-1.0" uri="platform:/resource/Extras/physicalsystem-1.0.xsd"></uri>
+  <uri name="http://maven.apache.org/xsd/maven-4.0.0.xsd" uri="platform:/resource/Extras/maven-4.0.0.xsd"></uri>
+  
+</catalog>

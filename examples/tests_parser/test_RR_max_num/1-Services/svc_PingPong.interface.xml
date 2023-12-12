@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="pingpong"/>
+
+  <operations>
+
+    <requestresponse name="Ping_async">
+      <input name="Ping_Position" type="pingpong:T_2D_Position"/>
+      <input name="Ping_Target" type="ECOA:uint32"/>
+      <output name="Pong_Position" type="pingpong:T_2D_Position"/>
+      <output name="Pong_Target" type="ECOA:uint32"/>
+    </requestresponse>
+    <requestresponse name="Ping_sync">
+      <input name="Ping_Position" type="pingpong:T_2D_Position"/>
+      <input name="Ping_Target" type="ECOA:uint32"/>
+      <output name="Pong_Position" type="pingpong:T_2D_Position"/>
+      <output name="Pong_Target" type="ECOA:uint32"/>
+    </requestresponse>
+
+    <!--data name="Counter" type="uint32"/-->
+
+  </operations>
+
+</serviceDefinition>

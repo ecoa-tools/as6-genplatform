@@ -1,0 +1,89 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Ping">
+
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPing_AM_t">
+    <operations>
+
+    <eventReceived name="Start_test">
+      <input name="param1" type="uint32"/>
+      <input name="param2" type="uint16"/>
+    </eventReceived>
+
+    <eventSent name="Ping"/>
+    <eventReceived name="Pong"/>
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPing_AM" language="C++" moduleType="myDemoPing_AM_t"/>
+
+  <moduleInstance name="myDemoPing_AM_I" implementationName="myDemoPing_AM" relativePriority="100"/>
+
+  <dynamicTriggerInstance name="d_trigger" size="10" relativePriority="160">
+    <parameter name="param1" type="uint32"/>
+    <parameter name="param2" type="uint16"/>
+  </dynamicTriggerInstance>
+
+
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <!-- Definition of module operation links for AM module -->
+
+
+
+  <eventLink>
+    <senders>
+      <dynamicTrigger instanceName="d_trigger" operationName="out"/>
+      <external operationName="Start_extern" language="C"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Start_test"/>
+      <!-- <moduleInstance instanceName="myDemoPing_AM_I" operationName="Start_test"/> -->
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <external operationName="Set_trigger_extern" language="C"/>
+    </senders>
+    <receivers>
+      <dynamicTrigger instanceName="d_trigger" operationName="in"/>
+    </receivers>
+  </eventLink>
+
+<!--   <eventLink>
+    <senders>
+      <dynamicTrigger instanceName="d_trigger" operationName="out"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Start_test"/>
+    </receivers>
+  </eventLink> -->
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <reference instanceName="PingPong" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

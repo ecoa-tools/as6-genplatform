@@ -1,0 +1,21 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Writer_PD">
+    <executeOn computingNode="machine0" computingPlatform="Dassault"/>
+    <deployedModuleInstance componentName="compWriter" moduleInstanceName="myCompWriter_mod_inst" modulePriority="30"/>
+    <!--deployedTriggerInstance componentName="demoPing" triggerInstanceName="Heart_Beat" triggerPriority="10"/-->
+  </protectionDomain>
+
+  <protectionDomain name="Reader_PD">
+    <executeOn computingNode="machine0" computingPlatform="Dassault"/>
+    <deployedModuleInstance componentName="compReader" moduleInstanceName="myCompReader_mod_inst" modulePriority="30"/>
+    <deployedModuleInstance componentName="compFinisher" moduleInstanceName="myCompFinisher_mod_inst" modulePriority="30"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Dassault" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

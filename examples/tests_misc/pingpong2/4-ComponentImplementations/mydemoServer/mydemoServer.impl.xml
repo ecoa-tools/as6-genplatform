@@ -1,0 +1,47 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="server">
+	
+  <!-- supervision module -->
+<use library="mylib"/>
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="mydemoServer_AM_t" >
+    <operations>
+    	<eventSent name="SPing0"/>
+    	<eventSent name="SPing1"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="mydemoServer_AM" language="C" moduleType="mydemoServer_AM_t"/>
+
+  <moduleInstance name="mydemoServer_AM_I" implementationName="mydemoServer_AM" relativePriority="100"/>
+
+  <!--triggerInstance name="Heart_Beat" moduleDeadline="0"/-->
+
+
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <!-- Definition of module operation links for AM module -->
+	<eventLink>
+		<senders>
+		  	<moduleInstance instanceName="mydemoServer_AM_I" operationName="SPing0"/>
+		</senders>
+		<receivers>
+		  	<reference instanceName="IServer0" operationName="Ping0"/>
+		  	<reference instanceName="IServer1" operationName="Ping0"/>
+		</receivers>
+	</eventLink>
+
+	<eventLink>
+		<senders>
+		  	<moduleInstance instanceName="mydemoServer_AM_I" operationName="SPing1"/>
+		</senders>
+		<receivers>
+		  	<reference instanceName="IServer1" operationName="Ping1"/>
+		  	<reference instanceName="IServer0" operationName="Ping1"/>
+		</receivers>
+	</eventLink>
+
+</componentImplementation>

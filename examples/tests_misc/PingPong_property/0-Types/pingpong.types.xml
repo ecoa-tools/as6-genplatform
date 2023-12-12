@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+ <use library="pingpong2"/>
+
+  <types>
+
+    <constant name="Constante0" type="int32" value="12" comment="xyz" />
+    <constant name="Constante1" type="int32" value="%pingpong2:Constante2%" comment="xyz" />
+
+    <simple name="Simple1" type="uint32"/>
+    <simple name="Simple2" type="float32" unit="radian"/>
+    <simple name="Simple3" type="Simple2" minRange="100.0" maxRange="200.0"/>
+
+    <enum name="Enum1" type="uint8">
+      <value name="PONG"/>
+      <value name="PUNG" valnum="32"/>
+      <value name="PING" valnum="%pingpong2:Constante2%"/>
+      <value name="PENG"/>
+    </enum>
+
+    <enum name="Enum2" type="Simple1">
+      <value name="PING" valnum="%pingpong2:Constante2%"/>
+      <value name="PONG" valnum="13"/>
+      <value name="PUNG" valnum="32"/>
+      <value name="PENG" valnum="15"/>
+    </enum>
+    <simple name="Simple4" type="Enum2"/>
+
+
+    <record name="Record1">
+      <field name="Rec_field1" type="Simple1"/>
+      <field name="Rec_field2" type="uint32"/>
+      <field name="Rec_field3" type="Enum2"/>
+      <field name="Rec_field4" type="Simple3"/>
+    </record>
+
+    <variantRecord name="VarRecord1" selectName="Selector" selectType="Enum2">
+      <field name="VRec1_field1" type="Simple1"/>
+      <field name="VRec1_field2" type="Simple1"/>
+      <field name="VRec1_field3" type="Simple1"/>
+      <union name="int_Sunday" type="ECOA:char8" when="PING"/>
+      <union name="int_Sunday1" type="ECOA:uint32" when="PONG"/>
+      <union name="int_Sunday2" type="ECOA:uint32" when="PUNG"/>
+      <union name="array_Saturday" type="Record1" when="PENG"/>
+    </variantRecord>
+
+    <variantRecord name="VarRecord2" selectName="Selector" selectType="Simple1">
+      <field name="VRec1_field1" type="Simple1"/>
+      <union name="int_Sunday" type="ECOA:uint32" when="1"/>
+      <union name="array_Saturday" type="Record1" when="%pingpong2:Constante2%"/>
+    </variantRecord>
+
+    <variantRecord name="VarRecord3" selectName="Selector" selectType="uint32">
+      <field name="VRec1_field1" type="Simple1"/>
+      <union name="int_Sunday" type="ECOA:uint32" when="1"/>
+      <union name="array_Saturday" type="Record1" when="%pingpong2:Constante2%"/>
+    </variantRecord>
+
+    <array name="my_message" itemType="ECOA:char8" maxNumber="5" />
+    <fixedArray name="my_message_f" itemType="Record1" maxNumber="5" />
+    <fixedArray name="my_message_f2" itemType="pingpong:Simple3" maxNumber="5" />
+
+  </types>
+</library>

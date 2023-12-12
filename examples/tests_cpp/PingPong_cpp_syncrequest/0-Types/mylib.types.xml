@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+
+	<types>
+				
+    <!-- just for test: -->
+    	<constant name="N" type="int32" value="55" comment="xyz" />
+    
+    	<enum name="Test_enum" type="ECOA:uint8">
+      	<value name="SUNDAY"/>
+      	<value name="SATURDAY"/>
+    	</enum>
+		<!-- arrays  -->
+		
+		<simple name="t1" type="int32"  comment="xyz"/>
+    	<constant name="F" type="double64" value="10996723987469832754287364032947E-45" />
+
+		<record name="coord">
+			<field name="x" type="int32"/>
+			<field name="y" type="int32"/>
+		</record>
+		
+		<array name="Test_array" itemType="ECOA:uint64" maxNumber="12"/>
+		<fixedArray name="Test_fixed_array" itemType="ECOA:uint32" maxNumber="12"/>
+
+
+	</types>
+
+</library>

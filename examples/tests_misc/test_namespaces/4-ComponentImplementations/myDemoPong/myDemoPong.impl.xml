@@ -1,0 +1,102 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Pong">
+
+    <!-- list of used libraries -->
+  <use library="libRoot.level1A"/>
+  <use library="libRoot"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPong_AM_t">
+    <operations>
+      <eventReceived name="event_received">
+        <input name="param1" type="libRoot.level1A:simple1B"/>
+        <input name="param2" type="uint32"/>
+        <input name="param3" type="libRoot:array_1A"/>
+      </eventReceived>
+
+
+      <dataWritten name="data_w1" type="libRoot.level1A:simple1B"/>
+      <dataWritten name="data_w2" type="uint32"/>
+      <dataWritten name="data_w3" type="libRoot:array_1A"/>
+
+
+      <requestReceived name="received_req">
+        <input name="in_param1" type="libRoot.level1A:simple1B"/>
+        <input name="in_param2" type="uint32"/>
+        <input name="in_param3" type="libRoot:array_1A"/>
+        <output name="out_param1" type="libRoot.level1A:simple1B"/>
+        <output name="out_param2" type="uint32"/>
+        <output name="out_param3" type="libRoot:array_1A"/>
+        <output name="out_bool" type="boolean8"/>
+      </requestReceived>
+
+
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPong_AM" language="C" moduleType="myDemoPong_AM_t"/>
+  <moduleImplementation name="myDemoPong_AM_cpp" language="C++" moduleType="myDemoPong_AM_t"/>
+  <moduleInstance name="myDemoPong_AM_I" implementationName="myDemoPong_AM" relativePriority="100"/>
+  <moduleInstance name="myDemoPong_AM_I_cpp" implementationName="myDemoPong_AM_cpp" relativePriority="100"/>
+
+  <eventLink>
+    <senders>
+      <service instanceName="PingPong" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="event_received"/>
+      <moduleInstance instanceName="myDemoPong_AM_I_cpp" operationName="event_received"/>
+    </receivers>
+  </eventLink>
+
+  <requestLink>
+    <clients>
+      <service instanceName="PingPong" operationName="RR_C"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="received_req"/>
+    </server>
+  </requestLink>
+
+  <requestLink>
+    <clients>
+      <service instanceName="PingPong" operationName="RR_Cpp"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoPong_AM_I_cpp" operationName="received_req"/>
+    </server>
+  </requestLink>
+
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="myDemoPong_AM_I_cpp" operationName="data_w1"/>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="data_w1"/>
+    </writers>
+    <readers>
+      <service instanceName="PingPong" operationName="data_1"/>
+    </readers>
+  </dataLink>
+
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="myDemoPong_AM_I_cpp" operationName="data_w2"/>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="data_w2"/>
+    </writers>
+    <readers>
+      <service instanceName="PingPong" operationName="data_2"/>
+    </readers>
+  </dataLink>
+
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="myDemoPong_AM_I_cpp" operationName="data_w3"/>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="data_w3"/>
+    </writers>
+    <readers>
+      <service instanceName="PingPong" operationName="data_3"/>
+    </readers>
+  </dataLink>
+
+</componentImplementation>

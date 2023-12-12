@@ -1,0 +1,33 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Writer_PD">
+    <executeOn computingNode="machine0" computingPlatform="Dassault"/>
+    <deployedModuleInstance componentName="compWriter" moduleInstanceName="myWriter_mod_inst1" modulePriority="30"/>
+    <deployedModuleInstance componentName="compWriter" moduleInstanceName="myWriter_mod_inst2" modulePriority="30"/>
+    <deployedTriggerInstance componentName="compWriter" triggerInstanceName="Heart_Beat" triggerPriority="10"/>
+    <deployedModuleInstance componentName="compWriter" moduleInstanceName="myReader_mod_inst1" modulePriority="10"/>
+    <deployedModuleInstance componentName="compWriter" moduleInstanceName="myReader_mod_inst2" modulePriority="10"/>
+
+    <deployedModuleInstance componentName="compReader1" moduleInstanceName="myCompReader_mod_inst1" modulePriority="30"/>
+    <deployedModuleInstance componentName="compReader1" moduleInstanceName="myCompReader_mod_inst2" modulePriority="30"/>
+    <deployedModuleInstance componentName="compReader2" moduleInstanceName="myCompReader_mod_inst1" modulePriority="30"/>
+    <deployedModuleInstance componentName="compReader2" moduleInstanceName="myCompReader_mod_inst2" modulePriority="30"/>
+
+    <deployedModuleInstance componentName="compFinisher" moduleInstanceName="myCompFinisher_mod_inst" modulePriority="30"/>
+  </protectionDomain>
+
+  <protectionDomain name="Reader_PD">
+    <executeOn computingNode="machine0" computingPlatform="Dassault"/>
+    <deployedModuleInstance componentName="compReader3" moduleInstanceName="myCompReader_mod_inst1" modulePriority="30"/>
+    <deployedModuleInstance componentName="compReader3" moduleInstanceName="myCompReader_mod_inst2" modulePriority="30"/>
+    <deployedModuleInstance componentName="compReader4" moduleInstanceName="myCompReader_mod_inst1" modulePriority="30"/>
+    <deployedModuleInstance componentName="compReader4" moduleInstanceName="myCompReader_mod_inst2" modulePriority="30"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Dassault" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

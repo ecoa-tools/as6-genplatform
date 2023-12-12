@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="demo"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="EarthComponent">
+    <ecoa-sca:instance componentType="Earth">
+      <ecoa-sca:implementation name="myEarth"/>
+    </ecoa-sca:instance>
+    <csa:reference name="antenna"/>
+  </csa:component>
+
+  <csa:component name="ConstellationComponent">
+    <ecoa-sca:instance componentType="Constellation">
+      <ecoa-sca:implementation name="myConstellation"/>
+    </ecoa-sca:instance>
+    <csa:service name="antenna"/>
+  </csa:component>
+
+  <csa:wire source="EarthComponent/antenna" target="ConstellationComponent/antenna" />
+
+</csa:composite>

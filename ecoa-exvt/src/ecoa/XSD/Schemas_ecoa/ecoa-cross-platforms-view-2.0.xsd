@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns="http://www.ecoa.technology/cross-platforms-view-2.0"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+  targetNamespace="http://www.ecoa.technology/cross-platforms-view-2.0">
+  <xsd:include schemaLocation="ecoa-common-2.0.xsd"/>
+
+  <xsd:element name="view" type="View"/>
+
+  <xsd:complexType name="View">
+    <xsd:annotation>
+      <xsd:documentation>
+        Describes how composites are mapped onto
+        platforms, how wires
+        are mapped onto logical links and how IDs
+        are bound to logical links
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:choice maxOccurs="unbounded" minOccurs="0">
+        <xsd:element maxOccurs="unbounded" minOccurs="0"
+          name="composite" type="Composite">
+          <xsd:annotation>
+            <xsd:documentation>Defines where a composite is executed
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element maxOccurs="unbounded" minOccurs="0"
+          name="wireMapping" type="WireMapping">
+          <xsd:annotation>
+            <xsd:documentation>Defines the mapping of a wires onto a
+              logical
+              platform link
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element maxOccurs="unbounded" minOccurs="0"
+          name="euidsBinding" type="EUIDsBinding">
+          <xsd:annotation>
+            <xsd:documentation>Defines the binding of EUIDs onto a
+              logical platform link
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+      </xsd:choice>
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+    <xsd:attribute name="assembly" type="NameId" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Name of the system composite referenced by
+          this view
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="logicalSystem" type="NameId" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Name of the logical system this deployment is
+          made on
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="Composite">
+    <xsd:attribute name="name" type="NameId" use="required"/>
+    <xsd:attribute name="deployedOnComputingPlatform"
+      type="NameId" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Name of a logical platform
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:complexType name="WireMapping">
+    <xsd:attribute name="source" type="xsd:anyURI" use="required">
+      <xsd:annotation>
+        <xsd:documentation>
+          wire source
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="target" type="xsd:anyURI" use="required">
+      <xsd:annotation>
+        <xsd:documentation>
+          wire target
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="mappedOnLinkId" type="NameId"
+      use="required">
+      <xsd:annotation>
+        <xsd:documentation>
+          reference an inter-platform link
+          identified in
+          the logical system
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:complexType name="EUIDsBinding">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" minOccurs="0"
+        name="specificBinding">
+        <xsd:annotation>
+          <xsd:documentation>
+            specific EUIDS file associated to one given
+            peer of the link
+          </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+          <xsd:attribute name="EUIDs" type="xsd:anyURI"
+            use="required">
+            <xsd:annotation>
+              <xsd:documentation>
+                specific EUIDS file associated to one
+                given peer of the link
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+          <xsd:attribute name="boundToComputingPlatform"
+            type="NameId" use="required">
+            <xsd:annotation>
+              <xsd:documentation>Name of a logical platform
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:attribute>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="EUIDs" type="xsd:anyURI" use="required">
+      <xsd:annotation>
+        <xsd:documentation>
+          Bind an EUIDS file to a given logical
+          computing platform link
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="boundToLinkId" type="NameId" use="required">
+      <xsd:annotation>
+        <xsd:documentation>
+          Reference an inter-platform link
+          identified in
+          the logical system
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+</xsd:schema>

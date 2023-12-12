@@ -1,0 +1,108 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="client_comp">
+
+  <use library="pingpong"/>
+
+  <moduleType name="myDemoClient_mod_t">
+    <properties>
+      <property name="mod_id" type="uint32"/>
+      <property name="comp_id" type="uint32"/>
+    </properties>
+
+    <operations>
+      <requestSent name="RR_local_Async" isSynchronous="false" timeout="1" maxConcurrentRequests="9">
+        <input name="Ping_Position" type="pingpong:T_2D_Position"/>
+        <input name="Ping_Target" type="ECOA:uint32"/>
+        <output name="Pong_Position" type="pingpong:T_2D_Position"/>
+        <output name="Pong_Target" type="ECOA:uint32"/>
+      </requestSent>
+      <requestSent name="RR_ext_0_Async" isSynchronous="false" timeout="1" maxConcurrentRequests="9">
+        <input name="Ping_Position" type="pingpong:T_2D_Position"/>
+        <input name="Ping_Target" type="ECOA:uint32"/>
+        <output name="Pong_Position" type="pingpong:T_2D_Position"/>
+        <output name="Pong_Target" type="ECOA:uint32"/>
+      </requestSent>
+
+      <requestSent name="RR_ext_1_Async" isSynchronous="false" timeout="1" maxConcurrentRequests="9">
+        <input name="Ping_Position" type="pingpong:T_2D_Position"/>
+        <input name="Ping_Target" type="ECOA:uint32"/>
+        <output name="Pong_Position" type="pingpong:T_2D_Position"/>
+        <output name="Pong_Target" type="ECOA:uint32"/>
+      </requestSent>
+
+      <eventSent name="finish"/>
+
+    </operations>
+  </moduleType>
+
+  <moduleType name="myDemoServer_mod_t">
+    <operations>
+      <requestReceived name="RR_msg" maxConcurrentRequests="8">
+        <input name="Ping_Position" type="pingpong:T_2D_Position"/>
+        <input name="Ping_Target" type="ECOA:uint32"/>
+        <output name="Pong_Position" type="pingpong:T_2D_Position"/>
+        <output name="Pong_Target" type="ECOA:uint32"/>
+      </requestReceived>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoServer_mod_impl" language="C" moduleType="myDemoServer_mod_t"/>
+  <moduleImplementation name="myDemoClient_mod_impl" language="C" moduleType="myDemoClient_mod_t"/>
+
+  <moduleInstance name="myDemoClient_mod1_inst" implementationName="myDemoClient_mod_impl" relativePriority="100">
+  <propertyValues>
+      <propertyValue name="mod_id">11</propertyValue>
+      <propertyValue name="comp_id">$comp_id</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <moduleInstance name="myDemoClient_mod0_inst" implementationName="myDemoClient_mod_impl" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="mod_id">10</propertyValue>
+      <propertyValue name="comp_id">$comp_id</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+  <moduleInstance name="myDemoServer_mod0_inst" implementationName="myDemoServer_mod_impl" relativePriority="160"/>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoClient_mod0_inst" operationName="RR_local_Async"/>
+      <moduleInstance instanceName="myDemoClient_mod1_inst" operationName="RR_local_Async"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoServer_mod0_inst" operationName="RR_msg"/>
+    </server>
+  </requestLink>
+
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoClient_mod0_inst" operationName="RR_ext_0_Async"/>
+      <moduleInstance instanceName="myDemoClient_mod1_inst" operationName="RR_ext_0_Async"/>
+    </clients>
+    <server>
+      <reference instanceName="PingPong0" operationName="Ping_RR"/>
+    </server>
+  </requestLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoClient_mod0_inst" operationName="RR_ext_1_Async"/>
+      <moduleInstance instanceName="myDemoClient_mod1_inst" operationName="RR_ext_1_Async"/>
+    </clients>
+    <server>
+      <reference instanceName="PingPong1" operationName="Ping_RR"/>
+    </server>
+  </requestLink>
+
+    <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoClient_mod0_inst" operationName="finish"/>
+      <moduleInstance instanceName="myDemoClient_mod1_inst" operationName="finish"/>
+    </senders>
+    <receivers>
+      <reference instanceName="finish" operationName="Finish"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

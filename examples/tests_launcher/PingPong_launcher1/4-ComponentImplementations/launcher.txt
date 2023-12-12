@@ -1,0 +1,16 @@
+#Mixed stuff
+###Some false requests (warnings expected)
+Initialize demoPing myDemoPong_AM_I
+Initialize demoPong myDemoPing_AM_I
+Initialize demoPong Heart_Beat
+Initialize demoPong myDemoPong2_AM_I
+Initialize demoPobng myDemoPong3_AM_I
+Initialize *PD myDemoPong_AM_I
+
+###Starting Real Operations
+#Real stuff
+Initialize *
+
+Wait 2 s
+
+Start *

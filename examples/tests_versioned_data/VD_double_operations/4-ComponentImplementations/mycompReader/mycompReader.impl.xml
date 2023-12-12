@@ -1,0 +1,61 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Reader">
+
+  <!-- list of used libraries -->
+  <use library="VD_lib"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myCompReader_mod_t">
+    <properties>
+      <property name="reader_id" type="uint32"/>
+    </properties>
+    <operations>
+      <dataRead type="VD_lib:vector_data" name="read_vector" notifying="true"/>
+      <eventSent name="finish"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myCompReader_mod" language="C" moduleType="myCompReader_mod_t"/>
+
+  <moduleInstance name="myCompReader_mod_inst0" implementationName="myCompReader_mod" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="reader_id">0x10</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <moduleInstance name="myCompReader_mod_inst1" implementationName="myCompReader_mod" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="reader_id">0x11</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <dataLink>
+    <writers>
+      <reference instanceName="svc_reader" operationName="some_data0"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCompReader_mod_inst0" operationName="read_vector"/>
+    </readers>
+  </dataLink>
+
+  <dataLink>
+    <writers>
+      <reference instanceName="svc_reader" operationName="some_data1"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCompReader_mod_inst1" operationName="read_vector"/>
+    </readers>
+  </dataLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myCompReader_mod_inst0" operationName="finish"/>
+      <moduleInstance instanceName="myCompReader_mod_inst1" operationName="finish"/>
+    </senders>
+    <receivers>
+      <reference instanceName="svc_finish" operationName="finish"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

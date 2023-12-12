@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+    <use library="libRoot.level1A"/>
+    <use library="libRoot.level1B"/>
+    <use library="libRoot.level1B.level2"/>
+    <types>
+        <!-- ############################################## -->
+        <constant value="%libRoot.level1A:Pi_level1A%" type="double64" name="Pi"/>
+        <simple type="float32" name="root_float"/>
+        <simple type="double64" name="root_double"/>
+
+
+        <simple type="libRoot.level1A:simple1A" minRange="%libRoot.level1A:min_simple1A%" name="root_int" comment="very simple type"/>
+
+        <simple type="libRoot.level1A:simple1B" name="root_int1" comment="very simple type with same type name"/>
+        <simple type="libRoot.level1B:simple1B" name="root_int2" comment="very simple type with same type name"/>
+
+        <array name="array_1A" comment="array" maxNumber="20" itemType="libRoot.level1A:simple1A"/>
+        <fixedArray name="fixedArray_1A" maxNumber="2" itemType="libRoot.level1A:simple1A"/>
+
+
+        <enum type="libRoot.level1A:simple1A" name="tcolor" comment="example">
+            <value name="GREEN" comment="example" valnum="1"/>
+            <value name="BLUE" valnum="2"/>
+            <value name="YELLOW" valnum="8"/>
+            <value name="PINK" valnum="%libRoot.level1A:min_simple1A%"/>
+        </enum>
+
+        <record name="tstruct" comment="example">
+            <field type="libRoot.level1A:simple1A" name="champ1" comment="toto"/>
+            <field type="libRoot.level1A:simple1B" name="champ2"/>
+        </record>
+
+        <variantRecord name="compoTrain" selectName="selecteur" selectType="libRoot.level1A:simple1A">
+            <field type="libRoot.level1A:simple1A" name="loco1" comment="champ fixe"/>
+            <field type="libRoot.level1A:simple1B" name="loco2" comment="champ fixe"/>
+            <union name="wagon1" type="libRoot.level1A:simple1A" when="0"/>
+            <union name="wagon2" type="libRoot.level1A:simple1B" when="%libRoot.level1A:min_simple1A%"/>
+        </variantRecord>
+
+
+        <!-- ############################################## -->
+        <!-- TODO surcharge type -->
+        <!-- TODO surcharge ECOA type -->
+        <simple name="uint32" type="ECOA:uint32"/>
+        <simple name="test" type="uint32"/>
+
+        <!-- ############################################## -->
+        <simple type="libRoot.level1B.level2:simple2A" name="root_int3" comment="defined by second level"/>
+
+        <record name="record_1A" comment="example">
+            <field type="uint16" name="champ1" comment="toto"/>
+            <field type="uint64" name="champ2"/>
+            <field type="uint8" name="champ4"/>
+            <field type="uint16" name="champ3"/>
+        </record>
+
+        <array name="complex_array_1A" comment="array" maxNumber="10" itemType="record_1A"/>
+
+        <fixedArray name="complex_fixedArray_1A" maxNumber="2" itemType="record_1A"/>
+
+
+        <array name="complex_array_2A" comment="array" maxNumber="5" itemType="array_1A"/>
+
+        <variantRecord name="var_record" selectName="select" selectType="uint64">
+            <field type="libRoot.level1A:simple1B" name="loco" comment="champ fixe"/>
+            <union name="wagon1" type="uint16" when="0"/>
+            <union name="wagon2" type="uint64" when="1"/>
+        </variantRecord>
+        <array name="complex_array_3A" comment="array" maxNumber="5" itemType="var_record"/>
+    </types>
+</library>

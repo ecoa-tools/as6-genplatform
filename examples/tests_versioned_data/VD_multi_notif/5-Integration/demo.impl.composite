@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="demo"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="compReader">
+    <ecoa-sca:instance componentType="Reader">
+      <ecoa-sca:implementation name="mycompReader"/>
+    </ecoa-sca:instance>
+    <csa:reference name="svc_reader0"/>
+    <csa:reference name="svc_reader1"/>
+    <csa:reference name="svc_reader2"/>
+    <csa:reference name="svc_finish"/>
+  </csa:component>
+
+  <csa:component name="compWriter0">
+    <ecoa-sca:instance componentType="Writer">
+      <ecoa-sca:implementation name="mycompWriter"/>
+    </ecoa-sca:instance>
+    <csa:service name="svc_writer"/>
+    <csa:reference name="svc_finish"/>
+    <csa:property name="comp_id"><csa:value>0x10</csa:value></csa:property>
+  </csa:component>
+  <csa:component name="compWriter1">
+    <ecoa-sca:instance componentType="Writer">
+      <ecoa-sca:implementation name="mycompWriter"/>
+    </ecoa-sca:instance>
+    <csa:service name="svc_writer"/>
+    <csa:reference name="svc_finish"/>
+    <csa:property name="comp_id"><csa:value>0x11</csa:value></csa:property>
+  </csa:component>
+  <csa:component name="compWriter2">
+    <ecoa-sca:instance componentType="Writer">
+      <ecoa-sca:implementation name="mycompWriter"/>
+    </ecoa-sca:instance>
+    <csa:service name="svc_writer"/>
+    <csa:reference name="svc_finish"/>
+    <csa:property name="comp_id"><csa:value>0x12</csa:value></csa:property>
+  </csa:component>
+
+  <csa:component name="compFinisher">
+    <ecoa-sca:instance componentType="Finisher">
+      <ecoa-sca:implementation name="mycompFinisher"/>
+    </ecoa-sca:instance>
+    <csa:service name="finish_interface"/>
+  </csa:component>
+
+  <csa:wire source="compReader/svc_reader0" target="compWriter0/svc_writer" />
+  <csa:wire source="compReader/svc_reader1" target="compWriter1/svc_writer" />
+  <csa:wire source="compReader/svc_reader2" target="compWriter2/svc_writer" />
+  <csa:wire source="compReader/svc_finish" target="compFinisher/finish_interface" />
+
+  <csa:wire source="compWriter0/svc_finish" target="compFinisher/finish_interface" />
+  <csa:wire source="compWriter1/svc_finish" target="compFinisher/finish_interface" />
+  <csa:wire source="compWriter2/svc_finish" target="compFinisher/finish_interface" />
+
+</csa:composite>

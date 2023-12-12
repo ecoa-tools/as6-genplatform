@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:y="http://www.yworks.com/xml/graphml">
+  <key attr.name="color" attr.type="string" for="node" id="d1">
+    <default>red</default>
+  </key>
+  <key attr.name="Text" attr.type="string" for="node" id="d2"/>
+  <key id="d3" yfiles.type="nodegraphics"/>
+  <key attr.name="color" attr.type="string" for="edge" id="d4">
+    <default>red</default>
+  </key>
+  <key attr.name="Text" attr.type="string" for="edge" id="d5"/>
+  <key for="edge" id="d6" yfiles.type="edgegraphics"/>
+  <graph edgedefault="undirected" id="Graph">
+    <node id="client_r0">
+      <data key="d3">
+        <y:GenericNode configuration="com.yworks.flowchart.userMessage">
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:NodeLabel>client_r0</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="client_r1">
+      <data key="d3">
+        <y:GenericNode configuration="com.yworks.flowchart.userMessage">
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:NodeLabel>client_r1</y:NodeLabel>
+        </y:GenericNode>
+      </data>
+    </node>
+    <node id="myDemoClient_AM_I">
+      <data key="d3">
+        <y:ShapeNode>
+          <y:Fill color="#FFFFFF" transparent="false"/>
+          <y:NodeLabel>myDemoClient_AM_I</y:NodeLabel>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge id="8event_ping01" source="myDemoClient_AM_I" target="client_r0">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" textColor="#000000" visible="true">event_ping01</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="9event_ping02" source="myDemoClient_AM_I" target="client_r0">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" textColor="#000000" visible="true">event_ping02</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="10event_ping11" source="myDemoClient_AM_I" target="client_r1">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" textColor="#000000" visible="true">event_ping11</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="11event_ping12" source="myDemoClient_AM_I" target="client_r1">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" textColor="#000000" visible="true">event_ping12</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+  </graph>
+</graphml>
+

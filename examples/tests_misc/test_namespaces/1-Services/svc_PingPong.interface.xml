@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="libRoot"/>
+  <use library="libRoot.level1A"/>
+
+  <operations>
+
+    <event direction="RECEIVED_BY_PROVIDER"  name="Ping">
+        <input name="param1" type="libRoot.level1A:simple1B"/>
+        <input name="param2" type="uint32"/>
+        <input name="param3" type="libRoot:array_1A"/>
+    </event>
+
+    <event direction="SENT_BY_PROVIDER"  name="Pong"/>
+
+    <requestresponse name="RR_C">
+        <input name="in_param1" type="libRoot.level1A:simple1B"/>
+        <input name="in_param2" type="uint32"/>
+        <input name="in_param3" type="libRoot:array_1A"/>
+        <output name="out_param1" type="libRoot.level1A:simple1B"/>
+        <output name="out_param2" type="uint32"/>
+        <output name="out_param3" type="libRoot:array_1A"/>
+        <output name="out_bool" type="boolean8"/>
+    </requestresponse>
+    <requestresponse name="RR_Cpp">
+        <input name="in_param1" type="libRoot.level1A:simple1B"/>
+        <input name="in_param2" type="uint32"/>
+        <input name="in_param3" type="libRoot:array_1A"/>
+        <output name="out_param1" type="libRoot.level1A:simple1B"/>
+        <output name="out_param2" type="uint32"/>
+        <output name="out_param3" type="libRoot:array_1A"/>
+        <output name="out_bool" type="boolean8"/>
+    </requestresponse>
+
+    <data name="data_1" type="libRoot.level1A:simple1B"/>
+    <data name="data_2" type="uint32"/>
+    <data name="data_3" type="libRoot:array_1A"/>
+  </operations>
+
+</serviceDefinition>

@@ -1,0 +1,189 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="TestComponent">
+
+  <!-- list of used libraries -->
+  <use library="lib_module"/>
+
+  <!-- Modules Types -->
+  <moduleType name="myDemoEmitter_AM_t" hasWarmStartContext="false">
+    <properties>
+      <property name="module_identifier" type="ECOA:uint32"/>
+    </properties>
+    <operations>
+      <eventSent name="Event_Sent">
+        <input name="module_implementation_identifier" type="ECOA:uint32"/>
+      </eventSent>
+      <requestSent name="Request_Async_Sent" isSynchronous="false" timeout="0.4">
+        <input name="module_implementation_identifier" type="ECOA:uint32"/>
+      </requestSent>
+      <requestSent name="Request_Sync_Sent" isSynchronous="true" timeout="0.4">
+        <input name="module_implementation_identifier" type="ECOA:uint32"/>
+      </requestSent>
+
+      <dataWritten type="ECOA:uint32" name="write_data"/>
+      <dataWritten type="lib_module:status_array" name="write_data2"/>
+      <eventSent name="Finish_Sent"/>
+    </operations>
+  </moduleType>
+
+  <moduleType name="myDemoReceiver_AM_t" hasWarmStartContext="false">
+    <properties>
+      <property name="module_identifier" type="ECOA:uint32"/>
+    </properties>
+    <operations>
+      <eventReceived name="Event_Received">
+        <input name="module_implementation_identifier" type="ECOA:uint32"/>
+      </eventReceived>
+      <requestReceived name="Request_Async_Received">
+        <input name="module_implementation_identifier" type="ECOA:uint32"/>
+      </requestReceived>
+      <requestReceived name="Request_Sync_Received">
+        <input name="module_implementation_identifier" type="ECOA:uint32"/>
+      </requestReceived>
+
+      <dataRead type="ECOA:uint32" name="read_data" notifying="true"/>
+      <eventSent name="Finish_Sent"/>
+    </operations>
+  </moduleType>
+  <!-- End of Modules Types -->
+
+  <!-- Implementations -->
+  <moduleImplementation name="myDemoEmitter_AM" language="C++" moduleType="myDemoEmitter_AM_t"/>
+  <moduleImplementation name="myDemoReceiver_AM" language="C++" moduleType="myDemoReceiver_AM_t"/>
+
+  <moduleInstance name="myDemoEmitter_Connected_ext_AM_I" implementationName="myDemoEmitter_AM" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="module_identifier">0</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+  <moduleInstance name="myDemoEmitter_Connected_AM_I" implementationName="myDemoEmitter_AM" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="module_identifier">1</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <moduleInstance name="myDemoEmitter_Unconnected_AM_I" implementationName="myDemoEmitter_AM" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="module_identifier">2</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+  <moduleInstance name="myDemoReceiver_Connected_AM_I" implementationName="myDemoReceiver_AM" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="module_identifier">3</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <moduleInstance name="myDemoReceiver_Unconnected_AM_I" implementationName="myDemoReceiver_AM" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="module_identifier">4</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <moduleInstance name="myDemoReceiver_Connected_ext_AM_I" implementationName="myDemoReceiver_AM" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="module_identifier">5</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <!-- End of Implementations -->
+
+  <!-- Event Links -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoEmitter_Connected_AM_I" operationName="Event_Sent"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoReceiver_Connected_AM_I" operationName="Event_Received"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoEmitter_Connected_ext_AM_I" operationName="Event_Sent"/>
+    </senders>
+    <receivers>
+      <reference instanceName="Extern" operationName="Event"/>
+    </receivers>
+  </eventLink>
+
+  <!-- asynchronous request response -->
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoEmitter_Connected_AM_I" operationName="Request_Async_Sent"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoReceiver_Connected_AM_I" operationName="Request_Async_Received"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoEmitter_Connected_ext_AM_I" operationName="Request_Async_Sent"/>
+    </clients>
+    <server>
+      <reference instanceName="Extern" operationName="async_RR"/>
+    </server>
+  </requestLink>
+
+  <!-- synchronous request response -->
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoEmitter_Connected_AM_I" operationName="Request_Sync_Sent"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoReceiver_Connected_AM_I" operationName="Request_Sync_Received"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoEmitter_Connected_ext_AM_I" operationName="Request_Sync_Sent"/>
+    </clients>
+    <server>
+      <reference instanceName="Extern" operationName="sync_RR"/>
+    </server>
+  </requestLink>
+
+  <!-- Versioned data -->
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="myDemoEmitter_Connected_AM_I" operationName="write_data"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoReceiver_Connected_AM_I" operationName="read_data"/>
+    </readers>
+  </dataLink>
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="myDemoEmitter_Connected_ext_AM_I" operationName="write_data"/>
+    </writers>
+    <readers>
+      <service instanceName="Extern_Data" operationName="data"/>
+    </readers>
+  </dataLink>
+  <dataLink>
+    <writers>
+      <reference instanceName="Extern" operationName="data_read"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoReceiver_Connected_ext_AM_I" operationName="read_data" />
+    </readers>
+  </dataLink>
+  <dataLink controlled="false">
+    <writers>
+      <moduleInstance instanceName="myDemoEmitter_Connected_AM_I" operationName="write_data2"/>
+      <moduleInstance instanceName="myDemoEmitter_Unconnected_AM_I" operationName="write_data2"/>
+      <moduleInstance instanceName="myDemoEmitter_Connected_ext_AM_I" operationName="write_data2"/>
+    </writers>
+  </dataLink>
+
+  <!-- Finish event -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoReceiver_Connected_AM_I" operationName="Finish_Sent"/>
+      <moduleInstance instanceName="myDemoEmitter_Connected_ext_AM_I" operationName="Finish_Sent"/>
+      <moduleInstance instanceName="myDemoEmitter_Connected_AM_I" operationName="Finish_Sent"/>
+      <moduleInstance instanceName="myDemoEmitter_Unconnected_AM_I" operationName="Finish_Sent"/>
+    </senders>
+    <receivers>
+      <reference instanceName="Finish" operationName="Finish_Event"/>
+    </receivers>
+  </eventLink>
+  <!-- End of Event Links -->
+
+</componentImplementation>

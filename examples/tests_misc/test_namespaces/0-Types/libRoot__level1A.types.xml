@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+    <types>
+        <constant value="3.14156" type="double64" name="Pi_level1A"/>
+
+        <simple type="uint16" name="simple1B" comment="same name than in namespace level1B"/>
+
+        <constant value="10" type="uint32" name="min_simple1A"/>
+
+
+        <simple type="uint32" name="simple1A"/>
+        <array name="array_1A" comment="array" maxNumber="20" itemType="simple1A"/>
+        <fixedArray name="fixedArray_1A" maxNumber="2" itemType="uint16"/>
+
+    </types>
+</library>

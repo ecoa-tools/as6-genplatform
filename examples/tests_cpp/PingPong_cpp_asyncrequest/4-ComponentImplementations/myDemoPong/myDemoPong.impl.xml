@@ -1,0 +1,75 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Pong">
+
+    <!-- list of used libraries -->
+  <use library="mylib"/>
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPong_AM_t">
+    <operations>
+
+    <eventReceived name="Ping">
+      <input name="recordwithping" type="mylib:coord"/>
+    	<input name="nb_ping" type="mylib:t1"/>
+      <input name="arraywithping" type="mylib:Test_array"/>
+      <input name="fixedarraywithping" type="mylib:Test_fixed_array"/>
+
+      <input name="enumwithping" type="mylib:Test_enum"/>
+    </eventReceived>
+
+
+    <eventSent name="Pong">
+      <input name="recordwithpong" type="mylib:coord"/>
+     	<input name="nb_pong" type="mylib:t1"/>
+      <input name="arraywithpong" type="mylib:Test_array"/>
+      <input name="fixedarraywithpong" type="mylib:Test_fixed_array"/>
+
+      <input name="enumwithpong" type="mylib:Test_enum"/>
+    </eventSent>
+
+    <requestReceived name="RR_msg_recv" >
+      <input name="nb_send" type="mylib:t1"/>
+      <input name="coord_send" type="mylib:coord"/>
+      <output name="nb_received" type="mylib:t1"/>
+      <output name="coord_received" type="mylib:coord"/>
+    </requestReceived>
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPong_AM" language="C" moduleType="myDemoPong_AM_t"/>
+
+  <moduleInstance name="myDemoPong_AM_I" implementationName="myDemoPong_AM" relativePriority="100"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <eventLink>
+    <senders>
+      <service instanceName="PingPong" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <service instanceName="PingPong" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+
+   <requestLink>
+    <clients>
+      <service instanceName="PingPong" operationName="RR_msg"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="RR_msg_recv"/>
+    </server>
+  </requestLink>
+
+
+</componentImplementation>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="pingpong"/>
+
+  <operations>
+
+    <requestresponse name="req_Async"/>
+
+    <requestresponse name="req_Sync"/>
+
+    <event name="finish" direction="SENT_BY_PROVIDER"/>
+
+    <!--data name="Counter" type="uint32"/-->
+
+  </operations>
+
+</serviceDefinition>

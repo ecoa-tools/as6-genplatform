@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+
+  <types>
+    <constant name="C_Captain_Age" type="uint32" value="33"/>
+  </types>
+</library>

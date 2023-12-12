@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+	<operations>
+		<event direction="RECEIVED_BY_PROVIDER"  name="event_RP"/>
+
+		<event direction="SENT_BY_PROVIDER"  name="event_SP"/>
+
+		<data name="data" type="uint32"/>
+
+		<requestresponse name="request"/>
+	</operations>
+</serviceDefinition>

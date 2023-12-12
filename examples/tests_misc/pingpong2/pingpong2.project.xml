@@ -1,0 +1,32 @@
+<ECOAProject xmlns="http://www.ecoa.technology/project-2.0" name="pingpong2">
+
+    <types>
+        <file>0-Types/mylib.types.xml</file>
+    </types>
+
+    <serviceDefinitions>
+        <file>1-Services/svc_server.interface.xml</file>
+        <file>1-Services/svc_client1.interface.xml</file>
+    </serviceDefinitions>
+
+    <componentDefinitions>
+        <file>2-ComponentDefinitions/client1/client1.componentType</file>
+        <file>2-ComponentDefinitions/client0/client0.componentType</file>
+        <file>2-ComponentDefinitions/server/server.componentType</file>
+    </componentDefinitions>
+
+    <initialAssembly></initialAssembly>
+
+    <componentImplementations>
+        <file>4-ComponentImplementations/mydemoServer/mydemoServer.impl.xml</file>
+        <file>4-ComponentImplementations/mydemoClient0/mydemoClient0.impl.xml</file>
+        <file>4-ComponentImplementations/mydemoClient1/mydemoClient1.impl.xml</file>
+    </componentImplementations>
+
+    <implementationAssembly>5-Integration/demo.impl.composite</implementationAssembly>
+    <deploymentSchema>5-Integration/demo.deployment.xml</deploymentSchema>
+    <logicalSystem>5-Integration/cs1.logical-system.xml</logicalSystem>
+
+    <outputDirectory>6-output</outputDirectory>
+</ECOAProject>
+

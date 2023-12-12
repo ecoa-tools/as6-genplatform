@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="lib_module"/>
+
+  <operations>
+    <event direction="RECEIVED_BY_PROVIDER" name="Event">
+        <input name="module_implementation_identifier" type="ECOA:uint32"/>
+    </event>
+
+    <requestresponse name="async_RR">
+        <input name="module_implementation_identifier" type="ECOA:uint32"/>
+    </requestresponse>
+
+    <requestresponse name="sync_RR">
+        <input name="module_implementation_identifier" type="ECOA:uint32"/>
+    </requestresponse>
+
+    <data name="data_read" type="ECOA:uint32"/>
+  </operations>
+
+</serviceDefinition>

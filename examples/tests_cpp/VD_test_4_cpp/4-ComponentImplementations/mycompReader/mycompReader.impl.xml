@@ -1,0 +1,49 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Reader">
+
+  <!-- list of used libraries -->
+  <use library="VD_lib"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myCompReader_mod_t">
+    <operations>
+      <dataRead type="VD_lib:vector_data" name="read_vector0" notifying="true"/>
+      <eventSent name="finish"/>
+      <dataRead type="VD_lib:vector_data" name="read_vector1" notifying="true"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myCompReader_mod" language="C++" moduleType="myCompReader_mod_t"/>
+
+  <moduleInstance name="myCompReader_mod_inst" implementationName="myCompReader_mod" relativePriority="100"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <dataLink>
+    <writers>
+      <reference instanceName="svc_reader" operationName="some_data0"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCompReader_mod_inst" operationName="read_vector0"/>
+    </readers>
+  </dataLink>
+
+  <dataLink>
+    <writers>
+      <reference instanceName="svc_reader" operationName="some_data1"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCompReader_mod_inst" operationName="read_vector1"/>
+    </readers>
+  </dataLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myCompReader_mod_inst" operationName="finish"/>
+    </senders>
+    <receivers>
+      <reference instanceName="svc_finish" operationName="finish"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

@@ -1,0 +1,101 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Ping">
+
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPing_AM_t">
+    <operations>
+
+
+    <eventSent name="Ping"/>
+
+    <eventReceived name="Pong"/>
+
+    <dataRead type="uint32" name="Counter_r" notifying="true" maxVersions="8"/>
+
+    <eventSent name="SetDTrigger"><input name="delayDuration" type="ECOA:duration"/><input name="param1" type="int32"/></eventSent>
+    <eventReceived name="ResultDTrigger"><input name="param1" type="int32"/></eventReceived>
+
+      <requestSent name="Ping_Async" isSynchronous="false" timeout="1" maxConcurrentRequests="7"/>
+      <requestSent name="Ping_Sync" isSynchronous="true" timeout="1" maxConcurrentRequests="2"/>
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPing_AM" language="C" moduleType="myDemoPing_AM_t"/>
+  <moduleInstance name="myDemoPing_AM_I" implementationName="myDemoPing_AM" relativePriority="100"/>
+
+  <triggerInstance name="Heart_Beat" relativePriority="100"/>
+
+  <dynamicTriggerInstance name="Dyn_Heart_Beat" size="4" relativePriority="160">
+    <parameter name="parma1" type="int32"/>
+  </dynamicTriggerInstance>
+
+
+
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <!-- Definition of module operation links for AM module -->
+  <dataLink>
+    <writers>
+      <reference instanceName="PingPong" operationName="Counter"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Counter_r" fifoSize="5" activating="false"/>
+    </readers>
+  </dataLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping_Sync"/>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping_Async"/>
+    </clients>
+    <server>
+      <reference instanceName="PingPong" operationName="req_ping"/>
+    </server>
+  </requestLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <reference instanceName="PingPong" operationName="Pong"/>
+      <trigger instanceName="Heart_Beat" period="0.10"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Pong" fifoSize="11" activating="false"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="SetDTrigger"/>
+    </senders>
+    <receivers>
+      <dynamicTrigger instanceName="Dyn_Heart_Beat" operationName="in" fifoSize="4"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <dynamicTrigger instanceName="Dyn_Heart_Beat" operationName="out"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="ResultDTrigger" fifoSize="13"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

@@ -1,0 +1,73 @@
+/**
+* @file {{mname}}.cpp
+* @brief Module Implementation for {{mname}}
+*
+*/
+
+#include "ECOA.hpp"
+#include "{{mname}}.hpp"
+
+
+{% for lib in libraries %}
+#include "{{fix_libname(lib)}}.hpp"
+{% endfor %}
+
+{% set default_todo = "/* @TODO TODO - To be implemented */" %}
+
+namespace {{mname}}
+{
+
+/* Entry points for lifecycle operations */
+
+{% for i in ["INITIALIZE", "START", "STOP", "SHUTDOWN"] %}
+void Module::{{i}}__received(){
+	{{default_todo}}
+}
+
+{% endfor %}
+
+{%- for (opname, op) in mtype.operations.items() -%}
+{% if op.type=="ER" %}
+void Module::{{op.name}}__received({{generate_header_fct_cpp(op, with_input=True, is_first_arg=True)}}){
+	{{default_todo}}
+}
+
+{% endif %}
+{% if op.type=="RR" %}
+void Module::{{op.name}}__request_received(const ECOA::uint32 ID{{generate_header_fct_cpp(op, with_input=True)}}){
+	{{default_todo}}
+}
+
+{% endif %}
+{% if op.type=="ARS" %}
+void Module::{{op.name}}__response_received(const ECOA::uint32 ID, const ECOA::return_status status{{generate_header_fct_cpp(op, with_output=True, is_output_const=True, output_mode=False )}}){
+	{{default_todo}}
+}
+
+{% endif %}
+{% if op.type=="DRN" %}
+void Module::{{op.name}}__updated(){
+	{{default_todo}}
+}
+{% endif %}
+{%- endfor -%}
+
+
+/* Fault Handling API , linked to another namespace (fault_handler_impl_name) */
+{% if mtype.fault_handler == True %} /* actually mtype.is_fault_handler() - added .fault_handler*/
+void {{mname}}__error_notification({{mname}}__context* context,const ECOA::error_id error_id)
+{
+	{{default_todo}}
+}
+{% endif %}
+
+extern "C" {
+
+	Module* {{mname}}__new_instance()
+	{
+		return new Module();
+	}
+}
+
+} /* namespace {{mname}} */
+

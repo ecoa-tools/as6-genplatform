@@ -1,0 +1,69 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Pong">
+
+    <!-- list of used libraries -->
+  <use library="mylib"/>
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPong_AM_t">
+    <operations>
+
+    <eventReceived name="Ping">
+      <input name="recordwithping" type="mylib:coord"/>
+    	<input name="nb_ping" type="mylib:t1"/>
+      <input name="arraywithping" type="mylib:Test_array"/>
+      <input name="fixedarraywithping" type="mylib:Test_fixed_array"/>
+
+      <input name="enumwithping" type="mylib:Test_enum"/>
+    </eventReceived>
+
+
+    <eventSent name="Pong">
+      <input name="recordwithpong" type="mylib:coord"/>
+     	<input name="nb_pong" type="mylib:t1"/>
+      <input name="arraywithpong" type="mylib:Test_array"/>
+      <input name="fixedarraywithpong" type="mylib:Test_fixed_array"/>
+
+      <input name="enumwithpong" type="mylib:Test_enum"/>
+    </eventSent>
+
+      <dataRead type="mylib:coord" name="read_coord0" notifying="true"/>
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPong_AM" language="C" moduleType="myDemoPong_AM_t"/>
+
+  <moduleInstance name="myDemoPong_AM_I" implementationName="myDemoPong_AM" relativePriority="100"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <eventLink>
+    <senders>
+      <service instanceName="PingPong" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <service instanceName="PingPong" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+
+ <dataLink>
+    <writers>
+       <reference instanceName="svc_demoPong" operationName="some_data0"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="read_coord0"/>
+    </readers>
+  </dataLink>
+
+</componentImplementation>

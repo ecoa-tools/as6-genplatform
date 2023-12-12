@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<componentType xmlns="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0">
+
+
+  <property name="comp_prop1" ecoa-sca:type="uint32"/>
+  <property name="ref_p_ass_array" ecoa-sca:type="lib:Test_array"/>
+</componentType>

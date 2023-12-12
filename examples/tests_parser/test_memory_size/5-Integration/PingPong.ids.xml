@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ID_map xmlns="http://www.ecoa.technology/uid-2.0">
+  <ID key="demoPing/PingPong:demoPong/PingPong:write_msg" value="1371532886"/>
+  <ID key="demoPing/PingPong:demoPong/PingPong:Counter" value="1898024210"/>
+  <ID key="demoPing/PingPong:demoPong/PingPong:req_ping" value="122481485"/>
+  <ID key="demoPing/PingPong:demoPong/PingPong:Ping" value="1282952677"/>
+  <ID key="demoPing/PingPong:demoPong/PingPong:Pong" value="1192644119"/>
+</ID_map>
+

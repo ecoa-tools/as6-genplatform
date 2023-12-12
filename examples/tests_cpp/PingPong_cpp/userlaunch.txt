@@ -1,0 +1,8 @@
+Initialize Ping_PD Heart_Beat
+Start demoPing Heart_Beat
+wait 2 s
+Initialize demoPing myDemoPing_AM_I
+Initialize demoPing myDemoPong2_AM_I
+Initialize demoPong myDemoPong_AM_I
+Start demoPing myDemoPing_AM_I
+Shutdown demoPing myDemoPing_AM_I

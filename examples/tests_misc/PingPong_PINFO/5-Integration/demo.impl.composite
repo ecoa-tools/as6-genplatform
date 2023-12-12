@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="demo"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="demoPing">
+    <ecoa-sca:instance componentType="Ping">
+      <ecoa-sca:implementation name="myDemoPing"/>
+    </ecoa-sca:instance>
+    <csa:reference name="PingPong"/>
+    <csa:property name="component_pinfo_1" source="$assembly_pinfo_1"/>
+    <csa:property name="component_pinfo_2"><csa:value>component_pinfo_2.txt</csa:value></csa:property>
+    <csa:property name="component_pinfo_common" source="$assembly_pinfo_common"/>
+  </csa:component>
+
+  <csa:component name="demoPong">
+    <ecoa-sca:instance componentType="Pong">
+      <ecoa-sca:implementation name="myDemoPong"/>
+    </ecoa-sca:instance>
+    <csa:service name="PingPong"/>
+  </csa:component>
+
+  <csa:wire source="demoPing/PingPong" target="demoPong/PingPong" />
+
+  <csa:property name="assembly_pinfo_common" ecoa-sca:type="ECOA:pinfo_filename">
+    <csa:value>assembly_pinfo_common.txt</csa:value>
+  </csa:property>
+  <csa:property name="assembly_pinfo_1" ecoa-sca:type="ECOA:pinfo_filename">
+    <csa:value>assembly_pinfo_1.txt</csa:value>
+  </csa:property>
+
+</csa:composite>

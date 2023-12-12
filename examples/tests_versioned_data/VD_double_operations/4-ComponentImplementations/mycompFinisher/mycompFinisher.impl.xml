@@ -1,0 +1,29 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Finisher">
+
+  <!-- list of used libraries -->
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myCompFinisher_mod_t">
+    <operations>
+      <eventReceived name="finish_event"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myCompFinisher_mod" language="C" moduleType="myCompFinisher_mod_t"/>
+
+  <moduleInstance name="myCompFinisher_mod_inst" implementationName="myCompFinisher_mod" relativePriority="100"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <eventLink>
+    <senders>
+      <service instanceName="finish_interface" operationName="finish"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myCompFinisher_mod_inst" operationName="finish_event"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

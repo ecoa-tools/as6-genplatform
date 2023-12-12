@@ -1,0 +1,145 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="PingPong">
+
+    <!-- list of used libraries -->
+  <use library="lib"/>
+  <use library="pingpong"/>
+  <use library="pingpong2"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPing_AM_t">
+    <properties>
+      <property name="m_ref_comp_prop1" type="uint32"/>
+      <property name="m_float_prop" type="float32"/>
+      <property name="m_ref_ass_array" type="lib:Test_array"/>
+    </properties>
+    <operations>
+      <eventSent name="Ping"/>
+      <eventReceived name="Pong"/>
+    </operations>
+  </moduleType>
+
+    <moduleType name="myDemoPong_AM_t">
+      <properties>
+        <property name="p_constant" type="lib:magic_number"/>
+        <property name="p_enum" type="lib:Test_enum"/>
+
+        <property name="p_fixed_array" type="lib:Test_fixed_array"/>
+        <property name="p_array" type="lib:Test_array"/>
+        <property name="p_fixed_array_complex" type="lib:Test_fixed_array"/>
+
+        <property name="p_fixed_array_matrix" type="lib:Test_matrix_fixed_array"/>
+        <property name="p_enum_array" type="lib:Test_enum_array"/>
+
+        <property name="p_fixed_array_string" type="lib:Test_fixed_array_char"/>
+        <property name="p_array_string" type="lib:Test_array_char"/>
+
+        <property name="p_fixed_array_ascii" type="lib:Test_fixed_array_char"/>
+        <property name="p_array_ascii" type="lib:Test_array_char"/>
+
+        <property name="p_fixed_matrix_ascii" type="lib:Test_fixed_matrix_char"/>
+        <property name="p_matrix_ascii" type="lib:Test_matrix_char"/>
+      </properties>
+      <operations>
+        <eventSent name="Pong"/>
+        <eventReceived name="Ping"/>
+      </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPing_AM" language="C" moduleType="myDemoPing_AM_t"/>
+  <moduleImplementation name="myDemoPong_AM" language="C" moduleType="myDemoPong_AM_t"/>
+  <moduleImplementation name="myDemoPong_AM_cpp" language="C++" moduleType="myDemoPong_AM_t"/>
+
+  <moduleInstance name="myDemoPing_AM_I_0" implementationName="myDemoPing_AM" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="m_ref_comp_prop1">$comp_prop1  </propertyValue>
+      <propertyValue name="m_ref_ass_array">  $ref_p_ass_array</propertyValue>
+      <propertyValue name="m_float_prop"> 10.0 </propertyValue>
+    </propertyValues>
+  </moduleInstance>
+    <moduleInstance name="myDemoPing_AM_I_1" implementationName="myDemoPing_AM" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="m_ref_comp_prop1">$comp_prop1</propertyValue>
+      <propertyValue name="m_ref_ass_array">[42,42,42,42,42]</propertyValue>
+      <propertyValue name="m_float_prop">11.0</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+  <moduleInstance name="myDemoPong_AM_I" implementationName="myDemoPong_AM" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="p_constant">  %lib:magic_number% </propertyValue>
+      <propertyValue name="p_enum">    SATURDAY  </propertyValue>
+
+      <propertyValue name="p_fixed_array"> [0,1,2,3,4,5,6,7,8,%lib:magic_number%]</propertyValue>
+      <propertyValue name="p_array">[1,2  ,3 ]  </propertyValue>
+      <propertyValue name="p_fixed_array_complex">[0,   1,2,#5:777,9,#*:%lib:magic_number%]</propertyValue>
+
+      <propertyValue name="p_fixed_array_matrix">[   [1, #4:4, # 3 :  3, #*:0]  ,#*:[     5,#*:1]]</propertyValue>
+      <propertyValue name="p_enum_array">[     SUNDAY , # 2 :   SATURDAY, #*:SUNDAY]</propertyValue>
+
+      <propertyValue name="p_fixed_array_string"> "A\"LDP\"AA"</propertyValue>
+      <propertyValue name="p_array_string">"\"LDP\"A" </propertyValue>
+
+      <propertyValue name="p_fixed_array_ascii">[0x41, 0x42 ,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A]</propertyValue>
+      <propertyValue name="p_array_ascii">[0x41,0x42,0x43]</propertyValue>
+
+      <propertyValue name="p_fixed_matrix_ascii">[  "AAAAAAAAAA"  ,  #*:[0x41,0x42,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A]]</propertyValue>
+      <propertyValue name="p_matrix_ascii">[ # 2 : [ 0x41 , 0x42 ] ,#2: "AAAA" ]</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+  <moduleInstance name="myDemoPong_AM_I_cpp" implementationName="myDemoPong_AM_cpp" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="p_constant">  %lib:magic_number% </propertyValue>
+      <propertyValue name="p_enum">    SATURDAY  </propertyValue>
+
+      <propertyValue name="p_fixed_array"> [0,1,2,3,4,5,6,7,8,%lib:magic_number%]</propertyValue>
+      <propertyValue name="p_array">[1,2  ,3 ]  </propertyValue>
+      <propertyValue name="p_fixed_array_complex">[0,   1,2,#5:777,9,#*:%lib:magic_number%]</propertyValue>
+
+      <propertyValue name="p_fixed_array_matrix">[   [1, #4:4, # 3 :  3, #*:0]  ,#*:[     5,#*:1]]</propertyValue>
+      <propertyValue name="p_enum_array">[     SUNDAY , # 2 :   SATURDAY, #*:SUNDAY]</propertyValue>
+
+      <propertyValue name="p_fixed_array_string"> "A\"LDP\"AA"</propertyValue>
+      <propertyValue name="p_array_string">"\"LDP\"A" </propertyValue>
+
+      <propertyValue name="p_fixed_array_ascii">[0x41, 0x42 ,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A]</propertyValue>
+      <propertyValue name="p_array_ascii">[0x41,0x42,0x43]</propertyValue>
+
+      <propertyValue name="p_fixed_matrix_ascii">[  "AAAAAAAAAA"  ,  #*:[0x41,0x42,0x43,0x44,0x45,0x46,0x47,0x48,0x49,0x4A]]</propertyValue>
+      <propertyValue name="p_matrix_ascii">[ # 2 : [ 0x41 , 0x42 ] ,#2: "AAAA" ]</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <!-- Definition of module operation links for AM module -->
+
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I_0" operationName="Ping"/>
+      <moduleInstance instanceName="myDemoPing_AM_I_1" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="Ping"/>
+      <moduleInstance instanceName="myDemoPong_AM_I_cpp" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="Pong"/>
+      <moduleInstance instanceName="myDemoPong_AM_I_cpp" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I_0" operationName="Pong" fifoSize="6"/>
+      <moduleInstance instanceName="myDemoPing_AM_I_1" operationName="Pong" fifoSize="6"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

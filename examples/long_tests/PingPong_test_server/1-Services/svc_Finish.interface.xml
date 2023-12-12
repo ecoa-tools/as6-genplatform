@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+  <use library="pingpong"/>
+  <operations>
+    <requestresponse name="counter_RR">
+      <input name="Counter" type="uint32"/>
+    </requestresponse>
+  </operations>
+</serviceDefinition>

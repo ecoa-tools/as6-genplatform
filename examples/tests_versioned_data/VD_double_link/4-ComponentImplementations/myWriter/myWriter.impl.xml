@@ -1,0 +1,52 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Writer">
+
+  <!-- list of used libraries -->
+  <use library="VD_lib"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myCompWriter_mod_t">
+    <operations>
+      <dataWritten type="VD_lib:vector_data" name="write_vector0"/>
+      <dataWritten type="VD_lib:vector_data" name="write_vector1"/>
+      <eventSent name="finish"/>
+      <eventReceived name="TriggerEvent"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myCompWriter_mod" language="C" moduleType="myCompWriter_mod_t"/>
+
+  <moduleInstance name="Writer_mod_inst" implementationName="myCompWriter_mod" relativePriority="100"/>
+
+  <triggerInstance name="Heart_Beat" relativePriority="10"/>
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <eventLink>
+    <senders>
+      <trigger instanceName="Heart_Beat" period="0.050"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="Writer_mod_inst" operationName="TriggerEvent"/>
+    </receivers>
+  </eventLink>
+
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="Writer_mod_inst" operationName="write_vector0"/>
+      <moduleInstance instanceName="Writer_mod_inst" operationName="write_vector1"/>
+    </writers>
+    <readers>
+      <service instanceName="svc_writer" operationName="some_data0"/>
+      <service instanceName="svc_writer" operationName="some_data1"/>
+    </readers>
+  </dataLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="Writer_mod_inst" operationName="finish"/>
+    </senders>
+    <receivers>
+      <reference instanceName="svc_finish" operationName="finish"/>
+    </receivers>
+  </eventLink>
+</componentImplementation>

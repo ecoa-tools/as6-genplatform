@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="myLib"/>
+
+  <operations>
+    <event direction="SENT_BY_PROVIDER"  name="data">
+        <input name="data" type="myLib:array_data"/>
+        <input name="satellite_num" type="uint32"/>
+    </event>
+
+    <requestresponse name="position_sat0">
+        <output name="data" type="myLib:position"/>
+        <output name="satellite_num" type="uint32"/>
+    </requestresponse>
+
+    <requestresponse name="position_sat1">
+        <output name="data" type="myLib:position"/>
+        <output name="satellite_num" type="uint32"/>
+    </requestresponse>
+
+    <requestresponse name="position_sat2">
+        <output name="data" type="myLib:position"/>
+        <output name="satellite_num" type="uint32"/>
+    </requestresponse>
+
+    <requestresponse name="position_sat3">
+        <output name="data" type="myLib:position"/>
+        <output name="satellite_num" type="uint32"/>
+    </requestresponse>
+  </operations>
+
+</serviceDefinition>

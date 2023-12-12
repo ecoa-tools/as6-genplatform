@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="pingpong"/>
+
+  <operations>
+
+    <!--requestresponse name="PingPong">
+      <input name="Ping_Target" type="pingpong:T_Target_Position"/>
+      <output name="Pong_Target" type="pingpong:T_Target_Position"/>
+    </requestresponse-->
+
+    <event direction="RECEIVED_BY_PROVIDER"  name="Ping">
+		<input name="nb_msg" type="ECOA:uint32"/>	
+	</event>
+    <event direction="SENT_BY_PROVIDER"  name="Pong"/>
+
+    <!--data name="Counter" type="uint32"/-->
+
+  </operations>
+
+</serviceDefinition>

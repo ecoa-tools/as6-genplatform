@@ -1,0 +1,32 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Master0_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales0"/>
+    <deployedModuleInstance componentName="demoMaster0" moduleInstanceName="myDemoMaster_Ping_inst" modulePriority="32"/>
+    <deployedTriggerInstance componentName="demoMaster0" triggerInstanceName="myDemoMaster_trigger" triggerPriority="31"/>
+    <deployedTriggerInstance componentName="demoMaster0" triggerInstanceName="myDemoMaster_dyn_trigger" triggerPriority="1"/>
+  </protectionDomain>
+
+  <protectionDomain name="Master1_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales0"/>
+    <deployedModuleInstance componentName="demoMaster1" moduleInstanceName="myDemoMaster_Ping_inst" modulePriority="255"/>
+    <deployedTriggerInstance componentName="demoMaster1" triggerInstanceName="myDemoMaster_trigger" triggerPriority="31"/>
+    <deployedTriggerInstance componentName="demoMaster1" triggerInstanceName="myDemoMaster_dyn_trigger" triggerPriority="31"/>
+  </protectionDomain>
+
+  <protectionDomain name="Pong_PD1">
+    <executeOn computingNode="machine1" computingPlatform="Thales1"/>
+    <deployedModuleInstance componentName="demoPong" moduleInstanceName="myDemoPong_AM_I" modulePriority="31"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Thales0" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+  <platformConfiguration computingPlatform="Thales1" faultHandlerNotificationMaxNumber="4">
+    <computingNodeConfiguration computingNode="machine1" />
+  </platformConfiguration>
+
+</deployment>

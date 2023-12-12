@@ -1,0 +1,36 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Main0_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <!--deployedModuleInstance componentName="demoMain0" moduleInstanceName="Supervisor_AM_I" modulePriority="30"/-->
+    <deployedModuleInstance componentName="demoMain0" moduleInstanceName="Sender_AM_I0" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoMain0" moduleInstanceName="Sender_AM_I1" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoMain0" moduleInstanceName="Sender_AM_I2" modulePriority="30"/>
+	<deployedModuleInstance componentName="demoMain0" moduleInstanceName="Receiver_AM_I0" modulePriority="40"/>
+	<deployedModuleInstance componentName="demoMain0" moduleInstanceName="Receiver_AM_I1" modulePriority="50"/>
+	<deployedModuleInstance componentName="demoMain0" moduleInstanceName="Receiver_AM_I2" modulePriority="60"/>
+  </protectionDomain>
+
+	  <protectionDomain name="Main1_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <!--deployedModuleInstance componentName="demoMain1" moduleInstanceName="Supervisor_AM_I" modulePriority="30"/-->
+    <deployedModuleInstance componentName="demoMain1" moduleInstanceName="Sender_AM_I0" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoMain1" moduleInstanceName="Sender_AM_I1" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoMain1" moduleInstanceName="Sender_AM_I2" modulePriority="30"/>
+	<deployedModuleInstance componentName="demoMain1" moduleInstanceName="Receiver_AM_I0" modulePriority="40"/>
+	<deployedModuleInstance componentName="demoMain1" moduleInstanceName="Receiver_AM_I1" modulePriority="50"/>
+	<deployedModuleInstance componentName="demoMain1" moduleInstanceName="Receiver_AM_I2" modulePriority="60"/>
+  </protectionDomain>
+
+	<protectionDomain name="Final_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+	<deployedModuleInstance componentName="demoFinal" moduleInstanceName="myFinal_AM_I" modulePriority="70"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Thales" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

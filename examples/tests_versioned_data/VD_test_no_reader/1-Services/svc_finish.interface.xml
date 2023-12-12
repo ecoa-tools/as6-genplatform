@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <operations>
+    <event name="finish" direction="RECEIVED_BY_PROVIDER"/>
+  </operations>
+
+</serviceDefinition>

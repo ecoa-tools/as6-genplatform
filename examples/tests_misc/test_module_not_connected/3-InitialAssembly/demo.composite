@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="demo"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="demoTestComponent">
+    <ecoa-sca:instance componentType="TestComponent"/>
+  </csa:component>
+
+  <csa:component name="demoTestFinish">
+    <ecoa-sca:instance componentType="TestFinish"/>
+  </csa:component>
+
+  <csa:wire source="demoTestComponent/Finish" target="demoTestFinish/Finish" />
+
+</csa:composite>

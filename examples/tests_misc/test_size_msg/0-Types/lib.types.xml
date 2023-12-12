@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+
+  <types>
+	<fixedArray name="Test_array_10" itemType="ECOA:uint32" maxNumber="20"/>
+	<fixedArray name="Test_array_11" itemType="ECOA:uint32" maxNumber="21"/>
+	<fixedArray name="Test_array_12" itemType="ECOA:uint32" maxNumber="22"/>
+	<fixedArray name="Test_array_13" itemType="ECOA:uint32" maxNumber="23"/>
+	<fixedArray name="Test_array_14" itemType="ECOA:uint32" maxNumber="24"/>
+	<fixedArray name="Test_array_15" itemType="ECOA:uint32" maxNumber="25"/>
+	<fixedArray name="Test_array_16" itemType="ECOA:uint32" maxNumber="32"/>
+
+
+  </types>
+</library>

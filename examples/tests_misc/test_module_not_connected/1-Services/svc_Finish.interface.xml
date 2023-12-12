@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="lib_module"/>
+
+  <operations>
+    <event direction="RECEIVED_BY_PROVIDER" name="Finish_Event"/>
+  </operations>
+
+</serviceDefinition>

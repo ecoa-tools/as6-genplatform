@@ -1,0 +1,7 @@
+# Copyright 2023 Dassault Aviation
+# MIT License (see LICENSE.txt)
+
+recursive-include src/ecoa_tools/generator/C *.c *.h
+recursive-include src/ecoa_genplatform/generators/C *.c *.h *.hpp *.cmake Doxyfile CMakeLists.txt
+recursive-include src/ecoa_genplatform/generators/Cpp *.jj
+#recursive-include ecoa_examples *.xml *.c *.h

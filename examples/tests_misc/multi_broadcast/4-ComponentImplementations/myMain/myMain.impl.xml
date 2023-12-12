@@ -1,0 +1,78 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Main">
+	
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="mySender_AM_t">
+    <operations>
+    	<eventSent name="Ping"/>
+    </operations>
+  </moduleType>
+
+
+  <moduleType name="receiver_mod_AM_t">
+	<operations>
+		<eventReceived name="Ping"/>
+		<eventSent name="Pong"/>
+   	 </operations>
+   </moduleType>
+
+  <moduleImplementation name="receiver_mod_AM" language="C" moduleType="receiver_mod_AM_t"/>
+  <moduleImplementation name="mySender_AM" language="C" moduleType="mySender_AM_t"/>
+
+
+  <moduleInstance name="receiver_mod_AM_I0" implementationName="receiver_mod_AM" relativePriority="100"/>
+  <moduleInstance name="receiver_mod_AM_I1" implementationName="receiver_mod_AM" relativePriority="110"/>
+
+  <moduleInstance name="mySender_AM_I" implementationName="mySender_AM" relativePriority="120"/>
+
+
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="mySender_AM_I" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <reference instanceName="Ping_r0" operationName="Ping_RbP"/>
+      <reference instanceName="Ping_r1" operationName="Ping_RbP"/>
+    </receivers>
+  </eventLink>
+
+	
+ <eventLink>
+    <senders>
+      <moduleInstance instanceName="mySender_AM_I" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <service instanceName="Ping_s0" operationName="Ping_SbP"/>
+      <service instanceName="Ping_s1" operationName="Ping_SbP"/>
+    </receivers>
+  </eventLink>
+
+
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="receiver_mod_AM_I1" operationName="Pong"/>
+      <moduleInstance instanceName="receiver_mod_AM_I0" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <reference instanceName="Pong_r" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="mySender_AM_I" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="receiver_mod_AM_I0" operationName="Ping"/>
+      <moduleInstance instanceName="receiver_mod_AM_I1" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+
+</componentImplementation>

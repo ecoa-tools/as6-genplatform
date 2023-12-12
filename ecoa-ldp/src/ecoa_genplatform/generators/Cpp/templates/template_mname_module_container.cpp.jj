@@ -1,0 +1,237 @@
+/* Module Container Implementation Skeleton for {{mname}} */
+
+/**
+*  @file {{mname}}_container.cpp
+*  @brief This is the Module Container for Module  {{mname}}
+*
+*/
+
+#include <assert.h>
+
+#include "route.h"
+
+#include "ldp_time_manager.h"
+#include "ldp_log.h"
+#include "ldp_VD.h"
+
+#include "ldp_mod_container_util.h"
+#include "{{mname}}_container.hpp"
+#include "{{mname}}_container_types.hpp"
+
+#include "component_{{comp_impl_name}}__properties.h"
+
+{% for lib in libraries.keys() %}
+#include "{{fix_libname(lib)}}.hpp"
+{# {% if lib.name != 'ECOA' %} #}
+{# #include "{{fix_libname(lib)}}_serialization.h #}
+{# {% else %} #}
+{# #include "ECOA_simple_types_serialization.h #}
+{# {% endif %} #}
+{% endfor %}
+
+namespace {{mname}}
+{
+
+  Container::Container(platform_hook* hook){
+    this->hook = hook;
+  }
+
+  {% for (opname, op) in mtype.operations.items() %}
+  {% if op.type=="ES" %}
+
+  void Container::{{op.name}}__send({{generate_header_fct_cpp(op, with_input=True, is_first_arg=True)}}){
+{{generate_broadcast_event_send_cpp(op, op.op_output_index)}}
+  }
+
+  {% elif op.type=="SRS" %}
+
+  ECOA::return_status Container::{{op.name}}__request_sync({{generate_header_fct_cpp(op, with_input=True, with_output=True, is_first_arg=True)}}){
+{{generate_sync_request_send_cpp(op, op.op_output_index)}}
+  }
+
+  {% elif op.type=="ARS" %}
+
+  ECOA::return_status Container::{{op.name}}__request_async(ECOA::uint32& ID{{generate_header_fct_cpp(op, with_input=True)}}){
+{{generate_async_request_send_cpp(op, op.op_output_index, op.RR_op_index)}}
+  }
+
+  {% elif op.type=="RR" %}
+
+  ECOA::return_status Container::{{op.name}}__response_send(const ECOA::uint32 ID{{generate_header_fct_cpp(op, with_output=True, is_output_const=True, output_mode=False)}}){
+{{generate_response_send_cpp(op, op.op_output_index, op.RR_op_index)}}
+  }
+
+  {% elif op.type=="DW" %}
+  ECOA::return_status Container::{{op.name}}__get_write_access({{op.name}}_handle& data_handle)
+  {
+    ldp_module_context* ctx = ((ldp_module_context*) this->hook);
+    ECOA::return_status ret;
+    ret = ldp_get_written_access(&ctx->VD_writter_managers[{{str(op.module_VD_op_index)}}], (ldp_VD_handle*) &data_handle);
+    if (ret != ECOA__return_status_OK){
+      ldp_send_fault_error_to_father(ctx->component_ctx, ctx->mod_id, ECOA__asset_type_COMPONENT,
+                                       ECOA__error_type_RESOURCE_NOT_AVAILABLE, 12);
+    }
+    return ret;
+  }
+
+  ECOA::return_status Container::{{op.name}}__cancel_write_access({{op.name}}_handle& data_handle)
+  {
+    ldp_module_context* ctx = ((ldp_module_context*) this->hook);
+    ECOA::return_status ret;
+    ret = ldp_cancel_written_access(&ctx->VD_writter_managers[{{str(op.module_VD_op_index)}}], (ldp_VD_handle*) &data_handle);
+    if (ret != ECOA__return_status_OK){
+      ldp_send_fault_error_to_father(ctx->component_ctx, ctx->mod_id, ECOA__asset_type_COMPONENT,
+                                       ECOA__error_type_RESOURCE_NOT_AVAILABLE, 13);
+    }
+    return ret;
+  }
+
+  ECOA::return_status Container::{{op.name}}__publish_write_access({{op.name}}_handle& data_handle)
+  {
+    ldp_module_context* ctx = ((ldp_module_context*) this->hook);
+    ECOA::return_status ret;
+    ret = ldp_publish_written_access(ctx, &ctx->VD_writter_managers[{{str(op.module_VD_op_index)}}], (ldp_VD_handle*) &data_handle);
+    if (ret != ECOA__return_status_OK){
+      ldp_send_fault_error_to_father(ctx->component_ctx, ctx->mod_id, ECOA__asset_type_COMPONENT,
+                                       ECOA__error_type_RESOURCE_NOT_AVAILABLE, 14);
+    }
+    return ret;
+  }
+
+
+
+
+  {% elif op.type=="DR" or op.type=="DRN" %}
+
+  ECOA::return_status Container::{{op.name}}__get_read_access({{op.name}}_handle& data_handle)
+  {
+    ldp_module_context* ctx = ((ldp_module_context*) this->hook);
+    ECOA::return_status ret;
+    ret = ldp_get_read_access(&ctx->VD_reader_managers[{{str(op.module_VD_op_index)}}], (ldp_VD_handle*) &data_handle);
+    if (ret != ECOA__return_status_OK){
+        ldp_send_fault_error_to_father(ctx->component_ctx, ctx->mod_id, ECOA__asset_type_COMPONENT,
+                                         ECOA__error_type_RESOURCE_NOT_AVAILABLE, 15);
+    }
+    return ret;
+  }
+
+  ECOA::return_status Container::{{op.name}}__release_read_access({{op.name}}_handle& data_handle)
+  {
+    ldp_module_context* ctx = ((ldp_module_context*) this->hook);
+    ECOA::return_status ret;
+    if (ret != ECOA__return_status_OK){
+      ldp_send_fault_error_to_father(ctx->component_ctx, ctx->mod_id, ECOA__asset_type_COMPONENT,
+                                       ECOA__error_type_RESOURCE_NOT_AVAILABLE, 16);
+    }
+    ret = ldp_release_read_access(&ctx->VD_reader_managers[{{str(op.module_VD_op_index)}}], (ldp_VD_handle*) &data_handle);
+    return ret;
+  }
+
+  {% else %}
+  /* Op of unconsidered type (else)*/
+  {% endif %}{# if op type = ...#}
+  {% endfor %}
+  /* Properties API */
+  {% for (key, prop) in mtype.properties.items() %}
+  {{property_get_function_generate_cpp(prop, mtype, mname)}}
+  {% endfor %}
+
+
+  {# generate_pinfo_functions(mtype, mname) #}
+  /* PINFO API */
+  {% for index, pinfo_name in enumerate(mtype.public_pinfo+mtype.private_pinfo) %}
+  ECOA::return_status Container::seek_{{pinfo_name}}(ECOA::int32 offset, ECOA::seek_whence_type whence, ECOA::uint32 *new_position){
+    ldp_module_context* ctx=(ldp_module_context*) this->hook;
+    ECOA::return_status ret;
+    ret.value = ldp_pinfo_seek(&ctx->pinfo_manager.pinfo_array[{{index}}], offset, new_position, whence);
+    return ret;
+  }
+
+  ECOA::return_status Container::read_{{pinfo_name}}(ECOA::byte *memory_address, ECOA::uint32 in_size, ECOA::uint32 *out_size){
+    ldp_module_context* ctx=(ldp_module_context*) this->hook;
+    ECOA::return_status ret;
+    ret.value = ldp_pinfo_read(&ctx->pinfo_manager.pinfo_array[{{index}}], memory_address ,in_size, out_size);
+    return ret;
+  }
+  {% endfor %}
+
+  /* Logging services API call specifications */
+  {% for i in [["log_trace","LOG_TRACE","TRACE"],["log_debug","LOG_DEBUG","DEBUG"],["log_info","LOG_INFO","INFO"],["log_warning","LOG_WARN","WARNING"]] %}
+  void Container::{{i[0]}}(const ECOA::log &log){
+    ldp_module_context* ctx=(ldp_module_context*) this->hook;
+    ldp__timestamp timestamp;
+    ldp_get_ecoa_utc_time(&timestamp);
+    ldp_log_log(ECOA_{{i[1]}}, "{{i[2]}}", ctx->logger, log.data, &timestamp);
+  }
+  {% endfor %}
+
+  /* Logging services API call specifications */
+  {% for i in [["raise_error","LOG_ERROR","ERROR","ECOA__error_type_ERROR"],["raise_fatal_error","LOG_FATAL","FATAL","ECOA__error_type_FATAL_ERROR"]] %}
+  void Container::{{i[0]}}(const ECOA::log &log){
+    ldp_module_context* ctx=(ldp_module_context*) this->hook;
+    ldp_send_fault_error_to_father(ctx->component_ctx, ctx->mod_id, ECOA__asset_type_COMPONENT, {{i[3]}}, 1);
+    ldp__timestamp timestamp;
+    ldp_get_ecoa_utc_time(&timestamp);
+    ldp_log_log(ECOA_{{i[1]}}, "{{i[2]}}", ctx->logger, log.data, &timestamp);
+  }
+  {% endfor %}
+
+  /* Recovery action service API call specification if the module is a Fault Handler */
+  {% if mtype.fault_handler == True %}
+      	/* Fault Handling API */
+  ECOA::return_status Container::recovery_action(ECOA::recovery_action_type recovery_action, ECOA::asset_id asset_id, ECOA::asset_type asset_type){
+    /* @TODO TODO - To be implemented */
+  }
+  {% endif %}
+
+
+  /* Time Services API call specifications */
+
+  void Container::get_relative_local_time(ECOA::hr_time& relative_local_time){
+    ldp__timestamp relative_local_time_temp;
+    ldp_get_ecoa_relative_time(NULL, &relative_local_time_temp);
+    relative_local_time.nanoseconds = relative_local_time_temp.nanoseconds;
+    relative_local_time.seconds = relative_local_time_temp.seconds;
+  }
+
+  ECOA::return_status Container::get_UTC_time(ECOA::global_time& UTC_time){
+  	ldp__timestamp UTC_time_temp;
+    ldp_get_ecoa_utc_time( &UTC_time_temp);
+    UTC_time.nanoseconds = UTC_time_temp.nanoseconds;
+    UTC_time.seconds = UTC_time_temp.seconds;
+
+    return ECOA::return_status::OK;
+  }
+
+  ECOA::return_status Container::get_absolute_system_time(ECOA::global_time& absolute_system_time){
+  	ldp__timestamp absolute_system_time_temp;
+    ldp_get_ecoa_absolute_time( &absolute_system_time_temp);
+
+    absolute_system_time.nanoseconds = absolute_system_time_temp.nanoseconds;
+    absolute_system_time.seconds = absolute_system_time_temp.seconds;
+
+    return ECOA::return_status::OK;
+  }
+
+  void Container::get_relative_local_time_resolution(ECOA::duration& relative_local_time_resolution){
+    ldp__timestamp relative_local_time_resolution_temp;
+    ldp_get_ecoa_relative_timeres( &relative_local_time_resolution_temp);
+    relative_local_time_resolution.nanoseconds = relative_local_time_resolution_temp.nanoseconds;
+    relative_local_time_resolution.seconds = relative_local_time_resolution_temp.seconds;
+  }
+
+  void Container::get_UTC_time_resolution(ECOA::duration& utc_time_resolution){
+    ldp__timestamp utc_time_resolution_temp;
+    ldp_get_ecoa_utc_timeres( &utc_time_resolution_temp);
+    utc_time_resolution.nanoseconds = utc_time_resolution_temp.nanoseconds;
+    utc_time_resolution.seconds = utc_time_resolution_temp.seconds;
+  }
+
+  void Container::get_absolute_system_time_resolution(ECOA::duration& absolute_system_time_resolution){
+    ldp__timestamp absolute_system_time_resolution_temp;
+    ldp_get_ecoa_absolute_timeres( &absolute_system_time_resolution_temp);
+    absolute_system_time_resolution.nanoseconds = absolute_system_time_resolution_temp.nanoseconds;
+    absolute_system_time_resolution.seconds = absolute_system_time_resolution_temp.seconds;
+  }
+}
+

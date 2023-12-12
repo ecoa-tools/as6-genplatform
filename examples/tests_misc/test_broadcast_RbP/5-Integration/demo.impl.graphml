@@ -1,0 +1,156 @@
+<?xml version="1.0" ?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:y="http://www.yworks.com/xml/graphml">
+  <key attr.name="color" attr.type="string" for="node" id="d1">
+    <default>red</default>
+  </key>
+  <key attr.name="Text" attr.type="string" for="node" id="d2"/>
+  <key id="d3" yfiles.type="nodegraphics"/>
+  <key attr.name="color" attr.type="string" for="edge" id="d4">
+    <default>red</default>
+  </key>
+  <key attr.name="Text" attr.type="string" for="edge" id="d5"/>
+  <key for="edge" id="d6" yfiles.type="edgegraphics"/>
+  <graph edgedefault="undirected" id="Graph">
+    <node id="demoServer1_Layer2">
+      <data key="d3">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="30.0"/>
+          <y:Fill color="#FFFFFF" transparent="false"/>
+          <y:NodeLabel>demoServer1_Layer2</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="demoFinal">
+      <data key="d3">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="30.0"/>
+          <y:Fill color="#FFFFFF" transparent="false"/>
+          <y:NodeLabel>demoFinal</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="demoServer1">
+      <data key="d3">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="30.0"/>
+          <y:Fill color="#FFFFFF" transparent="false"/>
+          <y:NodeLabel>demoServer1</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="demoServer0_Layer2">
+      <data key="d3">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="30.0"/>
+          <y:Fill color="#FFFFFF" transparent="false"/>
+          <y:NodeLabel>demoServer0_Layer2</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="demoClient">
+      <data key="d3">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="30.0"/>
+          <y:Fill color="#FFFFFF" transparent="false"/>
+          <y:NodeLabel>demoClient</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <node id="demoServer0">
+      <data key="d3">
+        <y:ShapeNode>
+          <y:Geometry height="30.0" width="30.0"/>
+          <y:Fill color="#FFFFFF" transparent="false"/>
+          <y:NodeLabel>demoServer0</y:NodeLabel>
+          <y:Shape type="rectangle"/>
+        </y:ShapeNode>
+      </data>
+    </node>
+    <edge id="6" source="demoServer1" target="demoServer0_Layer2">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" fontStyle="plain" preferredPlacement="centered" textColor="#000000" visible="true">server_r0</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="7" source="demoServer1" target="demoServer1_Layer2">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" fontStyle="plain" preferredPlacement="centered" textColor="#000000" visible="true">server_r0</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="8" source="demoServer0_Layer2" target="demoFinal">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" fontStyle="plain" preferredPlacement="centered" textColor="#000000" visible="true">server_r0</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="9" source="demoServer1_Layer2" target="demoFinal">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" fontStyle="plain" preferredPlacement="centered" textColor="#000000" visible="true">server_r0</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="0" source="demoClient" target="demoServer0">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" fontStyle="plain" preferredPlacement="centered" textColor="#000000" visible="true">client_r0</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="1" source="demoClient" target="demoServer1">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" fontStyle="plain" preferredPlacement="centered" textColor="#000000" visible="true">client_r0</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="2" source="demoClient" target="demoServer0">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" fontStyle="plain" preferredPlacement="centered" textColor="#000000" visible="true">client_r1</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="3" source="demoClient" target="demoServer1">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" fontStyle="plain" preferredPlacement="centered" textColor="#000000" visible="true">client_r1</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="4" source="demoServer0" target="demoServer0_Layer2">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" fontStyle="plain" preferredPlacement="centered" textColor="#000000" visible="true">server_r0</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="5" source="demoServer0" target="demoServer1_Layer2">
+      <data key="d6">
+        <y:PolyLineEdge>
+          <y:Arrows source="none" target="standard"/>
+          <y:EdgeLabel fontSize="8" fontStyle="plain" preferredPlacement="centered" textColor="#000000" visible="true">server_r0</y:EdgeLabel>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+  </graph>
+</graphml>
+

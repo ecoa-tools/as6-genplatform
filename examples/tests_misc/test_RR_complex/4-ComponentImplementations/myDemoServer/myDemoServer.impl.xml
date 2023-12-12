@@ -1,0 +1,30 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="server_comp">
+
+  <use library="pingpong"/>
+
+  <moduleType name="myDemoServer_mod1_t">
+    <operations>
+      <requestReceived name="RR_msg" maxConcurrentRequests="8">
+        <input name="Ping_Position" type="pingpong:T_2D_Position"/>
+        <input name="Ping_Target" type="ECOA:uint32"/>
+        <output name="Pong_Position" type="pingpong:T_2D_Position"/>
+        <output name="Pong_Target" type="ECOA:uint32"/>
+      </requestReceived>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoServer_mod1_impl" language="C" moduleType="myDemoServer_mod1_t"/>
+  <moduleInstance name="myDemoServer_mod1_inst" implementationName="myDemoServer_mod1_impl" relativePriority="160"/>
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <requestLink>
+    <clients>
+      <service instanceName="PingPong" operationName="Ping_RR"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoServer_mod1_inst" operationName="RR_msg"/>
+    </server>
+  </requestLink>
+
+</componentImplementation>

@@ -1,0 +1,29 @@
+<ECOAProject xmlns="http://www.ecoa.technology/project-2.0" name="test_big_RR_sync">
+
+    <types>
+        <file>0-Types/lib_array.types.xml</file>
+    </types>
+
+    <serviceDefinitions>
+        <file>1-Services/svc_PingPong.interface.xml</file>
+    </serviceDefinitions>
+
+    <componentDefinitions>
+        <file>2-ComponentDefinitions/Pong/Pong.componentType</file>
+        <file>2-ComponentDefinitions/Ping/Ping.componentType</file>
+    </componentDefinitions>
+
+    <initialAssembly></initialAssembly>
+
+    <componentImplementations>
+        <file>4-ComponentImplementations/myDemoPong/myDemoPong.impl.xml</file>
+        <file>4-ComponentImplementations/myDemoPing/myDemoPing.impl.xml</file>
+    </componentImplementations>
+
+    <implementationAssembly>5-Integration/demo.impl.composite</implementationAssembly>
+    <deploymentSchema>5-Integration/demo.deployment.xml</deploymentSchema>
+    <logicalSystem>5-Integration/cs1.logical-system.xml</logicalSystem>
+
+    <outputDirectory>6-output</outputDirectory>
+</ECOAProject>
+

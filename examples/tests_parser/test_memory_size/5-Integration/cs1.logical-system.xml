@@ -1,0 +1,27 @@
+<ecoa:logicalSystem id="cs1"
+   xmlns:ecoa="http://www.ecoa.technology/logicalsystem-2.0">
+
+   <!--
+   Computing Node = « Alienware Aurora » desktop PC
+   HyperThreading disabled (BIOS config)
+   4 CPU cores
+   Intel(R) Core(TM) i7-2600K CPU @ 3.40GHz
+   Bogomips :  6785.34  (dmesg | grep BogoMIPS)
+   stepDuration = 1/BogoMIPS = 1.47376e-4 s
+   -->
+
+  <logicalComputingPlatform id="Thales0" ELIPlatformId="1">
+
+    <logicalComputingNode id="machine0">
+      <endianess type="BIG" />
+      <logicalProcessors number="4" type="x86_64">
+        <stepDuration nanoSeconds="147376" />
+      </logicalProcessors>
+      <os name="linux" />
+      <availableMemory gigaBytes="6" />
+      <moduleSwitchTime microSeconds="10" />
+    </logicalComputingNode>
+
+  </logicalComputingPlatform>
+
+</ecoa:logicalSystem>

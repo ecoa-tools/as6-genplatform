@@ -1,0 +1,43 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Ping">
+
+  <use library="pingpong"/>
+
+  <moduleType name="myDemoPing_mod1_t">
+    <operations>
+      <requestSent name="Ping_Async" isSynchronous="false" timeout="1" maxConcurrentRequests="9">
+        <input name="Ping_Position" type="pingpong:T_2D_Position"/>
+        <input name="Ping_Target" type="ECOA:uint32"/>
+        <output name="Pong_Position" type="pingpong:T_2D_Position"/>
+        <output name="Pong_Target" type="ECOA:uint32"/>
+      </requestSent>
+      <requestSent name="Ping_Sync" isSynchronous="true" timeout="0.5" ><!--default value of maxConcurrentRequests-->
+        <input name="Ping_Position" type="pingpong:T_2D_Position"/>
+        <input name="Ping_Target" type="ECOA:uint32"/>
+        <output name="Pong_Position" type="pingpong:T_2D_Position"/>
+        <output name="Pong_Target" type="ECOA:uint32"/>
+      </requestSent>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPing_mod1_impl" language="C" moduleType="myDemoPing_mod1_t"/>
+  <moduleInstance name="myDemoPing_mod1_inst" implementationName="myDemoPing_mod1_impl" relativePriority="100"/>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoPing_mod1_inst" operationName="Ping_Sync"/>
+    </clients>
+    <server>
+      <reference instanceName="PingPong" operationName="Ping_sync"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoPing_mod1_inst" operationName="Ping_Async"/>
+    </clients>
+    <server>
+      <reference instanceName="PingPong" operationName="Ping_async"/>
+    </server>
+  </requestLink>
+
+</componentImplementation>

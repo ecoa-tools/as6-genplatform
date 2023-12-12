@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+
+  <types>
+    <record name="vector_data">
+      <field name="writter_0" type="uint32"/>
+      <field name="writter_1" type="uint32"/>
+      <field name="writter_2" type="uint32"/>
+      <field name="writter_3" type="uint32"/>
+    </record>
+  </types>
+</library>

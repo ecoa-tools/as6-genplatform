@@ -1,0 +1,80 @@
+/**
+* @file {{mname}}.hpp
+* @brief Module Header for {{mname}}
+*
+*/
+
+#if !defined(_{{mname}}_HPP)
+#define _{{mname}}_HPP
+
+
+#include "ECOA.hpp"
+#include "{{mname}}_container.hpp"
+#include "{{mname}}_container_types.hpp"
+{%if not mimpl.is_binary_module() %}
+#include "{{mname}}_user_context.hpp"
+{%endif%}
+{% for lib in libraries %}
+#include "{{fix_libname(lib)}}.hpp"
+{% endfor %}
+
+namespace {{mname}}
+{
+
+class Module
+{
+	public:
+
+		/* Entry points for lifecycle operations */
+
+		void INITIALIZE__received();
+
+		void START__received();
+
+		void STOP__received();
+
+		void SHUTDOWN__received();
+
+		{% if mtype.has_warm_start_context() == True %}
+			{% if mimpl.is_binary_module() %}
+		ECOA::byte warm_start[{{mimpl.binary_desc.warmStartContextSize}}];
+			{% else %}
+		warm_start_context warm_start;
+			{% endif %}
+		{% endif %}
+
+		{% for (opname, op) in mtype.operations.items() %}
+			{% if op.type=="ER" %}
+		void {{op.name}}__received({{generate_header_fct_cpp(op, with_input=True, is_first_arg=True)}});
+			{% endif %}
+			{% if op.type=="RR" %}
+		void {{op.name}}__request_received(const ECOA::uint32 ID{{generate_header_fct_cpp(op,
+		with_input=True)}});
+			{% endif %}
+			{% if op.type=="ARS" %}
+		void {{op.name}}__response_received(const ECOA::uint32 ID, const ECOA::return_status status{{generate_header_fct_cpp(op, with_output=True, is_output_const=True, output_mode=False)}});
+			{% endif %}
+			{% if op.type=="DRN" %}
+		void {{op.name}}__updated();
+			{% endif %}
+		{% endfor %}
+
+		Container* container;
+
+		{% if mtype.has_user_context() == True %}
+			{% if mimpl.is_binary_module() %}
+		ECOA::byte user[{{mimpl.binary_desc.userContextSize}}];
+			{% else %}
+		user_context user;
+			{% endif %}
+		{% endif %}
+
+}; /* Class Module */
+
+extern "C" {
+	Module* {{mname}}__new_instance();
+}
+
+} /* namespace {{mname}} */
+
+#endif  /* _{{mname.upper()}}_HPP */

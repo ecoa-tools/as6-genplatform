@@ -1,0 +1,74 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Server">
+	
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoServer_AM_t">
+    <operations>
+
+    <eventReceived name="ping01"/>
+    <eventReceived name="ping02"/>
+    <eventReceived name="ping11"/>
+    <eventReceived name="ping12"/>
+      
+    <eventSent name="pong"/>
+
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoServer_AM" language="C" moduleType="myDemoServer_AM_t"/>
+
+  <moduleInstance name="myDemoServer_AM_I" implementationName="myDemoServer_AM" relativePriority="100"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <eventLink>
+    <senders>
+      <service instanceName="server_s0" operationName="Ping01"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoServer_AM_I" operationName="ping01"/>
+    </receivers>
+  </eventLink>
+<eventLink>
+    <senders>
+      <service instanceName="server_s0" operationName="Ping02"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoServer_AM_I" operationName="ping02"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <service instanceName="server_s1" operationName="Ping11"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoServer_AM_I" operationName="ping11"/>
+    </receivers>
+  </eventLink>
+<eventLink>
+    <senders>
+      <service instanceName="server_s1" operationName="Ping12"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoServer_AM_I" operationName="ping12"/>
+    </receivers>
+  </eventLink>
+
+
+<eventLink>
+    <senders>
+		<moduleInstance instanceName="myDemoServer_AM_I" operationName="pong"/>
+
+    </senders>
+    <receivers>      
+		<reference instanceName="server_r0" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+</componentImplementation>

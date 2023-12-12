@@ -1,0 +1,34 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+	
+
+  <protectionDomain name="Main_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoMain" moduleInstanceName="myDemoMain_AM_I" modulePriority="30"/>    
+	<deployedModuleInstance componentName="demoMain" moduleInstanceName="myDemoMain2_AM_I" modulePriority="30"/>
+    <deployedTriggerInstance componentName="demoMain" triggerInstanceName="Heart_Beat_0" triggerPriority="10"/>
+    <deployedTriggerInstance componentName="demoMain" triggerInstanceName="Heart_Beat_1" triggerPriority="10"/>
+  </protectionDomain>
+
+ <protectionDomain name="Worker_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoWorker" moduleInstanceName="myDemoWorker_AM_I" modulePriority="30"/> 
+  </protectionDomain>
+
+  <protectionDomain name="Final_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoFinal" moduleInstanceName="myDemoFinal_AM_I" modulePriority="30"/>
+  </protectionDomain>
+
+	<logPolicy>
+		<componentLog instanceName="demoFinal" enabledLevels="DEBUG|WARN|TRACE">
+			<moduleLog instanceName="myDemoFinal_AM_I" enabledLevels="DEBUG|WARN|INFO|TRACE"/>
+		</componentLog>
+	</logPolicy>
+
+  <platformConfiguration computingPlatform="Thales" faultHandlerNotificationMaxNumber="10">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="lib_module"/>
+
+  <operations>
+
+    <data name="data" type="ECOA:uint32"/>
+
+  </operations>
+
+</serviceDefinition>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<componentType xmlns="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0">
+
+  <reference name="server_r0">
+    <ecoa-sca:interface syntax="svc_ping00"/>
+  </reference>
+  <reference name="server_r1">
+    <ecoa-sca:interface syntax="svc_ping10"/>
+  </reference>
+
+  <service name="server_s0">
+    <ecoa-sca:interface syntax="svc_pong"/>
+  </service>
+</componentType>

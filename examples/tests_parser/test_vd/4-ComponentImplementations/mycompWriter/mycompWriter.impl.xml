@@ -1,0 +1,40 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Writer">
+
+  <!-- list of used libraries -->
+  <use library="VD_lib"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myCompWriter_mod_t">
+    <operations>
+      <dataWritten type="VD_lib:vector_data" name="written_vector_0" maxVersions="12"/>
+      <dataWritten type="VD_lib:vector_data" name="written_vector_1" writeOnly="true"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myCompWriter_mod" language="C" moduleType="myCompWriter_mod_t"/>
+
+  <moduleInstance name="myCompWriter_mod_inst" implementationName="myCompWriter_mod" relativePriority="100"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="myCompWriter_mod_inst" operationName="written_vector_0"/>
+    </writers>
+    <readers>
+      <service instanceName="svc_writer" operationName="some_data_0"/>
+    </readers>
+  </dataLink>
+
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="myCompWriter_mod_inst" operationName="written_vector_1"/>
+    </writers>
+    <readers>
+      <service instanceName="svc_writer" operationName="some_data_1"/>
+    </readers>
+  </dataLink>
+
+
+</componentImplementation>

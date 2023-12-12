@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="demo"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="demoDriverComp">
+    <ecoa-sca:instance componentType="DriverComp">
+      <ecoa-sca:implementation name="myDemoDriverComp"/>
+    </ecoa-sca:instance>
+  </csa:component>
+
+</csa:composite>

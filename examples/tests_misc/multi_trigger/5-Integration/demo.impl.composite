@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0" 
+	       name="demo" 
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="demoMain">
+    <ecoa-sca:instance componentType="Main">
+      <ecoa-sca:implementation name="myDemoMain"/>
+    </ecoa-sca:instance>
+    <csa:reference name="trigger2_r0"/>
+    <csa:service name="trigger_s0"/>
+    <csa:service name="final_s0"/>
+  </csa:component>
+
+  <csa:component name="demoWorker">
+    <ecoa-sca:instance componentType="Worker">
+      <ecoa-sca:implementation name="myDemoWorker"/>
+    </ecoa-sca:instance>
+    <csa:reference name="trigger_r0"/>
+    <csa:service name="trigger2_s0"/>
+    <csa:service name="final_s0"/>
+  </csa:component>
+
+  <csa:component name="demoFinal">
+    <ecoa-sca:instance componentType="Final">
+      <ecoa-sca:implementation name="myDemoFinal"/>
+    </ecoa-sca:instance>
+    <csa:reference name="final_r0"/>
+  </csa:component>
+
+  <csa:wire source="demoFinal/final_r0" target="demoMain/final_s0"  />
+  <csa:wire source="demoFinal/final_r0" target="demoWorker/final_s0"  />
+  <csa:wire source="demoWorker/trigger_r0" target="demoMain/trigger_s0" />
+  <csa:wire source="demoMain/trigger2_r0" target="demoWorker/trigger2_s0" />
+
+</csa:composite>

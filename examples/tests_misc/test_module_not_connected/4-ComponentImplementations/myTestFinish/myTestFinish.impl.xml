@@ -1,0 +1,33 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="TestFinish">
+
+  <!-- list of used libraries -->
+  <use library="lib_module"/>
+
+  <!-- Modules Types -->
+  <moduleType name="myDemoFinish_AM_t" hasWarmStartContext="false">
+    <operations>
+      <eventReceived name="Finish_Received">
+      </eventReceived>
+    </operations>
+  </moduleType>
+  <!-- End of Modules Types -->
+
+  <!-- Implementations -->
+  <moduleImplementation name="myDemoFinish_AM" language="C" moduleType="myDemoFinish_AM_t"/>
+
+  <moduleInstance name="myDemoFinish_AM_I" implementationName="myDemoFinish_AM" relativePriority="100"/>
+  <!-- End of Implementations -->
+
+  <!-- Event Links -->
+  <eventLink>
+    <senders>
+      <service instanceName="Finish" operationName="Finish_Event"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoFinish_AM_I" operationName="Finish_Received"/>
+    </receivers>
+  </eventLink>
+  <!-- End of Event Links -->
+
+</componentImplementation>

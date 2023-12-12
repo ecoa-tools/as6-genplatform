@@ -1,0 +1,79 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Master">
+
+  <!-- list of used libraries -->
+  <use library="VD_lib"/>
+
+  <!-- supervision module -->
+  <moduleType name="myCompMaster_Read_t">
+    <operations>
+      <dataRead type="VD_lib:vector_data" name="read_vector_00" notifying="false" maxVersions="2"/>
+      <dataRead type="VD_lib:vector_data" name="read_vector_01" notifying="false" maxVersions="3"/>
+      <dataRead type="VD_lib:vector_data" name="read_vector_10" notifying="false"/>
+      <dataRead type="VD_lib:vector_data" name="read_vector_11" notifying="false"/>
+      <dataRead type="VD_lib:vector_data" name="read_vector_intern" notifying="true"/>
+      <eventSent name="finish"/>
+    </operations>
+  </moduleType>
+
+  <moduleType name="myCompMaster_Writer_t">
+    <operations>
+      <dataWritten type="VD_lib:vector_data" name="written_vector_intern" maxVersions="3"/>
+    </operations>
+  </moduleType>
+
+
+  <moduleImplementation name="myCompMaster_Read_impl" language="C" moduleType="myCompMaster_Read_t"/>
+  <moduleImplementation name="myCompMaster_Writer_impl" language="C" moduleType="myCompMaster_Writer_t"/>
+
+  <moduleInstance name="myCompMaster_Read_inst" implementationName="myCompMaster_Read_impl" relativePriority="100"/>
+  <moduleInstance name="myCompMaster_Writer_inst" implementationName="myCompMaster_Writer_impl" relativePriority="100"/>
+
+
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <dataLink controlled="true">
+    <writers>
+      <reference instanceName="svc_master_0" operationName="some_data_0"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCompMaster_Read_inst" operationName="read_vector_00"/>
+    </readers>
+  </dataLink>
+  <dataLink>
+    <writers>
+      <reference instanceName="svc_master_0" operationName="some_data_1"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCompMaster_Read_inst" operationName="read_vector_01"/>
+    </readers>
+  </dataLink>
+
+  <dataLink>
+    <writers>
+      <reference instanceName="svc_master_1" operationName="some_data_0"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCompMaster_Read_inst" operationName="read_vector_10"/>
+    </readers>
+  </dataLink>
+  <dataLink>
+    <writers>
+      <reference instanceName="svc_master_1" operationName="some_data_1"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCompMaster_Read_inst" operationName="read_vector_11"/>
+    </readers>
+  </dataLink>
+
+  <dataLink controlled="false">
+    <writers>
+      <moduleInstance instanceName="myCompMaster_Writer_inst" operationName="written_vector_intern"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCompMaster_Read_inst" operationName="read_vector_intern"/>
+    </readers>
+  </dataLink>
+
+
+</componentImplementation>

@@ -1,0 +1,34 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="ClientServer_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoClient0" moduleInstanceName="myDemoClient_mod1_inst" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoClient0" moduleInstanceName="myDemoClient_mod0_inst" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoClient0" moduleInstanceName="myDemoServer_mod0_inst" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoServer0" moduleInstanceName="myDemoServer_mod1_inst" modulePriority="40"/>
+  </protectionDomain>
+
+  <protectionDomain name="Client_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoClient1" moduleInstanceName="myDemoClient_mod1_inst" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoClient1" moduleInstanceName="myDemoClient_mod0_inst" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoClient1" moduleInstanceName="myDemoServer_mod0_inst" modulePriority="30"/>
+  </protectionDomain>
+
+  <protectionDomain name="Server_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoServer1" moduleInstanceName="myDemoServer_mod1_inst" modulePriority="40"/>
+  </protectionDomain>
+
+  <protectionDomain name="Final_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoFinish" moduleInstanceName="myDemoFinish_mod_inst" modulePriority="40"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Thales" faultHandlerNotificationMaxNumber="20">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

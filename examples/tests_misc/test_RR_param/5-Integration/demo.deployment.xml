@@ -1,0 +1,31 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Ping_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoPing" moduleInstanceName="myDemoPing_AM_I1" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoPing" moduleInstanceName="myDemoPing_AM_I0" modulePriority="30"/>
+
+    <deployedModuleInstance componentName="demoPing2" moduleInstanceName="myDemoPing_AM_I0" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoPing2" moduleInstanceName="myDemoPing_AM_I1" modulePriority="30"/>
+
+    <deployedModuleInstance componentName="demoPing3" moduleInstanceName="myDemoPing_AM_I0" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoPing3" moduleInstanceName="myDemoPing_AM_I1" modulePriority="30"/>
+  </protectionDomain>
+
+  <protectionDomain name="Pong_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+	<deployedModuleInstance componentName="demoPing4" moduleInstanceName="myDemoPing_AM_I0" modulePriority="30"/>
+	<deployedModuleInstance componentName="demoPing4" moduleInstanceName="myDemoPing_AM_I1" modulePriority="30"/>
+
+    <deployedModuleInstance componentName="demoPong" moduleInstanceName="myDemoPong_AM_I" modulePriority="40"/>
+    <deployedModuleInstance componentName="demoPong" moduleInstanceName="mySender_I" modulePriority="20"/>
+
+</protectionDomain>
+
+  <platformConfiguration computingPlatform="Thales" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

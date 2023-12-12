@@ -1,0 +1,96 @@
+# Copyright 2023 Dassault Aviation
+# MIT License (see LICENSE.txt)
+
+[project]
+name = "ecoa-ldp"
+description = "The Lightweight Development Platform tool."
+authors = [
+    {name = "Dassault Aviation", email = "ecoa.tools@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["ECOA", "Tools", "C", "C++", "CPP", "Linux", "Windows"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Framework :: Flake8",
+    "Framework :: Pytest",
+    "Framework :: Sphinx",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: C",
+    "Programming Language :: C++",
+    "Topic :: Documentation",
+    "Topic :: Documentation :: Sphinx",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: Text Processing :: Markup :: XML",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+dependencies = [
+    "ecoa-exvt"
+]
+version = "1.0.0"
+
+[project.urls]
+homepage = "http://ecoa.technology"
+documentation = "http://ecoa.technology"
+
+[project.scripts]
+ecoa-ldp = "ecoa_genplatform.__main__:main"
+
+[build-system]
+requires = ["setuptools>=64.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.isort]
+atomic = true
+profile = "black"
+line_length = 120
+
+[tool.black]
+line-length = 120
+target-version = ["py38"]
+skip_gitignore = true
+
+[tool.flake8]
+count = true
+extend-exclude = [
+    "__init__.py",
+]
+extend-ignore = ["E203", "W503"]
+max-line-length = 120
+max-complexity = 7
+max-cognitive-complexity = 8
+require-plugins = [
+    "flake8-cognitive-complexity",
+    "Flake8-pyproject"
+]
+
+[tool.coverage.run]
+branch = true
+omit = ["*tests*"]
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_lines = [
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+]
+ignore_errors = true
+
+[tool.coverage.html]
+directory = "coverage_html_report"
+

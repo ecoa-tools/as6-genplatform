@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<componentType xmlns="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0">
+
+  <service name="Finish">
+    <ecoa-sca:interface syntax="svc_Finish" qos="Required-svc_Finish"/>
+  </service>
+
+  <service name="svc_writer">
+    <ecoa-sca:interface syntax="svc_VD"/>
+  </service>
+
+</componentType>

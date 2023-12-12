@@ -1,0 +1,32 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="final">
+	
+<use library="mylib"/>
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="mydemoFinal_AM_t">
+    <operations>
+
+    <eventReceived name="Pong"/> 
+    <!--eventSent name="Pong"/-->
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="mydemoFinal_AM" language="C" moduleType="mydemoFinal_AM_t"/>
+
+  <moduleInstance name="mydemoFinal_AM_I" implementationName="mydemoFinal_AM" relativePriority="100">
+	</moduleInstance>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <eventLink>
+    <senders>
+      <service instanceName="Ifinal" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="mydemoFinal_AM_I" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

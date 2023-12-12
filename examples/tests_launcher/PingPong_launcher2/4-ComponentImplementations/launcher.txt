@@ -1,0 +1,18 @@
+###Mixed wrong wait requests 
+Wait
+Wait 0 s
+wait 3 s
+Wait s 3
+Wait 2.5 s
+Wait 2,5 s
+Wait -2,5 s
+
+#Negative time (0 sec expected)
+Wait -10 s
+
+### Initialize
+Initialize *
+Wait 2 s
+
+###Start
+Start *

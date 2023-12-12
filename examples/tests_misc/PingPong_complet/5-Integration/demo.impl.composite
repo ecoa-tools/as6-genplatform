@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="demo"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <!-- test in the same component -->
+    <csa:component name="demoPongPing">
+    <ecoa-sca:instance componentType="PongPing">
+      <ecoa-sca:implementation name="myDemoPongPing"/>
+    </ecoa-sca:instance>
+    </csa:component>
+
+  <!-- test between 2 modules on the same PD -->
+  <csa:component name="demoPing">
+    <ecoa-sca:instance componentType="Ping">
+      <ecoa-sca:implementation name="myDemoPing"/>
+    </ecoa-sca:instance>
+    <csa:reference name="PingPong"/>
+    <csa:property name="comp_ID"><csa:value>10</csa:value></csa:property>
+  </csa:component>
+
+  <csa:component name="demoPong">
+    <ecoa-sca:instance componentType="Pong">
+      <ecoa-sca:implementation name="myDemoPong"/>
+    </ecoa-sca:instance>
+    <csa:service name="PingPong"/>
+    <csa:property name="comp_ID"><csa:value>10</csa:value></csa:property>
+  </csa:component>
+
+  <!-- test between 2 modules on different PD-->
+  <csa:component name="demoPing_ext">
+    <ecoa-sca:instance componentType="Ping">
+      <ecoa-sca:implementation name="myDemoPing"/>
+    </ecoa-sca:instance>
+    <csa:reference name="PingPong"/>
+    <csa:property name="comp_ID"><csa:value>20</csa:value></csa:property>
+  </csa:component>
+
+  <csa:component name="demoPong_ext">
+    <ecoa-sca:instance componentType="Pong">
+      <ecoa-sca:implementation name="myDemoPong"/>
+    </ecoa-sca:instance>
+    <csa:service name="PingPong"/>
+    <csa:property name="comp_ID"><csa:value>20</csa:value></csa:property>
+  </csa:component>
+
+  <csa:wire source="demoPing/PingPong" target="demoPong/PingPong" />
+  <csa:wire source="demoPing_ext/PingPong" target="demoPong_ext/PingPong" />
+
+</csa:composite>

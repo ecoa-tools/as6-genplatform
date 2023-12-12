@@ -1,0 +1,91 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Main">
+
+    <!-- list of used libraries -->
+  	<use library="pingpong"/>
+
+  	<!-- supervision module -->
+
+  	<!-- module AM to implement provided operations -->
+  	<moduleType name="myDemoMain_AM_t">
+    	<operations>
+		    <eventSent name="Finish"/>
+		    <eventSent name="SetDTrigger"><input name="delayDuration" type="ECOA:duration"/><input name="param1" type="int32"/></eventSent>
+			<eventSent name="SetDTrigger2"><input name="delayDuration" type="ECOA:duration"/></eventSent>
+		    <eventSent name="ResetDTrigger"/>
+			<eventReceived name="ResultDTrigger"><input name="param1" type="int32"/></eventReceived>
+			<eventReceived name="ResultDTrigger2"></eventReceived>
+    	</operations>
+  	</moduleType>
+
+  	<moduleImplementation name="myDemoMain_AM" language="C" moduleType="myDemoMain_AM_t"/>
+
+  	<moduleInstance name="myDemoMain_AM_I" implementationName="myDemoMain_AM" relativePriority="160"/>
+
+	<dynamicTriggerInstance name="d_trigger" size="10" relativePriority="160">
+		<parameter name="parma1" type="int32"/>
+	</dynamicTriggerInstance>
+
+	<dynamicTriggerInstance name="d_trigger2" size="10" relativePriority="60"></dynamicTriggerInstance>
+
+  	<!-- Definition of module operation links for Supervision Module -->
+
+  	<!-- Definition of module operation links for AM module -->
+
+
+  	<eventLink>
+  	  	<senders>
+  	    	<moduleInstance instanceName="myDemoMain_AM_I" operationName="Finish"/>
+  	  	</senders>
+  	  	<receivers>
+  		    <service instanceName="final_s0" operationName="Finish"/>
+  		</receivers>
+  	</eventLink>
+
+	<eventLink>
+		<senders>
+			<moduleInstance instanceName="myDemoMain_AM_I" operationName="SetDTrigger"/>
+		</senders>
+		<receivers>
+			<dynamicTrigger instanceName="d_trigger" operationName="in"/>
+		</receivers>
+
+	</eventLink>
+	<eventLink>
+		<senders>
+			<moduleInstance instanceName="myDemoMain_AM_I" operationName="SetDTrigger2"/>
+		</senders>
+		<receivers>
+			<dynamicTrigger instanceName="d_trigger2" operationName="in"/>
+		</receivers>
+	</eventLink>
+
+	<eventLink>
+		<senders>
+			<dynamicTrigger instanceName="d_trigger" operationName="out"/>
+		</senders>
+		<receivers>
+			<moduleInstance instanceName="myDemoMain_AM_I" operationName="ResultDTrigger"/>
+		</receivers>
+	</eventLink>
+
+	<eventLink>
+		<senders>
+			<dynamicTrigger instanceName="d_trigger2" operationName="out"/>
+		</senders>
+		<receivers>
+			<moduleInstance instanceName="myDemoMain_AM_I" operationName="ResultDTrigger2"/>
+		</receivers>
+	</eventLink>
+
+	<eventLink>
+		<senders>
+			<moduleInstance instanceName="myDemoMain_AM_I" operationName="ResetDTrigger"/>
+		</senders>
+		<receivers>
+			<dynamicTrigger instanceName="d_trigger" operationName="reset"/>
+			<dynamicTrigger instanceName="d_trigger2" operationName="reset"/>
+		</receivers>
+	</eventLink>
+
+</componentImplementation>

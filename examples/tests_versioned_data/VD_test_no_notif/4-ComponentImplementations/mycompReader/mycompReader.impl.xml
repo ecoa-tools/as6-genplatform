@@ -1,0 +1,51 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Reader">
+
+  <!-- list of used libraries -->
+  <use library="VD_lib"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myCompReader_mod_t">
+    <operations>
+      <dataRead type="VD_lib:vector_data" name="read_vector" notifying="false"/>
+      <eventSent name="finish"/>
+      <eventReceived name="trigger"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myCompReader_mod" language="C" moduleType="myCompReader_mod_t"/>
+
+  <moduleInstance name="myCompReader_mod_inst" implementationName="myCompReader_mod" relativePriority="100"/>
+  <triggerInstance name="Heart_Beat" relativePriority="10"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <dataLink>
+    <writers>
+      <reference instanceName="svc_reader" operationName="some_data"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCompReader_mod_inst" operationName="read_vector"/>
+    </readers>
+  </dataLink>
+
+
+  <eventLink>
+    <senders>
+      <trigger instanceName="Heart_Beat" period="0.050"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myCompReader_mod_inst" operationName="trigger"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myCompReader_mod_inst" operationName="finish"/>
+    </senders>
+    <receivers>
+      <reference instanceName="svc_finish" operationName="finish"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

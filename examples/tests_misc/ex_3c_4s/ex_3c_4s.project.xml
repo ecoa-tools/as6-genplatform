@@ -1,0 +1,36 @@
+<ECOAProject xmlns="http://www.ecoa.technology/project-2.0" name="ex_3c_4s">
+
+    <types>
+        <file>0-Types/mylib.types.xml</file>
+    </types>
+
+    <serviceDefinitions>
+        <file>1-Services/svc_server.interface.xml</file>
+        <file>1-Services/svc_client.interface.xml</file>
+    </serviceDefinitions>
+
+    <componentDefinitions>
+        <file>2-ComponentDefinitions/client2/client2.componentType</file>
+        <file>2-ComponentDefinitions/server1/server1.componentType</file>
+        <file>2-ComponentDefinitions/final/final.componentType</file>
+        <file>2-ComponentDefinitions/client1/client1.componentType</file>
+        <file>2-ComponentDefinitions/server0/server0.componentType</file>
+        <file>2-ComponentDefinitions/client0/client0.componentType</file>
+        <file>2-ComponentDefinitions/server2/server2.componentType</file>
+    </componentDefinitions>
+
+    <initialAssembly></initialAssembly>
+
+    <componentImplementations>
+        <file>4-ComponentImplementations/mydemoServer0/mydemoServer0.impl.xml</file>
+        <file>4-ComponentImplementations/mydemoClient0/mydemoClient0.impl.xml</file>
+        <file>4-ComponentImplementations/mydemoFinal/mydemoFinal.impl.xml</file>
+    </componentImplementations>
+
+    <implementationAssembly>5-Integration/demo.impl.composite</implementationAssembly>
+    <deploymentSchema>5-Integration/demo.deployment.xml</deploymentSchema>
+    <logicalSystem>5-Integration/cs1.logical-system.xml</logicalSystem>
+
+    <outputDirectory>6-output</outputDirectory>
+</ECOAProject>
+

@@ -1,0 +1,190 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Elder">
+
+  <!-- list of used libraries -->
+  <use library="libmarx"/>
+
+  <moduleType name="myJunior_Main_t">
+    <properties>
+      <property name="ID" type="uint32"/>
+    </properties>
+    <operations>
+      <eventReceived name="TheFeedback">
+        <input name="param" type="uint32"/>
+      </eventReceived>
+
+      <eventReceived name="command">
+        <input name="param" type="libmarx:T_Data"/>
+      </eventReceived>
+      <eventReceived name="internal_report">
+        <input name="param" type="libmarx:T_Test_Report"/>
+      </eventReceived>
+      <eventSent name="notification">
+        <input name="param" type="libmarx:T_Data"/>
+      </eventSent>
+      <eventSent name="test_report">
+        <input name="param" type="libmarx:T_TR_Set"/>
+      </eventSent>
+      <dataWritten type="libmarx:T_Data" name="information"
+                maxVersions="2"/>
+      <requestReceived name="transaction">
+        <input name="input" type="libmarx:T_Data"/>
+        <output name="output" type="libmarx:T_Data"/>
+     </requestReceived>
+    </operations>
+  </moduleType>
+
+
+  <moduleType name="myJunior_Other_t">
+    <properties>
+      <property name="ID" type="uint32"/>
+    </properties>
+    <operations>
+      <eventReceived name="TheFeedback">
+        <input name="param" type="uint32"/>
+      </eventReceived>
+      <eventReceived name="TheFeedback_Other">
+        <input name="param" type="uint32"/>
+      </eventReceived>
+      <eventSent name="set">
+        <input name="expiryTime" type="ECOA:duration"/>
+        <input name="param" type="int32"/>
+      </eventSent>
+      <eventSent name="internal_report">
+        <input name="param" type="libmarx:T_Test_Report"/>
+      </eventSent>
+      <eventReceived name="result">
+        <input name="param" type="int32"/>
+      </eventReceived>
+      <eventSent name="reset"/>
+    </operations>
+  </moduleType>
+
+
+  <moduleImplementation name="myJunior_Main_impl" language="C" moduleType="myJunior_Main_t"/>
+
+  <moduleImplementation name="myJunior_Other_impl" language="C++" moduleType="myJunior_Other_t"/>
+
+  <moduleInstance name="myJunior_Main_inst"
+                  implementationName="myJunior_Main_impl"
+                  relativePriority="100">
+    <propertyValues>
+      <propertyValue name="ID">$ID</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+  <moduleInstance name="myJunior_Other_inst"
+                  implementationName="myJunior_Other_impl"
+                  relativePriority="100">
+    <propertyValues>
+      <propertyValue name="ID">$ID</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+  <dynamicTriggerInstance name="myJunior_DelayResult"
+                          size="10" relativePriority="1">
+    <parameter name="param" type="int32"/>
+  </dynamicTriggerInstance>
+
+
+  <!-- Main Internal Operations -->
+  <eventLink>
+    <senders><external operationName="FeedbackLegacy" language="C"/></senders>
+    <receivers>
+       <moduleInstance instanceName="myJunior_Main_inst" operationName="TheFeedback"/>
+       <moduleInstance instanceName="myJunior_Other_inst" operationName="TheFeedback_Other"/>
+    </receivers>
+  </eventLink>
+
+  <!-- Other Internal Operations -->
+  <eventLink>
+    <senders><external operationName="FeedbackLegacy" language="C++"/></senders>
+    <receivers><moduleInstance instanceName="myJunior_Other_inst" operationName="TheFeedback"/></receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myJunior_Other_inst" operationName="set"/>
+    </senders>
+    <receivers>
+      <dynamicTrigger instanceName="myJunior_DelayResult" operationName="in"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <dynamicTrigger instanceName="myJunior_DelayResult" operationName="out"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myJunior_Other_inst" operationName="result"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myJunior_Other_inst" operationName="reset"/>
+    </senders>
+    <receivers>
+      <dynamicTrigger instanceName="myJunior_DelayResult" operationName="reset"/>
+    </receivers>
+  </eventLink>
+
+  <!-- command -->
+  <eventLink>
+    <senders>
+      <service instanceName="older" operationName="command"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myJunior_Main_inst" operationName="command"/>
+    </receivers>
+  </eventLink>
+
+
+  <!-- notification -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myJunior_Main_inst" operationName="notification"/>
+    </senders>
+    <receivers>
+      <service instanceName="older" operationName="notification"/>
+    </receivers>
+  </eventLink>
+
+  <!-- (external) report -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myJunior_Main_inst" operationName="test_report"/>
+    </senders>
+    <receivers>
+      <service instanceName="older" operationName="report"/>
+    </receivers>
+  </eventLink>
+
+  <!-- internal_report -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myJunior_Other_inst" operationName="internal_report"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myJunior_Main_inst" operationName="internal_report"/>
+    </receivers>
+  </eventLink>
+
+  <!-- information -->
+  <dataLink controlled="true">
+    <writers>
+      <moduleInstance instanceName="myJunior_Main_inst" operationName="information"/>
+    </writers>
+    <readers>
+      <service instanceName="older" operationName="information"/>
+    </readers>
+  </dataLink>
+
+  <!-- transaction -->
+  <requestLink>
+    <clients>
+      <service instanceName="older" operationName="transaction"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myJunior_Main_inst" operationName="transaction"/>
+    </server>
+  </requestLink>
+
+</componentImplementation>

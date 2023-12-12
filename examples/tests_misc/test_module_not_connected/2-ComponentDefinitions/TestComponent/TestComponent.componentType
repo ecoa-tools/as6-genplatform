@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<componentType xmlns="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0">
+
+  <reference name="Finish">
+    <ecoa-sca:interface syntax="svc_Finish"/>
+  </reference>
+  <reference name="Extern">
+    <ecoa-sca:interface syntax="svc_extern"/>
+  </reference>
+  <service name="Extern_Data">
+    <ecoa-sca:interface syntax="svc_extern_data"/>
+  </service>
+
+</componentType>

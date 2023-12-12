@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+
+  <types>
+	<constant name="magic_number" type="ECOA:uint16" value="42"/>
+
+    <enum name="Test_enum" type="ECOA:uint8">
+      <value name="SUNDAY"/>
+      <value name="SATURDAY"/>
+    </enum>
+	
+	<fixedArray name="Test_fixed_array" itemType="ECOA:uint32" maxNumber="12"/>
+	<array name="Test_array" itemType="ECOA:uint32" maxNumber="12"/>
+
+    <simple name="Test_simple" type="ECOA:float32" unit="radian"/>
+    <record name="Test_record">
+      <field name="Latitude" type="Test_simple"/>
+      <field name="Longitude" type="Test_simple"/>
+    </record>
+	
+
+	<!-- TODO variant record-->
+	<variantRecord name="Test_variant_record" selectName="id" selectType="Test_enum">
+      <field name="nb0" type="Test_simple"/>
+      <union name="int_Sunday" type="ECOA:uint32" when="SUNDAY"/>
+      <union name="array_Saturday" type="Test_fixed_array" when="SATURDAY"/>	
+    </variantRecord>
+
+  </types>
+</library>

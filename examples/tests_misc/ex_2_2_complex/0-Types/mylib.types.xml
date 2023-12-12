@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+
+	<types>
+				
+    <!-- just for test: -->
+    	<constant name="N" type="int32" value="55" comment="xyz" />
+    
+    
+		<!-- arrays  -->
+		
+		<simple name="t1" type="int32"  comment="xyz"/>
+    	<constant name="F" type="double64" value="10996723987469832754287364032947E-45" />
+    
+    	<constant name="NB_OF_ITEMS" type="int32" value="10" />
+		<array name="TString" maxNumber="10" itemType="t1"  comment="xyz"/>
+		<fixedArray name="TString2" maxNumber="123" itemType="t1"  comment="xyz"/>
+
+		
+		<enum name="enum1" type="int32">
+			<value name="toto" valnum="12"/>
+			<value name="titi" valnum="123"/>
+			<value name="tata" valnum="1234"/>
+		</enum>
+
+		<record name="coord">
+			<field name="x" type="int32"/>
+			<field name="y" type="int32"/>
+		</record>
+		
+	</types>
+
+</library>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+
+  <operations>
+
+    <event direction="RECEIVED_BY_PROVIDER"  name="Ping_RbP"/>
+
+    <!--event direction="SENT_BY_PROVIDER"  name="Pong_SbP"/-->
+
+
+  </operations>
+
+</serviceDefinition>

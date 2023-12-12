@@ -1,0 +1,64 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Client">
+	
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoClient_AM_t">
+    <operations>
+    <eventSent name="ping01"/>
+    <eventSent name="ping02"/>
+    <eventSent name="ping11"/>
+    <eventSent name="ping12"/>
+      
+    <!--eventReceived name="Pong"/-->
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoClient_AM" language="C" moduleType="myDemoClient_AM_t"/>
+
+  <moduleInstance name="myDemoClient_AM_I" implementationName="myDemoClient_AM" relativePriority="100"/>
+
+
+
+
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoClient_AM_I" operationName="ping01"/>
+    </senders>
+    <receivers>
+      <reference instanceName="client_r0" operationName="Ping01"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoClient_AM_I" operationName="ping02"/>
+    </senders>
+    <receivers>
+      <reference instanceName="client_r0" operationName="Ping02"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoClient_AM_I" operationName="ping11"/>
+    </senders>
+    <receivers>
+      <reference instanceName="client_r1" operationName="Ping11"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoClient_AM_I" operationName="ping12"/>
+    </senders>
+    <receivers>
+      <reference instanceName="client_r1" operationName="Ping12"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

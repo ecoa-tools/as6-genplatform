@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<serviceInstanceQoS xmlns="http://www.ecoa.technology/interface-qos-1.0">
+  <operations>
+    <requestresponse maxResponseTime="100e-3" name="PingPong">
+      <highestRate numberOfOccurrences="1" timeFrame="100e-3"/>
+    </requestresponse>
+    <event maxHandlingTime="100e-3" name="Ping">
+      <highestRate numberOfOccurrences="1" timeFrame="100e-3"/>
+    </event>
+    <event maxHandlingTime="100e-3" name="Pong">
+      <highestRate numberOfOccurrences="1" timeFrame="100e-3"/>
+    </event>
+    <data maxAgeing="100e-3" name="Counter">
+      <highestRate numberOfOccurrences="1" timeFrame="80e-3"/>
+      <lowestRate numberOfOccurrences="1" timeFrame="120e-3"/>
+    </data>
+  </operations>
+</serviceInstanceQoS>

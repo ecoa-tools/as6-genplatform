@@ -1,0 +1,29 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="DummyComp">
+
+  <!-- list of used libraries -->
+  <use library="lib_module"/>
+
+  <!-- Modules Types -->
+  <moduleType name="Dummy_mod_t2">
+    <operations>
+      <eventSent name="operation1"/>
+      <eventReceived name="operation2"/>
+      <requestSent name = "request1" isSynchronous="true" timeout="0.5"/>
+      <requestSent name = "request2" isSynchronous="false" timeout="0.5"/>
+      <requestReceived name= "request3"/>
+      <dataWritten name="write_data" type="uint32"/>
+      <dataRead name="read_data" type="uint32"/>
+    </operations>
+  </moduleType>
+  <!-- End of Modules Types -->
+
+  <!-- Implementations -->
+  <moduleImplementation name="myDummy_mod_impl2" language="C" moduleType="Dummy_mod_t2"/>
+  <moduleInstance name="myDummy_mod2" implementationName="myDummy_mod_impl2" relativePriority="100"/>
+  <!-- End of Implementations -->
+
+  <!-- Event Links -->
+  <!-- End of Event Links -->
+
+</componentImplementation>

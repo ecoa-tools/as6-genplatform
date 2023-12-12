@@ -1,0 +1,91 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Ping">
+
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPing_AM_t">
+    <pinfo>
+      <publicPinfo name="public_pinfo_1"/>
+      <publicPinfo name="public_pinfo_2"/>
+      <privatePinfo name="private_pinfo_2"/>
+      <privatePinfo name="private_pinfo_1"/>
+    </pinfo>
+
+    <operations>
+      <eventSent name="Ping"/>
+      <eventReceived name="Pong"/>
+      <eventReceived name="TriggerPingEvent"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPing_AM" language="C" moduleType="myDemoPing_AM_t"/>
+  <moduleImplementation name="myDemoPing_AM_cpp" language="C++" moduleType="myDemoPing_AM_t"/>
+
+  <moduleInstance name="myDemoPing_1" implementationName="myDemoPing_AM" relativePriority="100">
+    <pinfo>
+      <publicPinfo name="public_pinfo_1">$component_pinfo_1</publicPinfo>
+      <publicPinfo name="public_pinfo_2">$component_pinfo_common</publicPinfo>
+      <privatePinfo name="private_pinfo_1">private_pinfo_1__Ping_1.txt</privatePinfo>
+      <privatePinfo name="private_pinfo_2">private_pinfo_2__common.txt</privatePinfo>
+    </pinfo>
+  </moduleInstance>
+
+  <moduleInstance name="myDemoPing_2" implementationName="myDemoPing_AM" relativePriority="100">
+    <pinfo>
+      <publicPinfo name="public_pinfo_2">$component_pinfo_common</publicPinfo>
+      <publicPinfo name="public_pinfo_1">$component_pinfo_2</publicPinfo>
+      <privatePinfo name="private_pinfo_1">private_pinfo_1__Ping_2.txt</privatePinfo>
+      <privatePinfo name="private_pinfo_2">private_pinfo_2__common.txt</privatePinfo>
+    </pinfo>
+  </moduleInstance>
+
+  <moduleInstance name="myDemoPing_cpp" implementationName="myDemoPing_AM_cpp" relativePriority="100">
+    <pinfo>
+      <publicPinfo name="public_pinfo_2">$component_pinfo_common</publicPinfo>
+      <publicPinfo name="public_pinfo_1">$component_pinfo_2</publicPinfo>
+      <privatePinfo name="private_pinfo_1">private_pinfo_1__Ping_2.txt</privatePinfo>
+      <privatePinfo name="private_pinfo_2">private_pinfo_2__common.txt</privatePinfo>
+    </pinfo>
+  </moduleInstance>
+
+  <triggerInstance name="Heart_Beat" relativePriority="0"/>
+
+
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <!-- Definition of module operation links for AM module -->
+
+  <eventLink>
+    <senders>
+      <trigger instanceName="Heart_Beat" period="0.100"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_1" operationName="TriggerPingEvent" fifoSize="12"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_1" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <reference instanceName="PingPong" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_1" operationName="Pong" fifoSize="6"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

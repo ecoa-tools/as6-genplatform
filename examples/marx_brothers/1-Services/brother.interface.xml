@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+  <use library="libmarx"/>
+
+  <operations>
+    <event direction="RECEIVED_BY_PROVIDER" name="command"
+           comment="Command">
+      <input name="param" type="libmarx:T_Data"/>
+    </event>
+    <event direction="SENT_BY_PROVIDER" name="notification" comment="Notification">
+      <input name="param" type="libmarx:T_Data"/>
+    </event>
+    <event direction="SENT_BY_PROVIDER" name="report"
+           comment="Test Report">
+      <input name="param" type="libmarx:T_TR_Set"/>
+    </event>
+    <data name="information" type="libmarx:T_Data" comment="Information"/>
+    <requestresponse name="transaction" comment="Transaction">
+      <input name="input" type="libmarx:T_Data"/>
+      <output name="output" type="libmarx:T_Data"/>
+    </requestresponse>
+  </operations>
+</serviceDefinition>

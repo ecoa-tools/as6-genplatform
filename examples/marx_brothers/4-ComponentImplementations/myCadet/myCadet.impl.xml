@@ -1,0 +1,159 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Elder">
+
+  <!-- list of used libraries -->
+  <use library="libmarx"/>
+
+  <moduleType name="myCadet_Main_t">
+    <properties>
+      <property name="ID" type="uint32"/>
+    </properties>
+    <operations>
+
+      <eventReceived name="older_command">
+        <input name="param" type="libmarx:T_Data"/>
+      </eventReceived>
+      <eventSent name="older_notification">
+        <input name="param" type="libmarx:T_Data"/>
+      </eventSent>
+      <eventSent name="older_test_report">
+        <input name="param" type="libmarx:T_TR_Set"/>
+      </eventSent>
+      <dataWritten type="libmarx:T_Data" name="older_information"
+                maxVersions="2"/>
+      <requestReceived name="older_transaction">
+        <input name="input" type="libmarx:T_Data"/>
+        <output name="output" type="libmarx:T_Data"/>
+     </requestReceived>
+
+      <eventSent name="younger_command">
+        <input name="param" type="libmarx:T_Data"/>
+      </eventSent>
+      <eventReceived name="younger_notification">
+        <input name="param" type="libmarx:T_Data"/>
+      </eventReceived>
+      <eventReceived name="younger_test_report">
+        <input name="param" type="libmarx:T_TR_Set"/>
+      </eventReceived>
+      <dataRead type="libmarx:T_Data" name="younger_information"
+                notifying="true" maxVersions="2"/>
+      <requestSent name="younger_transaction" isSynchronous="false"
+                   timeout="-1.0">
+        <input name="input" type="libmarx:T_Data"/>
+        <output name="output" type="libmarx:T_Data"/>
+     </requestSent>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myCadet_Main_impl" language="C" moduleType="myCadet_Main_t"/>
+
+  <moduleInstance name="myCadet_Main_inst"
+                  implementationName="myCadet_Main_impl"
+                  relativePriority="100">
+    <propertyValues>
+      <propertyValue name="ID">$ID</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+
+  <!-- older_command -->
+  <eventLink>
+    <senders>
+      <service instanceName="older" operationName="command"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myCadet_Main_inst" operationName="older_command"/>
+    </receivers>
+  </eventLink>
+
+  <!-- older_notification -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myCadet_Main_inst" operationName="older_notification"/>
+    </senders>
+    <receivers>
+      <service instanceName="older" operationName="notification"/>
+    </receivers>
+  </eventLink>
+
+  <!-- older_test_report -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myCadet_Main_inst" operationName="older_test_report"/>
+    </senders>
+    <receivers>
+      <service instanceName="older" operationName="report"/>
+    </receivers>
+  </eventLink>
+
+  <!-- older_information -->
+  <dataLink controlled="true">
+    <writers>
+      <moduleInstance instanceName="myCadet_Main_inst" operationName="older_information"/>
+    </writers>
+    <readers>
+      <service instanceName="older" operationName="information"/>
+    </readers>
+  </dataLink>
+
+  <!-- older_transaction -->
+  <requestLink>
+    <clients>
+      <service instanceName="older" operationName="transaction"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myCadet_Main_inst" operationName="older_transaction"/>
+    </server>
+  </requestLink>
+
+
+  <!-- younger_command -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myCadet_Main_inst" operationName="younger_command"/>
+    </senders>
+    <receivers>
+      <reference instanceName="younger" operationName="command"/>
+    </receivers>
+  </eventLink>
+
+  <!-- younger_notification -->
+  <eventLink>
+    <senders>
+      <reference instanceName="younger" operationName="notification"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myCadet_Main_inst" operationName="younger_notification"/>
+    </receivers>
+  </eventLink>
+
+  <!-- younger_notification -->
+  <eventLink>
+    <senders>
+      <reference instanceName="younger" operationName="report"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myCadet_Main_inst" operationName="younger_test_report"/>
+    </receivers>
+  </eventLink>
+
+  <!-- younger_information -->
+  <dataLink controlled="true">
+    <writers>
+      <reference instanceName="younger" operationName="information"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myCadet_Main_inst" operationName="younger_information"/>
+    </readers>
+  </dataLink>
+
+  <!-- younger_transaction -->
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myCadet_Main_inst" operationName="younger_transaction"/>
+    </clients>
+    <server>
+      <reference instanceName="younger" operationName="transaction"/>
+    </server>
+  </requestLink>
+
+</componentImplementation>

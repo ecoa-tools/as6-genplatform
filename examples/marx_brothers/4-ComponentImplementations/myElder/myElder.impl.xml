@@ -1,0 +1,138 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Elder">
+
+  <!-- list of used libraries -->
+  <use library="libmarx"/>
+
+  <moduleType name="myElder_Main_t">
+    <properties>
+      <property name="ID" type="uint32"/>
+    </properties>
+    <pinfo>
+      <publicPinfo name="myPublicPinfo_1"/>
+      <publicPinfo name="myPublicPinfo_2"/>
+      <privatePinfo name="myPrivatePinfo"/>
+    </pinfo>
+    <operations>
+      <eventReceived name="activate"/>
+      <eventSent name="command">
+        <input name="param" type="libmarx:T_Data"/>
+      </eventSent>
+      <eventReceived name="notification">
+        <input name="param" type="libmarx:T_Data"/>
+      </eventReceived>
+      <eventReceived name="test_report">
+        <input name="param" type="libmarx:T_TR_Set"/>
+      </eventReceived>
+      <dataRead type="libmarx:T_Data" name="information"
+                notifying="false" maxVersions="2"/>
+      <requestSent name="transaction_1" isSynchronous="true"
+                   timeout="-1.0">
+        <input name="input" type="libmarx:T_Data"/>
+        <output name="output" type="libmarx:T_Data"/>
+     </requestSent>
+      <requestSent name="transaction_2" isSynchronous="true"
+                   timeout="-1.0">
+        <input name="input" type="libmarx:T_Data"/>
+        <output name="output" type="libmarx:T_Data"/>
+     </requestSent>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myElder_Main_impl" language="C" moduleType="myElder_Main_t"/>
+
+  <moduleInstance name="myElder_Main_inst"
+                  implementationName="myElder_Main_impl"
+                  relativePriority="100">
+    <propertyValues>
+      <propertyValue name="ID">$ID</propertyValue>
+    </propertyValues>
+    <pinfo>
+      <publicPinfo name="myPublicPinfo_1">$elder_public_PINFO_1</publicPinfo>
+      <publicPinfo name="myPublicPinfo_2">$elder_public_PINFO_2</publicPinfo>
+      <privatePinfo name="myPrivatePinfo">"privateData.txt"</privatePinfo>
+    </pinfo>
+  </moduleInstance>
+
+  <triggerInstance name="myElder_Trigger_inst" relativePriority="50"/>
+
+  <eventLink>
+    <senders>
+      <trigger instanceName="myElder_Trigger_inst" period="1.00" />
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myElder_Main_inst" operationName="activate"/>
+    </receivers>
+  </eventLink>
+
+  <!-- command -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myElder_Main_inst" operationName="command"/>
+    </senders>
+    <receivers>
+      <reference instanceName="younger_1" operationName="command"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myElder_Main_inst" operationName="command"/>
+    </senders>
+    <receivers>
+      <reference instanceName="younger_2" operationName="command"/>
+    </receivers>
+  </eventLink>
+
+  <!-- notification -->
+  <eventLink>
+    <senders>
+      <reference instanceName="younger_1" operationName="notification"/>
+      <reference instanceName="younger_2" operationName="notification"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myElder_Main_inst" operationName="notification"/>
+    </receivers>
+  </eventLink>
+
+  <!-- report -->
+  <eventLink>
+    <senders>
+      <reference instanceName="younger_1" operationName="report"/>
+      <reference instanceName="younger_2" operationName="report"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myElder_Main_inst" operationName="test_report"/>
+    </receivers>
+  </eventLink>
+
+  <!-- information -->
+  <dataLink controlled="true">
+    <writers>
+      <reference instanceName="younger_1" operationName="information"/>
+      <reference instanceName="younger_2" operationName="information"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myElder_Main_inst" operationName="information"/>
+    </readers>
+  </dataLink>
+
+  <!-- transaction -->
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myElder_Main_inst" operationName="transaction_1"/>
+    </clients>
+    <server>
+      <reference instanceName="younger_1" operationName="transaction"/>
+    </server>
+  </requestLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myElder_Main_inst" operationName="transaction_2"/>
+    </clients>
+    <server>
+      <reference instanceName="younger_2" operationName="transaction"/>
+    </server>
+  </requestLink>
+
+</componentImplementation>

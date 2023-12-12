@@ -1,0 +1,39 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+  <protectionDomain name="Ping_ext_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedTriggerInstance componentName="demoPing_ext" triggerInstanceName="Heart_Beat" triggerPriority="29"/>
+    <deployedTriggerInstance componentName="demoPing_ext" triggerInstanceName="dyn_trigger" triggerPriority="29"/>
+    <deployedModuleInstance componentName="demoPing_ext" moduleInstanceName="myDemoPing_AM_I" modulePriority="30"/>
+  </protectionDomain>
+
+  <protectionDomain name="Pong_ext_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedTriggerInstance componentName="demoPong_ext" triggerInstanceName="Heart_Beat" triggerPriority="30"/>
+    <deployedModuleInstance componentName="demoPong_ext" moduleInstanceName="myDemoPong_AM_I" modulePriority="31"/>
+  </protectionDomain>
+
+  <protectionDomain name="PongPing_intern_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedTriggerInstance componentName="demoPing" triggerInstanceName="Heart_Beat" triggerPriority="29"/>
+    <deployedTriggerInstance componentName="demoPing" triggerInstanceName="dyn_trigger" triggerPriority="29"/>
+    <deployedModuleInstance componentName="demoPing" moduleInstanceName="myDemoPing_AM_I" modulePriority="30"/>
+
+    <deployedTriggerInstance componentName="demoPong" triggerInstanceName="Heart_Beat" triggerPriority="30"/>
+    <deployedModuleInstance componentName="demoPong" moduleInstanceName="myDemoPong_AM_I" modulePriority="31"/>
+
+  </protectionDomain>
+
+  <protectionDomain name="PongPing_intern_comp_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedTriggerInstance componentName="demoPongPing" triggerInstanceName="Heart_Beat_intern" triggerPriority="29"/>
+    <deployedModuleInstance componentName="demoPongPing" moduleInstanceName="myDemoPing_intern" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoPongPing" moduleInstanceName="myDemoPong_intern" modulePriority="31"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Thales" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

@@ -1,0 +1,61 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Pong">
+
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPong_AM_t">
+    <operations>
+      <eventReceived name="Ping">
+        <input name="nb_16" type="ECOA:uint16"/>
+        <input name="nb_msg" type="ECOA:uint32"/>
+      </eventReceived>
+      <eventSent name="Pong"/>
+
+      <requestSent name="Finish_counter" isSynchronous="true" timeout="0.5">
+        <input name="counter" type="ECOA:uint32"/>
+      </requestSent>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPong_AM" language="C" moduleType="myDemoPong_AM_t"/>
+
+  <moduleInstance name="myDemoPong_AM_I" implementationName="myDemoPong_AM" relativePriority="100"/>
+  <moduleInstance name="myDemoPong_AM_I2" implementationName="myDemoPong_AM" relativePriority="100"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <eventLink>
+    <senders>
+      <service instanceName="PingPong" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="Ping"/>
+      <moduleInstance instanceName="myDemoPong_AM_I2" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="Pong"/>
+      <moduleInstance instanceName="myDemoPong_AM_I2" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <service instanceName="PingPong" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+
+  <requestLink>
+   <clients>
+     <moduleInstance instanceName="myDemoPong_AM_I" operationName="Finish_counter"/>
+     <moduleInstance instanceName="myDemoPong_AM_I2" operationName="Finish_counter"/>
+   </clients>
+   <server>
+     <reference instanceName="Finish" operationName="counter_RR"/>
+   </server>
+ </requestLink>
+
+</componentImplementation>

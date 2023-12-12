@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="lib"/>
+
+  <operations>
+
+
+	<event direction="RECEIVED_BY_PROVIDER"  name="Ping_array_10">
+		<input name="array1" type="lib:Test_array_10"/>	
+	</event>
+	<event direction="RECEIVED_BY_PROVIDER"  name="Ping_array_11">
+		<input name="array1" type="lib:Test_array_11"/>	
+	</event>
+	<event direction="RECEIVED_BY_PROVIDER"  name="Ping_array_12">
+		<input name="array1" type="lib:Test_array_12"/>	
+	</event>
+	<event direction="RECEIVED_BY_PROVIDER"  name="Ping_array_13">
+		<input name="array1" type="lib:Test_array_13"/>	
+	</event>
+	<event direction="RECEIVED_BY_PROVIDER"  name="Ping_array_14">
+		<input name="array1" type="lib:Test_array_14"/>	
+	</event>
+	<event direction="RECEIVED_BY_PROVIDER"  name="Ping_array_15">
+		<input name="array1" type="lib:Test_array_15"/>	
+	</event>
+	<event direction="RECEIVED_BY_PROVIDER"  name="Ping_array_16">
+		<input name="array1" type="lib:Test_array_16"/>	
+	</event>
+	
+    <event direction="SENT_BY_PROVIDER"  name="Pong"/>
+
+  </operations>
+
+</serviceDefinition>

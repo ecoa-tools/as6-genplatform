@@ -1,0 +1,94 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Pong">
+  <!-- list of used libraries -->
+  <use library="lib_array"/>
+
+  <!-- supervision module -->
+  <moduleType name="myDemoPong_mod_t">
+    <operations>
+      <eventSent name="Pong"/>
+
+      <eventReceived name="Ping_array_1k">
+        <input name="array" type="lib_array:array_1k"/>
+      </eventReceived>
+      <eventReceived name="Ping_array_4k">
+        <input name="array" type="lib_array:array_4k"/>
+      </eventReceived>
+      <eventReceived name="Ping_array_16k">
+        <input name="array" type="lib_array:array_16k"/>
+      </eventReceived>
+      <eventReceived name="Ping_array_64k">
+        <input name="array" type="lib_array:array_64k"/>
+      </eventReceived>
+      <eventReceived name="Ping_array_256k">
+        <input name="array" type="lib_array:array_256k"/>
+      </eventReceived>
+      <eventReceived name="Ping_array_10m">
+        <input name="array" type="lib_array:array_10m"/>
+      </eventReceived>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPong_mod" language="C" moduleType="myDemoPong_mod_t"/>
+
+  <moduleInstance name="myDemoPong_inst" implementationName="myDemoPong_mod" relativePriority="100"/>
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <service instanceName="PingPong" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <service instanceName="PingPong" operationName="Ping_array_1k"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_1k" fifoSize="1"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <service instanceName="PingPong" operationName="Ping_array_4k"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_4k" fifoSize="1"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <service instanceName="PingPong" operationName="Ping_array_16k"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_16k" fifoSize="1"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <service instanceName="PingPong" operationName="Ping_array_64k"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_64k" fifoSize="1"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <service instanceName="PingPong" operationName="Ping_array_256k"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_256k" fifoSize="1"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <service instanceName="PingPong" operationName="Ping_array_10m"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_10m" fifoSize="1"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

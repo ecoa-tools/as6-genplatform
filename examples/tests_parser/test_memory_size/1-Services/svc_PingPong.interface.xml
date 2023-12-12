@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="pingpong"/>
+
+  <operations>
+
+    <requestresponse name="req_ping"/>
+
+
+    <event direction="RECEIVED_BY_PROVIDER"  name="Ping"/>
+    <event direction="SENT_BY_PROVIDER"  name="Pong"/>
+   <data type="uint32" name="write_msg"/>
+
+    <data name="Counter" type="uint32"/>
+
+  </operations>
+
+</serviceDefinition>

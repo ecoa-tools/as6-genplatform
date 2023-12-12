@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+
+  <types>
+    <record name="vector_data">
+      <field name="nb_x" type="uint32"/>
+      <field name="nb_y" type="uint32"/>
+      <field name="version_nb" type="uint32"/>
+    </record>
+  </types>
+</library>

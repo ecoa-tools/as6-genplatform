@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ID_map xmlns="http://www.ecoa.technology/uid-2.0">
+  <ID key="demoPing/PingPong:demoPong/PingPong:Ping_async" value="865271261"/>
+  <ID key="demoPing/PingPong:demoPong/PingPong:Ping_sync" value="1779393798"/>
+</ID_map>
+

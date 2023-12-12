@@ -1,0 +1,95 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Constellation">
+
+    <!-- list of used libraries -->
+  <use library="myLib"/>
+
+  <moduleType name="satellite_type" hasWarmStartContext="false">
+    <properties>
+      <property name="satellite_num" type="uint32"/>
+    </properties>
+    <operations>
+      <eventSent name="send_data">
+        <input name="data" type="myLib:array_data"/>
+        <input name="satellite_num" type="uint32"/>
+      </eventSent>
+
+      <requestReceived name="satellite_position">
+        <output name="data" type="myLib:position"/>
+        <output name="satellite_num" type="uint32"/>
+      </requestReceived>
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="satellite_C" language="C" moduleType="satellite_type"/>
+  <moduleImplementation name="satellite_Cpp" language="C++" moduleType="satellite_type"/>
+
+  <moduleInstance name="mySatellite_0" implementationName="satellite_C" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="satellite_num">0</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <moduleInstance name="mySatellite_2" implementationName="satellite_C" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="satellite_num">2</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+  <moduleInstance name="mySatellite_1" implementationName="satellite_Cpp" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="satellite_num">1</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <moduleInstance name="mySatellite_3" implementationName="satellite_Cpp" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="satellite_num">3</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="mySatellite_0" operationName="send_data"/>
+      <moduleInstance instanceName="mySatellite_2" operationName="send_data"/>
+      <moduleInstance instanceName="mySatellite_1" operationName="send_data"/>
+      <moduleInstance instanceName="mySatellite_3" operationName="send_data"/>
+    </senders>
+    <receivers>
+      <service instanceName="antenna" operationName="data"/>
+    </receivers>
+  </eventLink>
+
+  <requestLink>
+    <clients>
+      <service instanceName="antenna" operationName="position_sat0"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="mySatellite_0" operationName="satellite_position"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <service instanceName="antenna" operationName="position_sat1"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="mySatellite_1" operationName="satellite_position"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <service instanceName="antenna" operationName="position_sat2"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="mySatellite_2" operationName="satellite_position"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <service instanceName="antenna" operationName="position_sat3"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="mySatellite_3" operationName="satellite_position"/>
+    </server>
+  </requestLink>
+
+</componentImplementation>

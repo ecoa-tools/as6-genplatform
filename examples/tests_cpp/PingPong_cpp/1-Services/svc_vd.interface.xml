@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+ <use library="mylib"/>
+  <operations>
+    
+   <data name="some_data0" type="mylib:coord"/>
+
+  </operations>
+
+</serviceDefinition>

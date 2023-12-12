@@ -1,0 +1,227 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+
+#include <apr.h>
+#include <apr_thread_cond.h>
+#include <apr_network_io.h>
+#include <apr_time.h>
+#include <apr_thread_proc.h>
+
+#include "ldp_thread.h"
+#include "ldp_structures.h"
+#include "route.h"
+#include "ldp_network.h"
+#include "ldp_comp_util.h"
+#include "ldp_trigger.h"
+#include "ldp_dynamic_trigger.h"
+#include "ldp_log.h"
+#include "ldp_log_platform.h"
+#include "ldp_dynamic_trigger.h"
+#include "ldp_mod_container_util.h"
+#include "ldp_mod_lifecycle.h"
+#include "ldp_fifo_manager.h"
+#include "ldp_VD.h"
+
+#include "component_{{component_impl.get_name()}}.hpp"
+#include "component_{{component_impl.get_name()}}__properties.h"
+
+{% for _,module in component_impl.get_module_implementations().items() %}
+{% if module.language == "C++" %}
+#include "{{module.get_name()}}_container.hpp"
+#include "{{module.get_name()}}.hpp"
+{% elif module.language == "C" %}
+#include "{{module.get_name()}}_container.h"
+#include "{{module.get_name()}}.h"
+{% endif %}
+{% endfor %}
+
+{% for l,_ in libraries.values() %}
+#include "{{fix_libname(l.name)}}.hpp"
+#include "{{fix_libname(l.name)}}.h"
+{% endfor %}
+
+{% for comp in comp_list %}
+{% for module_i in component_impl.get_module_instances() %}
+    {% set module_impl = component_impl.get_module_implementations()[module_i.get_implementation()] %}
+{% if module_impl.language == "C++" %}
+    {% set mtype = component_impl.get_module_type(module_impl.type) %}
+
+void* start_module_{{comp.name}}_{{module_i.name}}(apr_thread_t* t, void* args){
+
+    ldp_module_context* ctx = (ldp_module_context*) args;
+    {{module_i.get_implementation()}}::Container* mod_c = new {{module_i.get_implementation()}}::Container(({{module_i.get_implementation()}}::Container::platform_hook*)ctx);
+    {{module_i.get_implementation()}}::Module* module_impl = new {{module_i.get_implementation()}}::Module();
+    module_impl->container = mod_c;
+
+    ctx->mem_pool = apr_thread_pool_get(t);
+    ldp_init_pinfo_manager(&ctx->pinfo_manager, ctx->logger_PF);
+    //init_mod_VD_manager(ctx->VD_manager);
+    {# /*if an asynchronous Request Response operation exists for this module*/ #}
+    {% set first_op_async = first_op_async_dict[module_i] %}
+    {% if first_op_async != None %}
+    apr_thread_t* RR_dyn_trigger_thread;
+    ldp_mod_start_RR_trigger( ctx, &RR_dyn_trigger_thread);
+    {% endif %}
+    ldp_element* elt;
+
+    bool is_running = true;
+    while(is_running){
+        ldp_fifo_manager_pop_elt(ctx->fifo_manager, &elt);
+
+        switch (elt->op_ID){
+            case LDP_ID_INITIALIZE_life:
+                if(ctx->state == IDLE){
+                    module_impl->{{module_i.get_implementation()}}::Module::INITIALIZE__received();
+                    ldp_mod_lifecycle_initialize(ctx);
+                }
+                else{
+                    ldp_log_PF_log(ECOA_LOG_WARN_PF,"WARNING", ctx->logger_PF,"[{{module_i.name}}]: received INIT. Invalid state");
+                }
+                break;
+            case LDP_ID_START_life:
+                if(ctx->state == READY){
+                   ldp_mod_lifecycle_start(ctx);
+                    module_impl->{{module_i.get_implementation()}}::Module::START__received();
+                }
+                else{
+                   ldp_log_PF_log(ECOA_LOG_WARN_PF,"WARNING", ctx->logger_PF,"[{{module_i.name}}]: received START. Invalid state");
+                }
+                break;
+            case LDP_ID_STOP_life:
+               if(ctx->state == RUNNING){
+                    module_impl->{{module_i.get_implementation()}}::Module::STOP__received();
+                   ldp_mod_lifecycle_stop(ctx);
+                }
+                else{
+                   ldp_log_PF_log(ECOA_LOG_WARN_PF,"WARNING", ctx->logger_PF,"[{{module_i.name}}]: received STOP. Invalid state");
+                }
+                break;
+            case LDP_ID_SHUTDOWN_life:
+                if (ctx->state == RUNNING || ctx->state == READY){
+                    module_impl->{{module_i.get_implementation()}}::Module::SHUTDOWN__received();
+        {% if first_op_async != None %}
+                    ldp_mod_lifecycle_shutdown(ctx, RR_dyn_trigger_thread);
+        {% else %}
+                    ldp_mod_lifecycle_shutdown(ctx, NULL);
+        {% endif %}
+                }
+                else{
+                    ldp_log_PF_log(ECOA_LOG_WARN_PF,"WARNING", ctx->logger_PF,"[{{module_i.name}}]: received SHUTDOWN. Invalid state");
+                }
+                break;
+            case LDP_ID_KILL_life:
+                module_impl->{{module_i.get_implementation()}}::Module::SHUTDOWN__received();
+        {% if first_op_async != None %}
+                ldp_mod_lifecycle_kill(ctx, RR_dyn_trigger_thread);
+        {% else %}
+                ldp_mod_lifecycle_kill(ctx, NULL);
+        {% endif %}
+                is_running = false;
+                break;
+            default:
+                if(ctx->state != RUNNING){
+                    ldp_send_fault_error_to_father(ctx->component_ctx, ctx->mod_id, ECOA__asset_type_COMPONENT, ECOA__error_type_UNAVAILABLE, 2);
+                    ldp_log_PF_log_var(ECOA_LOG_WARN_PF,"WARN", ctx->logger_PF,"[{{module_i.name}}] Module is not in RUNNING state. Erase msg %u",elt->op_ID);
+                }
+        {% for op_index,op_name in enumerate(module_i.entry_points_dict.keys()) %}
+        {%- set op = mtype.operations[op_name] -%}
+        {%- set op_id_used = []  -%} {# /* to avoid double op_id */ #}
+        {%- set real_op_id_used = []  -%} {# /* to avoid double op_id */ #}
+        {% for link_index, l in enumerate(module_i.entry_points_dict[op_name]) %}
+        {# /* to avoid double op_id */ #}
+    {% if not l.get_op_id() in op_id_used %}
+        {%- set op_id_used = op_id_used + [l.get_op_id()] -%}
+        {%- set l_op_id = comp.name+"__"+module_i.name+"__"+op_name -%}
+        {%- if not l_op_id in real_op_id_used -%}
+        {{ real_op_id_used.append(l_op_id) | default("", True)}}
+                {#- nothing to to for synchronise_response_send operation -#}
+                {#-   because this is done after the sent of the request (in the client module_impl container) -#}
+        {% if (op.type not in ["DW","DR","SRS"]) %}
+
+                else if( elt->op_ID == {{comp.name+"__"+module_i.name+"__"+op_name}}){
+            {% if op.type == "ER" or op.type == "ES" %}
+{{generate_params_variable_cpp(op, "0", with_input=True, with_output=True) | indent(20, first=true)}}                    module_impl->{{module_impl.get_name()}}::Module::{{op.name}}__received({{generate_param_fct_call_cpp(op, with_input=True, with_output=True, is_first_arg=True)}});
+                }
+            {% elif op.type == 'RR' %}
+                    ECOA::uint32 ID;
+                    memcpy(&ID, &elt->parameters[0],sizeof(ECOA::uint32));
+{{generate_params_variable_cpp(op, "sizeof(ECOA__uint32)", with_input=True, with_output=False) | indent(20, first=true)}}
+
+                    if(ldp_check_concurrent_RR_num(ctx,{{str(op.RR_op_index)}},{{str(op.maxVersions)}}) == MOD_CONTAINER_OK){
+                        ctx->req_resp.current_RR_number[{{str(op.RR_op_index)}}]++;
+                    module_impl->{{module_impl.get_name()}}::Module::{{op.name}}__request_received(ID{{generate_param_fct_call_cpp(op, with_input=True)}});
+                    }
+                }
+        {% elif op.type == 'ARS' %}
+                    ECOA::uint32 ID;
+                    memcpy(&ID, &elt->parameters[0],sizeof(ECOA::uint32));
+                    ctx->req_resp.current_RR_number[{{str(op.RR_op_index)}}]--;
+{{generate_params_variable_cpp(op, "sizeof(ECOA__uint32)", with_input=False, with_output=True) | indent(20, first=true)}}
+
+                    if(ID != ECOA::UINT32_MAX){
+                        ldp_node* node;
+                        if(ldp_find_req_sent(&ctx->req_resp,ID, &node) != NULL){
+                           ldp_free_req_sent(&ctx->req_resp,node);
+                    {% set start_read_index = "0" %}
+                           ECOA::return_status retOk = ECOA::return_status::OK;
+                           module_impl->{{module_impl.get_name()}}::Module::{{op.name}}__response_received(ID,retOk{{generate_param_fct_call_cpp(op, with_output=True)}});
+                        }
+                        else{
+                            ldp_log_PF_log(ECOA_LOG_WARN_PF,"WARN", ctx->logger_PF, "In comp {{component_impl.name}} and module {{module_i.name}}: sent RR not found");
+                            ID = ECOA::UINT32_MAX;
+                        }
+                    }
+
+                    if(ID == ECOA::UINT32_MAX){
+                    {% for param in op.params %}
+                    {% if param.direction == 'output' %}
+                        {% set param_type_lib, param_type_name = param.type.split(':') %}
+                        {% if param_type_lib == 'ECOA' and  param_type_name == 'boolean8' %}
+                        {{param.name}} = ECOA::FALSE;
+                        {% elif param.is_complex %}
+                        memset({{param.name}}, 0, sizeof({{fix_data_type(param.type)}}));
+                        {% else %}
+                        memset(&{{param.name}}, 0, sizeof({{fix_data_type(param.type)}}));
+                        {% endif %}
+                    {%- endif -%}
+
+                    {% endfor %}
+                        ECOA::return_status retNoResponse = ECOA::return_status::NO_RESPONSE;
+                        module_impl->{{module_impl.get_name()}}::Module::{{op.name}}__response_received(ID,retNoResponse{{generate_param_fct_call_cpp(op, with_output=True)}});
+                    }
+                }
+
+        {%- elif op.type == "DRN" -%}
+            {# vd_index, vd_name_array = mtype.vd_index[op.get_name()] #}
+                    module_impl->{{module_impl.get_name()}}::Module::{{op.name}}__updated();
+            }
+        {% else %}
+            {# print("ERROR in component " + component_impl.name + ": operation of type " + op.type + " not supported") #}
+        {%- endif -%} {# op.type == "ER" or op.type == "ES" + ELSE  #}
+        {%- endif -%} {# op.type not in ['DW','DR','SRS']  #}
+    {%- endif -%} {#  if not l.get_op_id() in op_id_used #}
+    {%- endif -%} {#  if not {{comp.name+"__"+module_i.name+"__"+op_name}} in real_op_id_used #}
+        {%- endfor -%} {# link, l in emuerate #}
+        {%- endfor -%} {# op.ci op.ca in enumerate #}
+
+                else{
+                    ldp_send_fault_error_to_father(ctx->component_ctx, ctx->mod_id, ECOA__asset_type_COMPONENT, ECOA__error_type_UNAVAILABLE, 3);
+                    ldp_log_PF_log_var(ECOA_LOG_WARN_PF,"WARN", ctx->logger_PF,"[{{module_i.name}}] unknow msg %u",elt->op_ID);
+                }
+        }
+        ldp_fifo_manager_release_elt(ctx->fifo_manager, elt);
+    }
+
+    ldp_destroy_pinfo_manager(&ctx->pinfo_manager);
+    //destroy_mod_VD_manager(&ctx->VD_manager);
+    delete module_impl;
+    delete mod_c;
+    return NULL;
+
+}
+{% endif %} {# endif C++ #}
+
+{% endfor %} {# for module_i in component_impl.get_module_instances() #}
+{% endfor %} {# for comp in comp_list #}

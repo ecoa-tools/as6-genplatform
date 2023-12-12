@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+ <use library="mylib"/>
+  <operations>
+
+    <event direction="RECEIVED_BY_PROVIDER"  name="Ping">
+    	<input name="recordwithping" type="mylib:coord"/>
+      <input name="nb_ping" type="mylib:t1"/>
+      <input name="arraywithping" type="mylib:Test_array"/>
+      <input name="fixedarraywithping" type="mylib:Test_fixed_array"/>
+
+      <input name="enumwithping" type="mylib:Test_enum"/>
+    </event>
+
+    <event direction="SENT_BY_PROVIDER"  name="Pong">
+    	<input name="recordwithpong" type="mylib:coord"/>
+    	<input name="nb_pong" type="mylib:t1"/>
+      <input name="arraywithpong" type="mylib:Test_array"/>
+      <input name="fixedarraywithpong" type="mylib:Test_fixed_array"/>
+
+      <input name="enumwithpong" type="mylib:Test_enum"/>
+
+	</event>
+
+  <requestresponse name="RR_msg">
+      <input name="nb_send" type="mylib:t1"/>
+      <input name="coord_send" type="mylib:coord"/>
+      <output name="nb_received" type="mylib:t1"/>
+      <output name="coord_received" type="mylib:coord"/>
+  </requestresponse>
+
+
+  </operations>
+
+</serviceDefinition>

@@ -1,0 +1,43 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Master">
+
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoMaster_t">
+    <operations>
+      <eventSent name="Ping"/>
+      <eventReceived name="Pong"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoMaster_Ping_impl" language="C" moduleType="myDemoMaster_t"/>
+
+  <moduleInstance name="myDemoMaster_Ping_inst" implementationName="myDemoMaster_Ping_impl" relativePriority="100"/>
+  <triggerInstance name="myDemoMaster_trigger" relativePriority="100"/>
+  <dynamicTriggerInstance name="myDemoMaster_dyn_trigger" size="10" relativePriority="160">
+    <parameter name="parma1" type="int32"/>
+  </dynamicTriggerInstance>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoMaster_Ping_inst" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <reference instanceName="PingPong" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoMaster_Ping_inst" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

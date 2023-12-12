@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+    <types>
+        <fixedArray name="array_data" maxNumber="20" itemType="uint32"/>
+
+        <record name="position" comment="example">
+            <field type="uint32" name="x"/>
+            <field type="uint32" name="y"/>
+            <field type="uint32" name="z"/>
+        </record>
+    </types>
+</library>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0" 
+	       name="demo" 
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="demoLogger1">
+    <ecoa-sca:instance componentType="Logger"/>
+    <csa:reference name="svc_Finish"/>
+  </csa:component>
+  <csa:component name="demoLogger2">
+    <ecoa-sca:instance componentType="Logger"/>
+    <csa:reference name="svc_Finish"/>
+  </csa:component>
+
+  <csa:component name="demoFinal">
+    <ecoa-sca:instance componentType="Final"/>
+    <csa:service name="svc_Finish"/>
+  </csa:component>
+
+  <csa:wire source="demoLogger1/Finish" target="demoFinal/Finish" />
+  <csa:wire source="demoLogger2/Finish" target="demoFinal/Finish" />
+
+</csa:composite>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+
+  <types>
+    <constant name="C_Size" type="uint32" value="10"/>
+    <constant name="C_Pi" type="double64" value="3.141592654"/>
+    <constant name="C_MinusPi" type="double64" value="-3.141592654"/>
+    <simple name="T_Flag" type="ECOA:boolean8"/>
+    <simple name="T_Angle" type="double64" minRange="%C_MinusPi%" maxRange="%C_Pi%"/>
+    <enum name="E_Enum" type="uint8">
+      <value name="ENUM1" valnum="1"/>
+      <value name="ENUM2" valnum="2"/>
+      <value name="ENUM3" valnum="3"/>
+    </enum>
+    <simple name="T_PositiveInteger" type="uint64"/>
+    <simple name="T_Integer" type="int64"/>
+    <simple name="T_Real" type="double64"/>
+    <record name="T_Vector">
+      <field name="x" type="uint32"/>
+      <field name="y" type="uint32"/>
+      <field name="z" type="uint32"/>
+    </record>
+    <array name="T_Array" maxNumber="%C_Size%" itemType="T_Integer"/>
+    <fixedArray name="T_FixedArray" maxNumber="10" itemType="T_Vector"/>
+    <record name="T_Data">
+      <field name="F_ID" type="T_PositiveInteger"/>
+      <field name="F_Counter" type="T_Integer"/>
+      <field name="F_Angle" type="T_Angle"/>
+      <field name="F_Vector" type="T_Vector"/>
+      <field name="F_Array" type="T_Array"/>
+      <field name="F_FixedArray" type="T_FixedArray"/>
+    </record>
+
+
+    <fixedArray name="T_TRI_Comment" maxNumber="16" itemType="char8"/>
+    <record name="T_TRI">
+      <field name="ID" type="uint32"/>
+      <field name="D1" type="uint32"/>
+      <field name="D2" type="uint32"/>
+      <field name="Comment" type="T_TRI_Comment"/>
+    </record>
+    <record name="T_Test_Report">
+      <field name="Number" type="uint32"/>
+      <field name="Positive" type="uint32"/>
+      <field name="LatestNegativeTRI" type="T_TRI"/>
+    </record>
+    <record name="T_TR_Set">
+      <field name="Chico" type="T_Test_Report"/>
+      <field name="Harpo" type="T_Test_Report"/>
+      <field name="Groucho" type="T_Test_Report"/>
+      <field name="Gummo" type="T_Test_Report"/>
+      <field name="Zeppo" type="T_Test_Report"/>
+    </record>
+
+
+    <enum name="E_Position" type="uint8">
+      <value name="Off" valnum="0"/>
+      <value name="On" valnum="1"/>
+    </enum>
+    <variantRecord name="T_Position" selectName="position" selectType="E_Position">
+      <field type="uint16" name="X" />
+      <field type="uint16" name="Y" />
+      <union type="uint16" name="Z_Off" when="Off" />
+      <union type="uint16" name="Z_On" when="On" />
+    </variantRecord>
+  </types>
+</library>

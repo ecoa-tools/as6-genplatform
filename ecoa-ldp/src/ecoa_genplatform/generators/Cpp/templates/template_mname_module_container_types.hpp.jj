@@ -1,0 +1,36 @@
+/*
+* Container Types for Module {{mname}}
+* Generated automatically from specification;
+*/
+
+#if !defined(_{{mname.upper()}}_CONTAINER_TYPES_HPP)
+#define _{{mname.upper()}}_CONTAINER_TYPES_HPP
+
+#define ECOA_VERSIONED_DATA_HANDLE_PRIVATE_SIZE 32
+
+#include <ECOA.hpp>
+namespace {{mname}} {
+{% for (opname,op) in mtype.get_operations().items() %} {## rather put operations #}
+	{% if op.type == "DW" or op.type == "DR" or op.type == "DRN" %}
+	{% set data_type = fix_Cpp_data_type(op.get_params()[0].type) %}
+    {% if  data_type == 'boolean8' or data_type == 'int8' or data_type == 'byte' or data_type == 'int16' or data_type == 'int32' or data_type == 'int64' or data_type == 'uint8' or data_type == 'uint16' or data_type == 'uint32' or data_type == 'uint64' or data_type == 'float32' or data_type == 'double64' %}
+                {%set data_type = 'ECOA::' + data_type %}
+    {% endif %}
+
+    /* The following is the data handle structure associated to the data operation, called {{op.name}} of data-type {{data_type}} */
+	typedef struct {
+		/* pointer to the local copy of the data */
+		{{data_type}}* data;
+
+		/* counter indicating the number of local updates of that version of the data */
+		ECOA::uint32 stamp;
+
+		/*counter technical info associated with the data*/
+		ECOA::byte platform_hook[ECOA_VERSIONED_DATA_HANDLE_PRIVATE_SIZE];
+
+	} {{op.name}}_handle;
+	{% endif %}
+{% endfor %}
+
+}
+#endif /* _{{mname.upper()}}_CONTAINER_TYPES_HPP */

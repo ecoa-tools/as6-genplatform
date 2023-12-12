@@ -1,0 +1,21 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Writer_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="compWriter0" moduleInstanceName="myCompWriter_mod_inst" modulePriority="30"/>
+    <deployedModuleInstance componentName="compWriter1" moduleInstanceName="myCompWriter_mod_inst" modulePriority="30"/>
+  </protectionDomain>
+
+  <protectionDomain name="Master_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="compMaster" moduleInstanceName="myCompMaster_Read_inst" modulePriority="30"/>
+    <deployedModuleInstance componentName="compMaster" moduleInstanceName="myCompMaster_Writer_inst" modulePriority="30"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Dassault" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

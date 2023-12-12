@@ -1,0 +1,74 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Reader">
+
+  <!-- list of used libraries -->
+  <use library="VD_lib"/>
+
+  <moduleType name="myCompReader_mod_Writter_t">
+    <properties>
+      <property name="module_identifier" type="ECOA:uint32"/>
+    </properties>
+    <operations>
+      <dataWritten type="VD_lib:vector_data" name="write_vector"/>
+      <eventReceived name="trigger"/>
+      <eventSent name="finish"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myCompReader_mod_Writter" language="C" moduleType="myCompReader_mod_Writter_t"/>
+
+  <moduleInstance name="mod_Writter_inst_1" implementationName="myCompReader_mod_Writter" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="module_identifier">1</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <moduleInstance name="mod_Writter_inst_2" implementationName="myCompReader_mod_Writter" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="module_identifier">2</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <moduleInstance name="mod_Writter_inst_3" implementationName="myCompReader_mod_Writter" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="module_identifier">3</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <triggerInstance name="Heart_Beat" relativePriority="10"/>
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <dataLink>
+    <writers>
+      <reference instanceName="svc_reader" operationName="some_data"/>
+      <moduleInstance instanceName="mod_Writter_inst_3" operationName="write_vector"/>
+      <moduleInstance instanceName="mod_Writter_inst_2" operationName="write_vector"/>
+      <moduleInstance instanceName="mod_Writter_inst_1" operationName="write_vector"/>
+    </writers>
+  </dataLink>
+
+  <dataLink>
+    <writers>
+      <reference instanceName="svc_reader2" operationName="some_data"/>
+    </writers>
+  </dataLink>
+
+  <eventLink>
+    <senders>
+      <trigger instanceName="Heart_Beat" period="0.050"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="mod_Writter_inst_3" operationName="trigger"/>
+      <moduleInstance instanceName="mod_Writter_inst_2" operationName="trigger"/>
+      <moduleInstance instanceName="mod_Writter_inst_1" operationName="trigger"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="mod_Writter_inst_3" operationName="finish"/>
+      <moduleInstance instanceName="mod_Writter_inst_2" operationName="finish"/>
+      <moduleInstance instanceName="mod_Writter_inst_1" operationName="finish"/>
+    </senders>
+    <receivers>
+      <reference instanceName="svc_finish" operationName="finish"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

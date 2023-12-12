@@ -1,0 +1,44 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Test_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoTestComponent" moduleInstanceName="myDemoEmitter_Connected_AM_I" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoTestComponent" moduleInstanceName="myDemoEmitter_Connected_ext_AM_I" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoTestComponent" moduleInstanceName="myDemoEmitter_Unconnected_AM_I" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoTestComponent" moduleInstanceName="myDemoReceiver_Connected_AM_I" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoTestComponent" moduleInstanceName="myDemoReceiver_Connected_ext_AM_I" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoTestComponent" moduleInstanceName="myDemoReceiver_Unconnected_AM_I" modulePriority="30"/>
+ </protectionDomain>
+
+  <protectionDomain name="Dummy_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoDummyComponent" moduleInstanceName="myDummy_mod" modulePriority="30"/>
+ </protectionDomain>
+
+  <protectionDomain name="Dummy2_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoDummyComponent_2" moduleInstanceName="myDummy_mod2" modulePriority="30"/>
+  </protectionDomain>
+
+  <protectionDomain name="Test_cpp_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoTestComponent_Cpp" moduleInstanceName="myDemoEmitter_Connected_AM_I" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoTestComponent_Cpp" moduleInstanceName="myDemoEmitter_Connected_ext_AM_I" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoTestComponent_Cpp" moduleInstanceName="myDemoEmitter_Unconnected_AM_I" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoTestComponent_Cpp" moduleInstanceName="myDemoReceiver_Connected_AM_I" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoTestComponent_Cpp" moduleInstanceName="myDemoReceiver_Connected_ext_AM_I" modulePriority="30"/>
+    <deployedModuleInstance componentName="demoTestComponent_Cpp" moduleInstanceName="myDemoReceiver_Unconnected_AM_I" modulePriority="30"/>
+  </protectionDomain>
+
+  <protectionDomain name="Finish_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="demoTestFinish" moduleInstanceName="myDemoFinish_AM_I" modulePriority="30"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Thales" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

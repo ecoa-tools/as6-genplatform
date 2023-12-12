@@ -1,0 +1,122 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Ping">
+
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPing_AM_t" hasWarmStartContext="false">
+    <properties>
+      <property name="comp_ID" type="uint32"/>
+    </properties>
+    <operations>
+      <eventSent name="Ping">
+        <input name="nb_msg" type="ECOA:uint32"/>
+      </eventSent>
+
+      <eventReceived name="Pong">
+        <input name="nb_msg" type="ECOA:uint32"/>
+      </eventReceived>
+
+      <dataRead type="uint32" name="data_r" maxVersions="8" notifying="true"/>
+
+      <requestSent name="Ping_ASync" isSynchronous="false" timeout="1"/>
+
+      <eventReceived name="TriggerEvent"/>
+
+      <eventReceived name="dyn_trig_event">
+        <input name="parma1" type="int32"/>
+      </eventReceived>
+
+      <eventSent name="dyn_trig_set">
+        <input name="delayDuration" type="ECOA:duration"/>
+        <input name="parma1" type="int32"/>
+      </eventSent>
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPing_AM" language="C" moduleType="myDemoPing_AM_t"/>
+
+  <moduleInstance name="myDemoPing_AM_I" implementationName="myDemoPing_AM" relativePriority="100">
+    <propertyValues>
+      <propertyValue name="comp_ID">$comp_ID</propertyValue>
+    </propertyValues>
+  </moduleInstance>
+  <triggerInstance name="Heart_Beat" relativePriority="100"/>
+
+  <dynamicTriggerInstance name="dyn_trigger" size="10" relativePriority="60">
+    <parameter name="parma1" type="int32"/>
+  </dynamicTriggerInstance>
+
+
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <!-- Definition of module operation links for AM module -->
+  <eventLink>
+    <senders>
+      <trigger instanceName="Heart_Beat" period="0.500"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="TriggerEvent" activating="true"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <reference instanceName="PingPong" operationName="Pong_SbP"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Pong" activating="false"/>
+    </receivers>
+  </eventLink>
+
+  <dataLink>
+    <writers>
+      <reference instanceName="PingPong" operationName="some_data"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="data_r" activating="false"/>
+    </readers>
+  </dataLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping_ASync" activating="false"/>
+    </clients>
+    <server>
+      <reference instanceName="PingPong" operationName="Ping_RR"/>
+    </server>
+  </requestLink>
+
+  <!-- dynamic trigger -->
+	<eventLink>
+		<senders>
+			<moduleInstance instanceName="myDemoPing_AM_I" operationName="dyn_trig_set"/>
+		</senders>
+		<receivers>
+			<dynamicTrigger instanceName="dyn_trigger" operationName="in"/>
+		</receivers>
+	</eventLink>
+  <eventLink>
+		<senders>
+      <dynamicTrigger instanceName="dyn_trigger" operationName="out"/>
+		</senders>
+		<receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="dyn_trig_event" activating="false"/>
+		</receivers>
+	</eventLink>
+</componentImplementation>

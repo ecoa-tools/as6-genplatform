@@ -1,0 +1,67 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Pong">
+	
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPong_AM_t">
+    <operations>
+		<requestReceived name="Ping">
+      		<input name="Ping_Position" type="pingpong:T_2D_Position"/>
+			<input name="Ping_Target" type="ECOA:uint32"/>
+		  	<output name="Pong_Position" type="pingpong:T_2D_Position"/>
+			<output name="Pong_Target" type="ECOA:uint32"/>
+		</requestReceived>
+    </operations>
+  </moduleType>
+	
+	<moduleType name="mySender_t">
+    <operations>
+		<requestSent name="Ping_Async" isSynchronous="false" timeout="-1">
+      		<input name="Ping_Position" type="pingpong:T_2D_Position"/>
+			<input name="Ping_Target" type="ECOA:uint32"/>
+		  	<output name="Pong_Position" type="pingpong:T_2D_Position"/>
+			<output name="Pong_Target" type="ECOA:uint32"/>
+		</requestSent>
+		<requestSent name="Ping_Sync" isSynchronous="true" timeout="-1">
+      		<input name="Ping_Position" type="pingpong:T_2D_Position"/>
+			<input name="Ping_Target" type="ECOA:uint32"/>
+		  	<output name="Pong_Position" type="pingpong:T_2D_Position"/>
+			<output name="Pong_Target" type="ECOA:uint32"/>
+		</requestSent>
+    </operations>
+  </moduleType>
+
+
+  <moduleImplementation name="myDemoPong_AM" language="C" moduleType="myDemoPong_AM_t"/>
+  <moduleImplementation name="mySender" language="C" moduleType="mySender_t"/>
+
+  <moduleInstance name="myDemoPong_AM_I" implementationName="myDemoPong_AM" relativePriority="160"/>
+  <moduleInstance name="mySender_I" implementationName="mySender" relativePriority="160"/>
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <requestLink>
+    <clients>
+      <service instanceName="PingPong" operationName="Ping"/>
+      <moduleInstance instanceName="mySender_I" operationName="Ping_Async"/>
+      <moduleInstance instanceName="mySender_I" operationName="Ping_Sync"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="Ping"/>
+    </server>
+  </requestLink>
+
+  <!--eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPong_AM_I" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <service instanceName="PingPong" operationName="Pong"/>
+    </receivers>
+  </eventLink-->
+
+</componentImplementation>

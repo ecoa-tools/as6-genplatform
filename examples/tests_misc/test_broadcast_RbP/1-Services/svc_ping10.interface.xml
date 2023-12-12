@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="pingpong"/>
+
+  <operations>
+    <event direction="RECEIVED_BY_PROVIDER"  name="Ping11"/>
+    <event direction="RECEIVED_BY_PROVIDER"  name="Ping12"/>
+  </operations>
+
+</serviceDefinition>

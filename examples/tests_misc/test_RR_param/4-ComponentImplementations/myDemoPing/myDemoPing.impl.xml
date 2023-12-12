@@ -1,0 +1,61 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Ping">
+	
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPing_AM_t">
+    <operations>
+		<requestSent name="Ping_Async" isSynchronous="false" timeout="-1" >
+      		<input name="Ping_Position" type="pingpong:T_2D_Position"/>
+			<input name="Ping_Target" type="ECOA:uint32"/>
+		  	<output name="Pong_Position" type="pingpong:T_2D_Position"/>
+			<output name="Pong_Target" type="ECOA:uint32"/>
+		</requestSent>
+      	<requestSent name="Ping_Sync" isSynchronous="true" timeout="1" >
+      		<input name="Ping_Position" type="pingpong:T_2D_Position"/>
+			<input name="Ping_Target" type="ECOA:uint32"/>
+		  	<output name="Pong_Position" type="pingpong:T_2D_Position"/>
+			<output name="Pong_Target" type="ECOA:uint32"/>
+		</requestSent>
+    	<!--eventReceived name="Pong"/-->
+
+    <!--dataRead type="uint32" name="Counter" maxVersions="8"/-->
+
+    <!--eventReceived name="TriggerPingEvent"/-->
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPing_AM" language="C" moduleType="myDemoPing_AM_t"/>
+
+  <moduleInstance name="myDemoPing_AM_I0" implementationName="myDemoPing_AM" relativePriority="100"/>
+  <moduleInstance name="myDemoPing_AM_I1" implementationName="myDemoPing_AM" relativePriority="100"/>
+
+  <!--triggerInstance name="Heart_Beat" moduleDeadline="0"/-->
+
+
+
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <!-- Definition of module operation links for AM module -->
+ 
+
+
+<requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoPing_AM_I0" operationName="Ping_Sync"/>
+      <moduleInstance instanceName="myDemoPing_AM_I1" operationName="Ping_Sync"/>
+      <moduleInstance instanceName="myDemoPing_AM_I0" operationName="Ping_Async"/>
+      <moduleInstance instanceName="myDemoPing_AM_I1" operationName="Ping_Async"/>
+    </clients>
+    <server>
+      <reference instanceName="PingPong" operationName="Ping"/>
+    </server>
+  </requestLink>
+
+</componentImplementation>

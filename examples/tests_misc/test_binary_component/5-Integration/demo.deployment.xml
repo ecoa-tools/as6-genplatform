@@ -1,0 +1,23 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Earth_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="EarthComponent" moduleInstanceName="myEarth_mod" modulePriority="30"/>
+    <deployedTriggerInstance componentName="EarthComponent" triggerInstanceName="Heart_Beat" triggerPriority="30"/>
+  </protectionDomain>
+
+  <protectionDomain name="Constellation_PD">
+    <executeOn computingNode="machine0" computingPlatform="Thales"/>
+    <deployedModuleInstance componentName="ConstellationComponent" moduleInstanceName="mySatellite_0" modulePriority="30"/>
+    <deployedModuleInstance componentName="ConstellationComponent" moduleInstanceName="mySatellite_1" modulePriority="30"/>
+    <deployedModuleInstance componentName="ConstellationComponent" moduleInstanceName="mySatellite_2" modulePriority="30"/>
+    <deployedModuleInstance componentName="ConstellationComponent" moduleInstanceName="mySatellite_3" modulePriority="30"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Thales" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

@@ -1,0 +1,95 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="PongPing">
+
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPong_AM_t"  hasWarmStartContext="false">
+    <operations>
+
+    <eventReceived name="Ping">
+      <input name="nb_msg" type="ECOA:uint32"/>
+    </eventReceived>
+    <eventSent name="Pong">
+      <input name="nb_msg" type="ECOA:uint32"/>
+    </eventSent>
+
+    <dataWritten type="uint32" name="data_w"/>
+
+    <requestReceived name="Ping_RR"/>
+
+    </operations>
+  </moduleType>
+
+  <moduleType name="myDemoPing_AM_t2"  hasWarmStartContext="false">
+    <operations>
+      <eventSent name="Ping">
+        <input name="nb_msg" type="ECOA:uint32"/>
+      </eventSent>
+      <eventReceived name="Pong">
+        <input name="nb_msg" type="ECOA:uint32"/>
+      </eventReceived>
+      <dataRead type="uint32" name="data_r" maxVersions="8" notifying="true"/>
+      <eventReceived name="TriggerEvent"/>
+      <requestSent name="Ping_ASync" isSynchronous="false" timeout="1"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPing_AM2" language="C" moduleType="myDemoPing_AM_t2"/>
+  <moduleImplementation name="myDemoPong_AM" language="C" moduleType="myDemoPong_AM_t"/>
+
+  <moduleInstance name="myDemoPing_intern" implementationName="myDemoPing_AM2" relativePriority="100"/>
+  <moduleInstance name="myDemoPong_intern" implementationName="myDemoPong_AM" relativePriority="100"/>
+  <triggerInstance name="Heart_Beat_intern" relativePriority="100"/>
+
+
+
+  <!-- INTERNAL TEST -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_intern" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong_intern" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPong_intern" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_intern" operationName="Pong" activating="false"/>
+    </receivers>
+  </eventLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoPing_intern" operationName="Ping_ASync"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoPong_intern" operationName="Ping_RR" activating="false"/>
+    </server>
+  </requestLink>
+
+  <eventLink>
+    <senders>
+      <trigger instanceName="Heart_Beat_intern" period="0.200"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_intern" operationName="TriggerEvent" activating="true"/>
+    </receivers>
+  </eventLink>
+
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="myDemoPong_intern" operationName="data_w"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPing_intern" operationName="data_r" activating="false"/>
+    </readers>
+  </dataLink>
+
+</componentImplementation>

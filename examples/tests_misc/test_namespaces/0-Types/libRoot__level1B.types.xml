@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+    <use library="libRoot.level1B.level2"/>
+    <types>
+        <simple type="uint16" name="simple1B" comment="same name than in namespace level1A"/>
+        <simple type="libRoot.level1B.level2:simple2A" name="simple1C" comment="type defined by the belowed level"/>
+
+    	<simple type="uint16" name="uint32" comment="overload of ECOA type"/>
+    	<array name="array_overload"  maxNumber="20" itemType="uint32" comment="array of overloaded predefined types"/>
+
+    </types>
+</library>

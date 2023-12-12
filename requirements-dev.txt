@@ -1,0 +1,6 @@
+Jinja2>3.0.0
+lxml==4.9.2
+MarkupSafe==2.0.1
+pytest
+pytest-check
+paramiko==2.12.0

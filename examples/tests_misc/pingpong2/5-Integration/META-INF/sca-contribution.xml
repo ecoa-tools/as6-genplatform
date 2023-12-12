@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contribution xmlns="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+              xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0">
+  <deployable composite="ecoa-sca:demo1B_impl" ecoa-sca:deployment="deployment"/>
+</contribution>
+<!-- This file shall be in the META-INF folder.
+     Ref : OASIS - Service Component Architecture - Assembly Model Specification Version 1.1
+           Committee Specification Draft 08 / Public Review Draft 03 - 31 May 2011
+     section: 10.2.2 SCA Contribution Metadata Document
+-->

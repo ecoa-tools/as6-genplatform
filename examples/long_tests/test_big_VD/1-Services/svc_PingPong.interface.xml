@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+  <use library="lib_array"/>
+  <operations>
+	<data type="lib_array:array_1k" name="Ping_array_1k"/>
+	<data type="lib_array:array_4k" name="Ping_array_4k"/>
+	<data type="lib_array:array_16k" name="Ping_array_16k"/>
+	<data type="lib_array:array_64k" name="Ping_array_64k"/>
+	<data type="lib_array:array_256k" name="Ping_array_256k"/>
+	<data type="lib_array:array_10m" name="Ping_array_10m"/>
+    <event direction="RECEIVED_BY_PROVIDER"  name="Pong"/>
+  </operations>
+</serviceDefinition>

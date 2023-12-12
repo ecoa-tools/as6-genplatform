@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ecoa.technology/ecoa-common-2.0">
+<xsd:include schemaLocation="Schemas_ecoa/ecoa-common-2.0.xsd"/>
+
+<xsd:element name="fineGrainDeployment" type="FineGrainDeployment" >
+  <xsd:key name="ProtectionDomainDeploymentkey">
+    <xsd:selector xpath="protectionDomainDeployment/mapping"/>
+    <xsd:field xpath="@protectionDomainName"/>
+  </xsd:key>
+</xsd:element>
+
+<xsd:complexType name="FineGrainDeployment">
+  <xsd:annotation>
+    <xsd:documentation> Definition of affinities for ECOA Application fine grain deployment
+    </xsd:documentation>
+  </xsd:annotation>
+  <xsd:sequence>
+    <xsd:element name="platformTechnicalDeployment" type="TypePlatformTechnicalDeployment" />
+    <xsd:element name="protectionDomainDeployment" type="ProtectionDomainDeployment" maxOccurs="unbounded"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+<xsd:complexType name="TypePlatformTechnicalDeployment">
+  <xsd:annotation>
+    <xsd:documentation> Definition of processing resources onto which OS technical tasks can be mapped
+    </xsd:documentation>
+  </xsd:annotation>
+  <xsd:sequence>
+    <xsd:element name="technicalProcessingResource" minOccurs="1" maxOccurs="unbounded">
+    <xsd:complexType>
+      <xsd:attribute name="computingNode" type="xsd:string" use="required"/>
+      <xsd:attribute name="coreId" type="xsd:integer" use="required" />
+      <xsd:attribute name="computingPlatform" type="NameId"/>
+    </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+
+<xsd:complexType name="ProtectionDomainDeployment">
+  <xsd:annotation>
+    <xsd:documentation> If a protection domain is not deployed here, it will be deployed on all cpu of the node with SCHED_OTHER scheduler
+    </xsd:documentation>
+  </xsd:annotation>
+  <xsd:sequence>
+    <xsd:element name="mapping">
+      <xsd:complexType>
+        <xsd:attribute name="protectionDomainName" type="xsd:string" use="required"/>
+        <xsd:attribute name="computingNode" type="NameId" use="required"/>
+        <xsd:attribute name="computingPlatform" type="NameId"/>
+      </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="schedulingPolicy" type="SchedulingPolicy" />
+    <xsd:element name="defaultAffinity" type="DefaultAffinity" />
+    <xsd:element name="affinity" type="Affinity">
+      <xsd:key name="deployedTriggerInstancekey">
+        <xsd:selector xpath="deployedTriggerInstance"/>
+        <xsd:field xpath="@triggerInstanceName"/>
+        <xsd:field xpath="@componentName"/>
+      </xsd:key>
+      <xsd:key name="deployedModuleInstancekey">
+        <xsd:selector xpath="deployedModuleInstance"/>
+        <xsd:field xpath="@moduleInstanceName"/>
+        <xsd:field xpath="@componentName"/>
+      </xsd:key>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+
+<xsd:complexType name="DefaultAffinity">
+  <xsd:annotation>
+    <xsd:documentation> Affinities for modules and triggers that are not explicitly defined for the related Protection Domain
+    </xsd:documentation>
+  </xsd:annotation>
+  <xsd:sequence>
+    <xsd:element name="core" minOccurs="1" maxOccurs="unbounded">
+      <xsd:complexType>
+        <xsd:attribute name="id" type="xsd:integer" use="required"/>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+
+<xsd:complexType name="Affinity">
+  <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+    <xsd:choice>
+      <xsd:element name="deployedModuleInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="core" minOccurs="1" maxOccurs="unbounded">
+              <xsd:complexType>
+                <xsd:attribute name="id" type="xsd:integer" use="required"/>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="componentName" type="NameId" use="required" />
+          <xsd:attribute name="moduleInstanceName" type="NameId" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="deployedTriggerInstance">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="core" minOccurs="1" maxOccurs="unbounded">
+              <xsd:complexType>
+                <xsd:attribute name="id" type="xsd:integer" use="required"/>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+          <xsd:attribute name="componentName" type="NameId" use="required" />
+          <xsd:attribute name="triggerInstanceName" type="NameId" use="required" />
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:sequence>
+</xsd:complexType>
+
+<xsd:simpleType name="SchedulingPolicy">
+  <xsd:restriction base="xsd:string">
+    <xsd:enumeration value="default">
+      <xsd:annotation>
+        <xsd:documentation>default OS scheduling policy
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:enumeration>
+    <xsd:enumeration value="FIFO">
+      <xsd:annotation>
+        <xsd:documentation>SCHED_FIFO: a first-in, first-out policy. Need root permission
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:enumeration>
+    <xsd:enumeration value="RR">
+      <xsd:annotation>
+        <xsd:documentation>SCHED_RR: a round-robin policy. Need root permission
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:enumeration>
+    <xsd:enumeration value="OTHER">
+      <xsd:annotation>
+        <xsd:documentation>SCHED_OTHER: the standard round-robin time-sharing policy
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:enumeration>
+    <xsd:enumeration value="BATCH">
+      <xsd:annotation>
+        <xsd:documentation> SCHED_BATCH: for running very low priority background jobs
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:enumeration>
+    <xsd:enumeration value="IDLE">
+      <xsd:annotation>
+        <xsd:documentation> SCHED_IDLE: for running very low priority background jobs
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:enumeration>
+  </xsd:restriction>
+</xsd:simpleType>
+</xsd:schema>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca" 
+	       name="demo" 
+	       targetNamespace="http://www.ecoa.technology/sca">
+
+  <csa:component name="demoServer0">
+    <ecoa-sca:instance componentType="Server0"/>
+    <csa:service name="svc_client"/>
+    <csa:reference name="svc_server"/>
+    <csa:reference name="svc_final"/>
+ <csa:service name="svc_server"/>
+  </csa:component>
+
+  <csa:component name="demoServer1">
+    <ecoa-sca:instance componentType="Server0"/>
+    <csa:service name="svc_client"/>
+    <csa:reference name="svc_server"/>
+    <csa:reference name="svc_final"/>
+ <csa:service name="svc_server"/>
+  </csa:component>
+
+  <csa:component name="demoClient0">
+    <ecoa-sca:instance componentType="Client0"/>
+    <csa:reference name="svc_client"/>
+	<csa:service name="svc_server"/>
+  </csa:component>
+  </csa:component>
+
+	<csa:component name="demoFinal">
+    <ecoa-sca:instance componentType="Finale"/>
+    <csa:service name="svc_final"/>
+  </csa:component>
+
+  <csa:wire source= "demoClient0/Iclient_r" target="demoServer0/Isever_s" ecoa-sca:rank="10" aaallEventsMulticasted = "True"////>
+  <csa:wire source= "demoServer0/Iserver_r" target="democlient0/Iclient_s" ecoa-sca:rank="20" allEventsMulticasted = "True"/>
+  <csa:wire source= "demoServer0/Ifinal_r" target="demoFinal/Ifinal_s" ecoa-sca:rank="30" allEventsMulticasted = "True"/>
+
+	 <csa:wire source= "demoClient0/Iclient_r" target="demoServer1/Isever_s" ecoa-sca:rank="4" allEventsMulticasted = "True"/>
+  <csa:wire source= "demoServer1/Iserver_r" target="democlient0/Iclient_s" ecoa-sca:rank="5" allEventsMulticasted = "True"/>
+  <csa:wire source= "demoServer1/Ifinal_r" target="demoFinal/Ifinal_s" ecoa-sca:rank="6" allEventsMulticasted = "True"/>
+
+</csa:composite>

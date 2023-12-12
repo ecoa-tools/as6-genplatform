@@ -1,0 +1,25 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="final_comp">
+
+  <use library="pingpong"/>
+
+  <moduleType name="myDemoFinish_mod_t">
+    <operations>
+      <eventReceived name="finish"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoFinish_mod_impl" language="C" moduleType="myDemoFinish_mod_t"/>
+  <moduleInstance name="myDemoFinish_mod_inst" implementationName="myDemoFinish_mod_impl" relativePriority="160"/>
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <eventLink>
+    <senders>
+      <service instanceName="finish" operationName="Finish"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoFinish_mod_inst" operationName="finish"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

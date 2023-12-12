@@ -1,0 +1,82 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Main">
+	
+    <!-- list of used libraries -->
+  	<use library="pingpong"/>
+
+  	<!-- supervision module -->
+
+  	<!-- module AM to implement provided operations -->
+  	<moduleType name="myDemoMain_AM_t">
+    	<operations>
+		    <eventSent name="Finish"/>  
+    		<eventReceived name="TriggerEvent0"/>
+    		<eventReceived name="TriggerEvent1"/>
+    	</operations>
+  	</moduleType>
+	
+	<moduleType name="myDemoMain2_AM_t">
+    	<operations>
+		    <eventSent name="Finish"/>  
+    		<eventReceived name="TriggerEvent_f1"/>
+    		<eventReceived name="TriggerEvent_f2"/>
+    	</operations>
+  	</moduleType>
+
+  	<moduleImplementation name="myDemoMain_AM" language="C" moduleType="myDemoMain_AM_t"/>
+  	<moduleImplementation name="myDemoMain2_AM" language="C" moduleType="myDemoMain2_AM_t"/>
+
+  	<moduleInstance name="myDemoMain_AM_I" implementationName="myDemoMain_AM" relativePriority="100"/>
+  	<moduleInstance name="myDemoMain2_AM_I" implementationName="myDemoMain2_AM" relativePriority="100"/>
+
+  	<triggerInstance name="Heart_Beat_0" relativePriority="10"/>
+	<triggerInstance name="Heart_Beat_1" relativePriority="10"/>
+
+
+
+  	<!-- Definition of module operation links for Supervision Module -->
+
+  	<!-- Definition of module operation links for AM module -->
+
+ 	<eventLink>
+    	<senders>
+    	  	<trigger instanceName="Heart_Beat_0" period="0.010"/>
+    	</senders>
+    	<receivers>
+    	  	<moduleInstance instanceName="myDemoMain_AM_I" operationName="TriggerEvent0"/>
+   	 	</receivers>
+  	</eventLink>
+	
+ 	<eventLink>
+    	<senders>
+    	  	<trigger instanceName="Heart_Beat_1" period="0.100"/>
+    	</senders>
+    	<receivers>
+    	  	<moduleInstance instanceName="myDemoMain_AM_I" operationName="TriggerEvent1"/>
+    	  	<moduleInstance instanceName="myDemoMain2_AM_I" operationName="TriggerEvent_f1"/>
+   	 	</receivers>
+  	</eventLink>
+
+	<eventLink>
+    	<senders>
+    	  	<trigger instanceName="Heart_Beat_1" period="0.200"/>
+    	</senders>
+    	<receivers>
+    	  	<moduleInstance instanceName="myDemoMain2_AM_I" operationName="TriggerEvent_f2"/>
+			<service instanceName="trigger_s0" operationName="trigger"/>
+			<reference instanceName="trigger2_r0" operationName="trigger2"/>
+   	 	</receivers>
+  	</eventLink>
+
+
+  	<eventLink>
+  	  	<senders>
+  	    	<moduleInstance instanceName="myDemoMain_AM_I" operationName="Finish"/>
+  	    	<moduleInstance instanceName="myDemoMain2_AM_I" operationName="Finish"/>
+  	  	</senders>
+  	  	<receivers>
+  		    <service instanceName="final_s0" operationName="Finish"/>
+  		</receivers>
+  	</eventLink>
+
+</componentImplementation>

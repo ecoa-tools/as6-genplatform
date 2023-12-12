@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0" 
+	       name="demo" 
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="demoServer">
+    <ecoa-sca:instance componentType="server">
+      <ecoa-sca:implementation name="mydemoServer"/>
+    </ecoa-sca:instance>
+    <csa:reference name="IServer0"/>
+    <csa:reference name="IServer1"/>
+  </csa:component>
+
+  <csa:component name="demoClient0">
+    <ecoa-sca:instance componentType="client0">
+      <ecoa-sca:implementation name="mydemoClient0"/>
+    </ecoa-sca:instance>
+    <csa:service name="IClient0"/>
+    <csa:service name="Iserver"/>
+  </csa:component>
+
+	<csa:component name="demoClient1">
+    <ecoa-sca:instance componentType="client1">
+      <ecoa-sca:implementation name="mydemoClient1"/>
+    </ecoa-sca:instance>
+    <csa:reference name="IClient1"/>
+    <csa:service name="Iserver"/>
+  </csa:component>
+
+  <csa:wire source="demoClient1/IClient1" target="demoClient0/IClient0" />
+
+  <csa:wire source="demoServer/IServer1" target="demoClient1/Iserver" />
+  <csa:wire source="demoServer/IServer0" target="demoClient0/Iserver" />
+
+</csa:composite>

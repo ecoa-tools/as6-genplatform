@@ -1,0 +1,101 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Master">
+
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoMaster_AM_t">
+    <operations>
+      <requestSent name="req_Async_ext" isSynchronous="false" timeout="0.4"/>
+      <requestSent name="req_Sync_ext" isSynchronous="true" timeout="0.4"/>
+        <requestSent name="req_Async_ext2" isSynchronous="false" timeout="0.4"/>
+      <requestSent name="req_Sync_ext2" isSynchronous="true" timeout="0.4"/>
+      <requestSent name="req_Async_int" isSynchronous="false" timeout="0.4"/>
+      <requestSent name="req_Sync_int" isSynchronous="true" timeout="0.4"/>
+      <eventReceived name="finish"/>
+    </operations>
+  </moduleType>
+
+  <moduleType name="myDemoServer_AM_t">
+    <operations>
+      <requestReceived name="req_Async"/>
+      <requestReceived name="req_Sync"/>
+      <eventSent name="finish"/>
+    </operations>
+  </moduleType>
+
+
+  <moduleImplementation name="myDemoMaster_AM" language="C" moduleType="myDemoMaster_AM_t"/>
+  <moduleImplementation name="myDemoServer_AM" language="C" moduleType="myDemoServer_AM_t"/>
+
+  <moduleInstance name="myDemoMaster_AM_I" implementationName="myDemoMaster_AM" relativePriority="100"/>
+  <moduleInstance name="myDemoServer_AM_I" implementationName="myDemoServer_AM" relativePriority="100"/>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoMaster_AM_I" operationName="req_Sync_ext"/>
+    </clients>
+    <server>
+      <reference instanceName="ref_req" operationName="req_Sync"/>
+    </server>
+  </requestLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoMaster_AM_I" operationName="req_Sync_ext2"/>
+    </clients>
+    <server>
+      <reference instanceName="ref_req2" operationName="req_Sync"/>
+    </server>
+  </requestLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoMaster_AM_I" operationName="req_Sync_int"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoServer_AM_I" operationName="req_Sync"/>
+    </server>
+  </requestLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoMaster_AM_I" operationName="req_Async_ext"/>
+    </clients>
+    <server>
+      <reference instanceName="ref_req" operationName="req_Async"/>
+    </server>
+  </requestLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoMaster_AM_I" operationName="req_Async_ext2"/>
+    </clients>
+    <server>
+      <reference instanceName="ref_req2" operationName="req_Async"/>
+    </server>
+  </requestLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoMaster_AM_I" operationName="req_Async_int"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoServer_AM_I" operationName="req_Async"/>
+    </server>
+  </requestLink>
+
+    <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoServer_AM_I" operationName="finish"/>
+      <reference instanceName="ref_req" operationName="finish"/>
+      <reference instanceName="ref_req2" operationName="finish"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoMaster_AM_I" operationName="finish"/>
+    </receivers>
+  </eventLink>
+</componentImplementation>

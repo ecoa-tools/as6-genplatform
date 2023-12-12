@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="pingpong"/>
+
+  <operations>
+
+  <event direction="RECEIVED_BY_PROVIDER"  name="Ping">
+		<input name="nb_16" type="ECOA:uint16"/>
+		<input name="nb_msg" type="ECOA:uint32"/>
+	</event>
+  <event direction="SENT_BY_PROVIDER"  name="Pong"/>
+
+  </operations>
+
+</serviceDefinition>

@@ -1,0 +1,38 @@
+<deployment finalAssembly="marx_brothers" logicalSystem="platform"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Chico_PD">
+    <executeOn computingNode="machine0" computingPlatform="Dassault"/>
+    <deployedTriggerInstance componentName="Chico" triggerInstanceName="myElder_Trigger_inst" triggerPriority="10"/>
+    <deployedModuleInstance componentName="Chico" moduleInstanceName="myElder_Main_inst" modulePriority="40"/>
+  </protectionDomain>
+
+  <protectionDomain name="Harpo_PD">
+    <executeOn computingNode="machine0" computingPlatform="Dassault"/>
+    <deployedTriggerInstance componentName="Harpo" triggerInstanceName="myElder_Trigger_inst" triggerPriority="10"/>
+    <deployedModuleInstance componentName="Harpo" moduleInstanceName="myElder_Main_inst" modulePriority="40"/>
+  </protectionDomain>
+
+  <protectionDomain name="Groucho_PD">
+    <executeOn computingNode="machine0" computingPlatform="Dassault"/>
+    <deployedModuleInstance componentName="Groucho" moduleInstanceName="myCadet_Main_inst" modulePriority="40"/>
+  </protectionDomain>
+
+  <protectionDomain name="Gummo_PD">
+    <executeOn computingNode="machine0" computingPlatform="Dassault"/>
+    <deployedModuleInstance componentName="Gummo" moduleInstanceName="myCadet_Main_inst" modulePriority="40"/>
+  </protectionDomain>
+
+  <protectionDomain name="Zeppo_PD">
+    <executeOn computingNode="machine0" computingPlatform="Dassault"/>
+    <deployedModuleInstance componentName="Zeppo" moduleInstanceName="myJunior_Main_inst" modulePriority="40"/>
+    <deployedModuleInstance componentName="Zeppo" moduleInstanceName="myJunior_Other_inst" modulePriority="40"/>
+    <deployedTriggerInstance componentName="Zeppo" triggerInstanceName="myJunior_DelayResult" triggerPriority="40"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Dassault" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

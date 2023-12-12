@@ -1,0 +1,87 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="DummyComp">
+
+  <!-- list of used libraries -->
+  <use library="lib_module"/>
+
+  <!-- Modules Types -->
+  <moduleType name="Dummy_mod_t">
+    <operations>
+      <eventSent name="operation1"/>
+      <eventReceived name="operation2"/>
+      <requestSent name = "request1" isSynchronous="true" timeout="1"/>
+      <requestSent name = "request2" isSynchronous="false" timeout="1"/>
+      <requestReceived name= "request3"/>
+      <dataWritten name="write_data" type="uint32"/>
+      <dataRead name="read_data" type="uint32"/>
+    </operations>
+  </moduleType>
+  <!-- End of Modules Types -->
+
+  <!-- Implementations -->
+  <moduleImplementation name="myDummy_mod_impl" language="C" moduleType="Dummy_mod_t"/>
+  <moduleInstance name="myDummy_mod" implementationName="myDummy_mod_impl" relativePriority="100"/>
+  <!-- End of Implementations -->
+
+  <!-- Event Links -->
+    <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDummy_mod" operationName="operation1"/>
+    </senders>
+    <receivers>
+      <reference instanceName="Reference" operationName="event_RP"/>
+    </receivers>
+  </eventLink>
+  <eventLink>
+    <senders>
+      <service instanceName="Service" operationName="event_RP"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDummy_mod" operationName="operation2"/>
+    </receivers>
+  </eventLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDummy_mod" operationName="request1"/>
+    </clients>
+    <server>
+      <reference instanceName="Reference" operationName="request"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDummy_mod" operationName="request2"/>
+    </clients>
+    <server>
+      <reference instanceName="Reference" operationName="request"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <service instanceName="Service" operationName="request"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDummy_mod" operationName="request3"/>
+    </server>
+  </requestLink>
+
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="myDummy_mod" operationName="write_data"/>
+    </writers>
+    <readers>
+      <service instanceName="Service" operationName="data"/>
+    </readers>
+  </dataLink>
+  <dataLink>
+    <writers>
+      <reference instanceName="Reference" operationName="data"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDummy_mod" operationName="read_data"/>
+    </readers>
+  </dataLink>
+  <!-- End of Event Links -->
+
+</componentImplementation>

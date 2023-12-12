@@ -1,0 +1,199 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Ping">
+
+    <!-- list of used libraries -->
+  <use library="mylib"/>
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPing_AM_t" hasWarmStartContext="false">
+    <operations>
+
+    <eventSent name="Ping">
+      <input name="recordwithping" type="mylib:coord"/>
+      <input name="nb_ping" type="mylib:t1"/>
+      <input name="arraywithping" type="mylib:Test_array"/>
+      <input name="fixedarraywithping" type="mylib:Test_fixed_array"/>
+
+      <input name="enumwithping" type="mylib:Test_enum"/>
+   </eventSent>
+
+    <eventReceived name="Pong">
+      <input name="recordwithpong" type="mylib:coord"/>
+    	<input name="nb_pong" type="mylib:t1"/>
+      <input name="arraywithpong" type="mylib:Test_array"/>
+      <input name="fixedarraywithpong" type="mylib:Test_fixed_array"/>
+
+      <input name="enumwithpong" type="mylib:Test_enum"/>
+    </eventReceived>
+
+    <eventReceived name="TriggerPingEvent"/>
+
+    <requestSent name="RR_msg_async0" isSynchronous="false" timeout="-1" >
+      <input name="nb_send" type="mylib:t1"/>
+      <input name="coord_send" type="mylib:coord"/>
+      <output name="nb_received" type="mylib:t1"/>
+      <output name="coord_received" type="mylib:coord"/>
+    </requestSent>
+    <requestSent name="RR_msg_async1" isSynchronous="false" timeout="-1" >
+      <input name="nb_send" type="mylib:t1"/>
+      <input name="coord_send" type="mylib:coord"/>
+      <output name="nb_received" type="mylib:t1"/>
+      <output name="coord_received" type="mylib:coord"/>
+
+    </requestSent>
+
+    <requestSent name="RR_msg_sync0" isSynchronous="true" timeout="0.1" >
+      <input name="nb_send" type="mylib:t1"/>
+      <input name="coord_send" type="mylib:coord"/>
+      <output name="nb_received" type="mylib:t1"/>
+      <output name="coord_received" type="mylib:coord"/>
+    </requestSent>
+    <requestSent name="RR_msg_sync1" isSynchronous="true" timeout="0.1" >
+      <input name="nb_send" type="mylib:t1"/>
+      <input name="coord_send" type="mylib:coord"/>
+      <output name="nb_received" type="mylib:t1"/>
+      <output name="coord_received" type="mylib:coord"/>
+    </requestSent>
+
+    <dataWritten type="mylib:coord" name="write_coord0"/>
+
+    </operations>
+
+  </moduleType>
+
+  <moduleType name="myDemoPong2_AM_t" hasUserContext="false">
+    <operations>
+
+    <eventReceived name="Ping">
+      <input name="recordwithping" type="mylib:coord"/>
+      <input name="nb_ping" type="mylib:t1"/>
+      <input name="arraywithping" type="mylib:Test_array"/>
+      <input name="fixedarraywithping" type="mylib:Test_fixed_array"/>
+      <input name="enumwithping" type="mylib:Test_enum"/>
+    </eventReceived>
+
+    <eventSent name="Pong">
+      <input name="recordwithpong" type="mylib:coord"/>
+      <input name="nb_pong" type="mylib:t1"/>
+      <input name="arraywithpong" type="mylib:Test_array"/>
+      <input name="fixedarraywithpong" type="mylib:Test_fixed_array"/>
+      <input name="enumwithpong" type="mylib:Test_enum"/>
+    </eventSent>
+
+    <requestReceived name="RR_msg_recv" >
+      <input name="nb_send" type="mylib:t1"/>
+      <input name="coord_send" type="mylib:coord"/>
+      <output name="nb_received" type="mylib:t1"/>
+      <output name="coord_received" type="mylib:coord"/>
+    </requestReceived>
+
+    <requestReceived name="RR_msg2_recv_sync" >
+      <input name="nb_send" type="mylib:t1"/>
+      <input name="coord_send" type="mylib:coord"/>
+      <output name="nb_received" type="mylib:t1"/>
+      <output name="coord_received" type="mylib:coord"/>
+    </requestReceived>
+
+    <dataRead type="mylib:coord" name="read_coord0" notifying="true"/>
+
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPing_AM" language="C++" moduleType="myDemoPing_AM_t"/>
+  <moduleImplementation name="myDemoPong2_AM" language="C++" moduleType="myDemoPong2_AM_t"/>
+  <moduleImplementation name="myDemoPong3_AM" language="C" moduleType="myDemoPong2_AM_t"/>
+
+  <moduleInstance name="myDemoPing_AM_I" implementationName="myDemoPing_AM" relativePriority="100"/>
+  <moduleInstance name="myDemoPong2_AM_I" implementationName="myDemoPong2_AM" relativePriority="100"/>
+  <moduleInstance name="myDemoPong3_AM_I" implementationName="myDemoPong3_AM" relativePriority="100"/>
+
+   <triggerInstance name="Heart_Beat" relativePriority="0"/>
+
+  <!-- Definition of module operation links for Supervision Module -->
+
+  <!-- Definition of module operation links for AM module -->
+
+
+  <eventLink>
+    <senders>
+      <trigger instanceName="Heart_Beat" period="0.100"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="TriggerPingEvent" fifoSize="12"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPong2_AM_I" operationName="Ping"/>
+      <moduleInstance instanceName="myDemoPong3_AM_I" operationName="Ping"/>
+      <reference instanceName="PingPong" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <reference instanceName="PingPong" operationName="Pong"/>
+      <moduleInstance instanceName="myDemoPong2_AM_I" operationName="Pong"/>
+      <moduleInstance instanceName="myDemoPong3_AM_I" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Pong" fifoSize="6"/>
+    </receivers>
+  </eventLink>
+
+
+   <dataLink>
+    <writers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="write_coord0"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPong2_AM_I" operationName="read_coord0"/>
+      <moduleInstance instanceName="myDemoPong3_AM_I" operationName="read_coord0"/>
+            <service instanceName="svc_demoPing" operationName="some_data0"/>
+    </readers>
+  </dataLink>
+
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="RR_msg_async0"/>
+    </clients>
+    <server>
+      <reference instanceName="PingPong" operationName="RR_msg"/>
+    </server>
+  </requestLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="RR_msg_async1"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoPong2_AM_I" operationName="RR_msg_recv"/>
+    </server>
+  </requestLink>
+
+<requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="RR_msg_sync0"/>
+    </clients>
+    <server>
+      <reference instanceName="PingPong" operationName="RR_msg2"/>
+    </server>
+  </requestLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="RR_msg_sync1"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoPong2_AM_I" operationName="RR_msg2_recv_sync"/>
+    </server>
+  </requestLink>
+
+</componentImplementation>

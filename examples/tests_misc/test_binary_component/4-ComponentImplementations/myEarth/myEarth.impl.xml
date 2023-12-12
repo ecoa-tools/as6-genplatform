@@ -1,0 +1,94 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Earth">
+
+    <!-- list of used libraries -->
+  <use library="myLib"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myEarth_mod_t">
+    <operations>
+      <eventReceived name="trigger"/>
+
+      <eventReceived name="data">
+        <input name="data" type="myLib:array_data"/>
+        <input name="satellite_num" type="uint32"/>
+      </eventReceived>
+
+      <requestSent name="satellite_0_position" isSynchronous="false" timeout="2">
+        <output name="data" type="myLib:position"/>
+        <output name="satellite_num" type="uint32"/>
+      </requestSent>
+      <requestSent name="satellite_1_position" isSynchronous="false" timeout="2">
+        <output name="data" type="myLib:position"/>
+        <output name="satellite_num" type="uint32"/>
+      </requestSent>
+      <requestSent name="satellite_2_position" isSynchronous="false" timeout="2">
+        <output name="data" type="myLib:position"/>
+        <output name="satellite_num" type="uint32"/>
+      </requestSent>
+      <requestSent name="satellite_3_position" isSynchronous="false" timeout="2">
+        <output name="data" type="myLib:position"/>
+        <output name="satellite_num" type="uint32"/>
+      </requestSent>
+
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myEarth_mod_impl" language="C" moduleType="myEarth_mod_t"/>
+  <moduleInstance name="myEarth_mod" implementationName="myEarth_mod_impl" relativePriority="100"/>
+
+  <triggerInstance name="Heart_Beat" relativePriority="10"/>
+
+  <eventLink>
+    <senders>
+      <trigger instanceName="Heart_Beat" period="0.5"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myEarth_mod" operationName="trigger"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <reference instanceName="antenna" operationName="data"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myEarth_mod" operationName="data"/>
+    </receivers>
+  </eventLink>
+
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myEarth_mod" operationName="satellite_0_position"/>
+    </clients>
+    <server>
+      <reference instanceName="antenna" operationName="position_sat0"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myEarth_mod" operationName="satellite_1_position"/>
+    </clients>
+    <server>
+      <reference instanceName="antenna" operationName="position_sat1"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myEarth_mod" operationName="satellite_2_position"/>
+    </clients>
+    <server>
+      <reference instanceName="antenna" operationName="position_sat2"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <moduleInstance instanceName="myEarth_mod" operationName="satellite_3_position"/>
+    </clients>
+    <server>
+      <reference instanceName="antenna" operationName="position_sat3"/>
+    </server>
+  </requestLink>
+
+</componentImplementation>

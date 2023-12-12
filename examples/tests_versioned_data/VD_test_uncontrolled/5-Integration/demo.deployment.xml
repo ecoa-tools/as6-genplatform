@@ -1,0 +1,26 @@
+<deployment finalAssembly="demo" logicalSystem="cs1"
+  xmlns="http://www.ecoa.technology/deployment-2.0">
+
+
+  <protectionDomain name="Master_PD">
+    <executeOn computingNode="machine0" computingPlatform="Dassault"/>
+    <deployedModuleInstance componentName="compMaster_A" moduleInstanceName="myCompWritter_mod_inst0" modulePriority="30"/>
+    <deployedModuleInstance componentName="compMaster_A" moduleInstanceName="myCompWritter_mod_inst1" modulePriority="30"/>
+    <deployedModuleInstance componentName="compMaster_A" moduleInstanceName="myCompReader_mod_inst" modulePriority="30"/>
+    <deployedTriggerInstance componentName="compMaster_A" triggerInstanceName="Heart_Beat" triggerPriority="10"/>
+    <deployedModuleInstance componentName="compMaster_B" moduleInstanceName="myCompWritter_mod_inst0" modulePriority="30"/>
+    <deployedModuleInstance componentName="compMaster_B" moduleInstanceName="myCompWritter_mod_inst1" modulePriority="30"/>
+    <deployedModuleInstance componentName="compMaster_B" moduleInstanceName="myCompReader_mod_inst" modulePriority="30"/>
+    <deployedTriggerInstance componentName="compMaster_B" triggerInstanceName="Heart_Beat" triggerPriority="10"/>
+  </protectionDomain>
+
+  <protectionDomain name="Finisher_PD">
+    <executeOn computingNode="machine0" computingPlatform="Dassault"/>
+    <deployedModuleInstance componentName="compFinisher" moduleInstanceName="myCompFinisher_mod_inst" modulePriority="30"/>
+  </protectionDomain>
+
+  <platformConfiguration computingPlatform="Dassault" faultHandlerNotificationMaxNumber="8">
+    <computingNodeConfiguration computingNode="machine0" />
+  </platformConfiguration>
+
+</deployment>

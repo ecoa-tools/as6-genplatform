@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="demo"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="compMaster_A">
+    <ecoa-sca:instance componentType="Master"/>
+    <csa:reference name="svc_finish"/>
+  </csa:component>
+  <csa:component name="compMaster_B">
+    <ecoa-sca:instance componentType="Master"/>
+    <csa:reference name="svc_finish"/>
+  </csa:component>
+
+  <csa:component name="compFinisher">
+    <ecoa-sca:instance componentType="Finisher"/>
+    <csa:service name="svc_finish"/>
+  </csa:component>
+
+  <csa:wire source="compMaster_A/svc_finish" target="compFinisher/svc_finish" />
+  <csa:wire source="compMaster_B/svc_finish" target="compFinisher/svc_finish" />
+
+</csa:composite>

@@ -1,0 +1,30 @@
+<ECOAProject xmlns="http://www.ecoa.technology/project-2.0" name="marx_brothers">
+
+    <types>
+        <file>0-Types/libmarx.types.xml</file>
+    </types>
+
+    <serviceDefinitions>
+        <file>1-Services/brother.interface.xml</file>
+    </serviceDefinitions>
+
+    <componentDefinitions>
+        <file>2-ComponentDefinitions/Elder/Elder.componentType</file>
+        <file>2-ComponentDefinitions/Cadet/Cadet.componentType</file>
+        <file>2-ComponentDefinitions/Junior/Junior.componentType</file>
+    </componentDefinitions>
+
+    <initialAssembly>3-InitialAssembly/marx_brothers.composite</initialAssembly>
+
+    <componentImplementations>
+        <file>4-ComponentImplementations/myElder/myElder.impl.xml</file>
+        <file>4-ComponentImplementations/myCadet/myCadet.impl.xml</file>
+        <file>4-ComponentImplementations/myJunior/myJunior.impl.xml</file>
+    </componentImplementations>
+
+    <implementationAssembly>5-Integration/marx_brothers.impl.composite</implementationAssembly>
+    <deploymentSchema>5-Integration/marx_brothers.deployment.xml</deploymentSchema>
+    <logicalSystem>5-Integration/platform.logical-system.xml</logicalSystem>
+
+    <outputDirectory>6-Output</outputDirectory>
+</ECOAProject>

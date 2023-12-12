@@ -1,0 +1,41 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="FinishComp">
+
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoFinish_AM_t">
+    <operations>
+      <requestReceived name="Finish_RR2">
+        <input name="counter" type="ECOA:uint32"/>
+      </requestReceived>
+
+      <dataWritten name="write_vector" type="pingpong:vector_data"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoFinish_AM" language="C" moduleType="myDemoFinish_AM_t"/>
+
+  <moduleInstance name="myDemoFinish_AM_I" implementationName="myDemoFinish_AM" relativePriority="100"/>
+
+  <dataLink>
+    <writers>
+      <moduleInstance instanceName="myDemoFinish_AM_I" operationName="write_vector"/>
+    </writers>
+    <readers>
+      <service instanceName="svc_writer" operationName="vd_data"/>
+    </readers>
+  </dataLink>
+
+  <requestLink>
+     <clients>
+       <service instanceName="Finish" operationName="counter_RR"/>
+     </clients>
+     <server>
+       <moduleInstance instanceName="myDemoFinish_AM_I" operationName="Finish_RR2"/>
+     </server>
+   </requestLink>
+
+</componentImplementation>

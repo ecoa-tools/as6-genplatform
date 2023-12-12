@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<serviceDefinition xmlns="http://www.ecoa.technology/interface-2.0">
+
+  <use library="VD_lib"/>
+
+  <operations>
+
+    <data name="some_data" type="VD_lib:vector_data"/>
+
+  </operations>
+
+</serviceDefinition>

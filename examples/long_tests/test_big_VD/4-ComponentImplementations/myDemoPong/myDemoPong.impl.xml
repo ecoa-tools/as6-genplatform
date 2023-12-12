@@ -1,0 +1,83 @@
+<componentImplementation xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Pong">
+  <!-- list of used libraries -->
+  <use library="lib_array"/>
+
+  <!-- supervision module -->
+  <moduleType name="myDemoPong_mod_t">
+    <operations>
+      <eventSent name="Pong"/>
+      <dataRead type="lib_array:array_1k" name="Ping_array_1k" notifying="true" maxVersions="1"/>
+      <dataRead type="lib_array:array_4k" name="Ping_array_4k" notifying="true" maxVersions="1"/>
+      <dataRead type="lib_array:array_16k" name="Ping_array_16k" notifying="true" maxVersions="1"/>
+      <dataRead type="lib_array:array_64k" name="Ping_array_64k" notifying="true" maxVersions="1"/>
+      <dataRead type="lib_array:array_256k" name="Ping_array_256k" notifying="true" maxVersions="1"/>
+      <dataRead type="lib_array:array_10m" name="Ping_array_10m" notifying="true" maxVersions="1"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPong_mod" language="C" moduleType="myDemoPong_mod_t"/>
+
+  <moduleInstance name="myDemoPong_inst" implementationName="myDemoPong_mod" relativePriority="100"/>
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+
+  <dataLink>
+    <writers>
+      <reference instanceName="PingPong" operationName="Ping_array_1k"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_1k" fifoSize="1"/>
+    </readers>
+  </dataLink>
+  <dataLink>
+    <writers>
+      <reference instanceName="PingPong" operationName="Ping_array_4k"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_4k" fifoSize="1"/>
+    </readers>
+  </dataLink>
+  <dataLink>
+    <writers>
+      <reference instanceName="PingPong" operationName="Ping_array_16k"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_16k" fifoSize="1"/>
+    </readers>
+  </dataLink>
+  <dataLink>
+    <writers>
+      <reference instanceName="PingPong" operationName="Ping_array_64k"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_64k" fifoSize="1"/>
+    </readers>
+  </dataLink>
+  <dataLink>
+    <writers>
+      <reference instanceName="PingPong" operationName="Ping_array_256k"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_256k" fifoSize="1"/>
+    </readers>
+  </dataLink>
+  <dataLink>
+    <writers>
+      <reference instanceName="PingPong" operationName="Ping_array_10m"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPong_inst" operationName="Ping_array_10m" fifoSize="1"/>
+    </readers>
+  </dataLink>
+
+
+
+</componentImplementation>

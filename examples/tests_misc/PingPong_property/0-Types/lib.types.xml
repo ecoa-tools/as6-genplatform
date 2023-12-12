@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library xmlns="http://www.ecoa.technology/types-2.0">
+
+  <types>
+    <constant name="magic_number" type="ECOA:uint16" value="42"/>
+
+    <enum name="Test_enum" type="ECOA:uint8">
+      <value name="SUNDAY"/>
+      <value name="SATURDAY"/>
+    </enum>
+
+    <simple name="Test_simple" type="ECOA:float32" unit="radian"/>
+
+    <!-- simple array -->
+    <fixedArray name="Test_fixed_array" itemType="ECOA:uint32" maxNumber="10"/>
+    <array name="Test_array" itemType="ECOA:uint32" maxNumber="10"/>
+
+    <!-- 2d array-->
+    <fixedArray name="Test_matrix_fixed_array" itemType="Test_fixed_array" maxNumber="5"/>
+    <array name="Test_matrix_array" itemType="Test_array" maxNumber="5"/>
+
+    <!-- array of a type -->
+    <fixedArray name="Test_enum_array" itemType="Test_enum" maxNumber="5"/>
+    <fixedArray name="Test_simple_array" itemType="lib:Test_simple" maxNumber="5"/>
+
+    <!-- array with char-->
+    <fixedArray name="Test_fixed_array_char" itemType="char8" maxNumber="10"/>
+    <array name="Test_array_char" itemType="char8" maxNumber="10"/>
+
+    <!-- matrix with char-->
+    <fixedArray name="Test_fixed_matrix_char" itemType="Test_fixed_array_char" maxNumber="5"/>
+    <array name="Test_matrix_char" itemType="Test_array_char" maxNumber="5"/>
+
+  </types>
+</library>

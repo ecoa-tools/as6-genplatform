@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ecoa.technology/ecoa-common-2.0">
+<xsd:include schemaLocation="Schemas_ecoa/ecoa-common-2.0.xsd"/>
+    <xsd:element name="nodesDeployment" type="NodesDeployment">
+        <xsd:key name="NodesDeploymentKey">
+            <xsd:selector xpath="nodesDeployment"/>
+            <xsd:field xpath="@nodesName"/>
+        </xsd:key>
+    </xsd:element>
+
+<xsd:complexType name="NodesDeployment">
+    <xsd:annotation>
+        <xsd:documentation> Definition of ip address for ECOA Nodes
+        </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+        <xsd:element name="logicalComputingNode" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:attribute name="id" type="NameId" use="required" />
+                <xsd:attribute name="ipAddress" type="IPv4Address"/>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:sequence>
+</xsd:complexType>
+
+<xsd:simpleType name="IPv4Address">
+    <xsd:annotation>
+        <xsd:documentation> IPv4 address. [0-255].[0-255].[0-255].[0-255]
+        </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="((1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])\.){3}(1?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])"/>
+    </xsd:restriction>
+</xsd:simpleType>
+</xsd:schema>

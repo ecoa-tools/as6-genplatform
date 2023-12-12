@@ -1,0 +1,44 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Pong">
+
+  <use library="pingpong"/>
+
+  <moduleType name="myDemoPong_mod1_t">
+    <operations>
+      <requestReceived name="Ping1" maxConcurrentRequests="8">
+        <input name="Ping_Position" type="pingpong:T_2D_Position"/>
+        <input name="Ping_Target" type="ECOA:uint32"/>
+        <output name="Pong_Position" type="pingpong:T_2D_Position"/>
+        <output name="Pong_Target" type="ECOA:uint32"/>
+      </requestReceived>
+      <requestReceived name="Ping2"><!--default value of maxConcurrentRequests-->
+        <input name="Ping_Position" type="pingpong:T_2D_Position"/>
+        <input name="Ping_Target" type="ECOA:uint32"/>
+        <output name="Pong_Position" type="pingpong:T_2D_Position"/>
+        <output name="Pong_Target" type="ECOA:uint32"/>
+      </requestReceived>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPong_mod1_impl" language="C" moduleType="myDemoPong_mod1_t"/>
+  <moduleInstance name="myDemoPong_mod1_inst" implementationName="myDemoPong_mod1_impl" relativePriority="160"/>
+
+  <!-- Definition of module operation links for Supervision Module -->
+  <requestLink>
+    <clients>
+      <service instanceName="PingPong" operationName="Ping_async"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoPong_mod1_inst" operationName="Ping1" fifoSize="12"/>
+    </server>
+  </requestLink>
+  <requestLink>
+    <clients>
+      <service instanceName="PingPong" operationName="Ping_sync"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoPong_mod1_inst" operationName="Ping2" fifoSize="8" />
+    </server>
+  </requestLink>
+
+</componentImplementation>

@@ -1,0 +1,29 @@
+#ifndef _COMPONENT_{{component_impl.get_name().upper()}}_HPP
+#define _COMPONENT_{{component_impl.get_name().upper()}}_HPP
+
+{# define route macro #}
+#include <apr_thread_proc.h>
+#include "ldp_structures.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+{% for comp in comp_list %}
+{% for module in component_impl.get_module_instances() %}
+void* start_module_{{comp.name}}_{{module.get_name()}}(apr_thread_t* t, void* args);
+{% endfor %}
+
+{# define initialise function for each component with this component implementation   #}
+{% for comp in comp_list  %}
+extern ldp_PDomain_ctx* {{comp.name}}_ctx;
+ldp_PDomain_ctx* init_comp_{{comp.name}}(void);
+{% endfor %}
+{% endfor %}
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif  /* _COMPONENT_{{component_impl.get_name().upper()}}_HPP */

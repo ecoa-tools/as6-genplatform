@@ -1,0 +1,44 @@
+<componentImplementation 
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Server">
+	
+  <use library="pingpong"/>
+
+  <moduleType name="myDemoServer2_AM_t">
+    <operations>
+      <requestReceived name="req_Async"/>
+      <requestReceived name="req_Sync"/>
+      <eventSent name="finish"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoServer2_AM" language="C" moduleType="myDemoServer2_AM_t"/>
+  <moduleInstance name="myDemoServer2_AM_I" implementationName="myDemoServer2_AM" relativePriority="100"/>
+
+
+  <requestLink>
+    <clients>
+      <service instanceName="ser_req" operationName="req_Async"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoServer2_AM_I" operationName="req_Async"/>
+    </server>
+  </requestLink>
+
+  <requestLink>
+    <clients>
+      <service instanceName="ser_req" operationName="req_Sync"/>
+    </clients>
+    <server>
+      <moduleInstance instanceName="myDemoServer2_AM_I" operationName="req_Sync"/>
+    </server>
+  </requestLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoServer2_AM_I" operationName="finish"/>
+    </senders>
+    <receivers>
+      <service instanceName="ser_req" operationName="finish"/>
+    </receivers>
+  </eventLink>
+</componentImplementation>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<csa:composite xmlns:csa="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+               xmlns:ecoa-sca="http://www.ecoa.technology/sca-extension-2.0"
+	       name="demo"
+	       targetNamespace="http://www.ecoa.technology/sca-extension-2.0">
+
+  <csa:component name="compReader">
+    <ecoa-sca:instance componentType="Reader">
+      <ecoa-sca:implementation name="myReader"/>
+    </ecoa-sca:instance>
+    <csa:reference name="svc_reader"/>
+    <csa:reference name="svc_finish"/>
+  </csa:component>
+
+  <csa:component name="compWriter">
+    <ecoa-sca:instance componentType="Writer">
+      <ecoa-sca:implementation name="myWriter"/>
+    </ecoa-sca:instance>
+    <csa:service name="svc_writer"/>
+    <csa:reference name="svc_finish"/>
+  </csa:component>
+
+  <csa:component name="compFinisher">
+    <ecoa-sca:instance componentType="Finisher">
+      <ecoa-sca:implementation name="myFinisher"/>
+    </ecoa-sca:instance>
+    <csa:service name="finish_interface"/>
+  </csa:component>
+
+  <csa:wire source="compReader/svc_reader" target="compWriter/svc_writer" />
+  <csa:wire source="compReader/svc_finish" target="compFinisher/finish_interface" />
+  <csa:wire source="compWriter/svc_finish" target="compFinisher/finish_interface" />
+
+</csa:composite>

@@ -1,0 +1,102 @@
+<componentImplementation
+    xmlns="http://www.ecoa.technology/implementation-2.0" componentDefinition="Ping">
+
+    <!-- list of used libraries -->
+  <use library="pingpong"/>
+
+  <!-- supervision module -->
+
+  <!-- module AM to implement provided operations -->
+  <moduleType name="myDemoPing_AM_t">
+    <operations>
+      <eventSent name="Ping">
+        <input name="nb_16" type="ECOA:uint16"/>
+        <input name="nb_msg" type="ECOA:uint32"/>
+      </eventSent>
+
+      <eventReceived name="Pong"/>
+      <eventReceived name="trigger"/>
+
+      <!-- <eventSent name="Finish"/> -->
+      <eventSent name="SetDTrigger"><input name="delayDuration" type="ECOA:duration"/></eventSent>
+      <eventSent name="ResetDTrigger"/>
+      <eventReceived name="ResultDTrigger"></eventReceived>
+
+      <dataRead type="pingpong:vector_data" name="read_vector" notifying="false" maxVersions="2"/>
+    </operations>
+  </moduleType>
+
+  <moduleImplementation name="myDemoPing_AM" language="C" moduleType="myDemoPing_AM_t"/>
+
+  <moduleInstance name="myDemoPing_AM_I" implementationName="myDemoPing_AM" relativePriority="100"/>
+
+  <triggerInstance name="Heart_Beat" relativePriority="0"/>
+  <dynamicTriggerInstance name="Dyn_Trigger" size="10" relativePriority="60"></dynamicTriggerInstance>
+
+  <dataLink>
+    <writers>
+      <reference instanceName="svc_reader" operationName="vd_data"/>
+    </writers>
+    <readers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="read_vector"/>
+    </readers>
+  </dataLink>
+
+  <!-- Trigger -->
+  <eventLink>
+      <senders>
+          <trigger instanceName="Heart_Beat" period="0.1"/>
+      </senders>
+      <receivers>
+        <moduleInstance instanceName="myDemoPing_AM_I" operationName="trigger"/>
+      </receivers>
+  </eventLink>
+
+  <!-- Dynamic Trigger -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="ResetDTrigger"/>
+    </senders>
+    <receivers>
+      <dynamicTrigger instanceName="Dyn_Trigger" operationName="reset"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+		<senders>
+			<dynamicTrigger instanceName="Dyn_Trigger" operationName="out"/>
+		</senders>
+		<receivers>
+			<moduleInstance instanceName="myDemoPing_AM_I" operationName="ResultDTrigger"/>
+		</receivers>
+	</eventLink>
+
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="SetDTrigger"/>
+    </senders>
+    <receivers>
+      <dynamicTrigger instanceName="Dyn_Trigger" operationName="in"/>
+    </receivers>
+  </eventLink>
+
+  <!-- Events -->
+  <eventLink>
+    <senders>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Ping"/>
+    </senders>
+    <receivers>
+      <reference instanceName="PingPong" operationName="Ping"/>
+    </receivers>
+  </eventLink>
+
+  <eventLink>
+    <senders>
+      <reference instanceName="PingPong" operationName="Pong"/>
+    </senders>
+    <receivers>
+      <moduleInstance instanceName="myDemoPing_AM_I" operationName="Pong"/>
+    </receivers>
+  </eventLink>
+
+</componentImplementation>

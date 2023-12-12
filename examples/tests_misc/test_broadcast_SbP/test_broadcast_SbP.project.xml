@@ -1,0 +1,36 @@
+<ECOAProject xmlns="http://www.ecoa.technology/project-2.0" name="test_broadcast_SbP">
+
+    <types>
+        <file>0-Types/pingpong.types.xml</file>
+    </types>
+
+    <serviceDefinitions>
+        <file>1-Services/svc_ping00.interface.xml</file>
+        <file>1-Services/svc_pong.interface.xml</file>
+        <file>1-Services/svc_ping10.interface.xml</file>
+        <file>1-Services/svc_final.interface.xml</file>
+    </serviceDefinitions>
+
+    <componentDefinitions>
+        <file>2-ComponentDefinitions/Server/Server.componentType</file>
+        <file>2-ComponentDefinitions/Server_layer2/Server_layer2.componentType</file>
+        <file>2-ComponentDefinitions/Final/Final.componentType</file>
+        <file>2-ComponentDefinitions/Client/Client.componentType</file>
+    </componentDefinitions>
+
+    <initialAssembly></initialAssembly>
+
+    <componentImplementations>
+        <file>4-ComponentImplementations/myDemoServer_layer2/myDemoServer_layer2.impl.xml</file>
+        <file>4-ComponentImplementations/myDemoClient/myDemoClient.impl.xml</file>
+        <file>4-ComponentImplementations/myDemoFinal/myDemoFinal.impl.xml</file>
+        <file>4-ComponentImplementations/myDemoServer/myDemoServer.impl.xml</file>
+    </componentImplementations>
+
+    <implementationAssembly>5-Integration/demo.impl.composite</implementationAssembly>
+    <deploymentSchema>5-Integration/demo.deployment.xml</deploymentSchema>
+    <logicalSystem>5-Integration/cs1.logical-system.xml</logicalSystem>
+
+    <outputDirectory>6-output</outputDirectory>
+</ECOAProject>
+

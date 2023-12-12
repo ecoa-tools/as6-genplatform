@@ -1,0 +1,36 @@
+<ECOAProject xmlns="http://www.ecoa.technology/project-2.0" name="test_module_not_connected">
+
+    <types>
+        <file>0-Types/lib_module.types.xml</file>
+    </types>
+
+    <serviceDefinitions>
+        <file>1-Services/svc_extern.interface.xml</file>
+        <file>1-Services/svc_Finish.interface.xml</file>
+        <file>1-Services/svc_dummy.interface.xml</file>
+        <file>1-Services/svc_extern_data.interface.xml</file>
+    </serviceDefinitions>
+
+    <componentDefinitions>
+        <file>2-ComponentDefinitions/TestFinish/TestFinish.componentType</file>
+        <file>2-ComponentDefinitions/DummyComp/DummyComp.componentType</file>
+        <file>2-ComponentDefinitions/TestComponent/TestComponent.componentType</file>
+    </componentDefinitions>
+
+    <initialAssembly></initialAssembly>
+
+    <componentImplementations>
+        <file>4-ComponentImplementations/myTestComponent_cpp/myTestComponent_cpp.impl.xml</file>
+        <file>4-ComponentImplementations/myDummyComponent_no_link/myDummyComponent_no_link.impl.xml</file>
+        <file>4-ComponentImplementations/myDummyComponent/myDummyComponent.impl.xml</file>
+        <file>4-ComponentImplementations/myTestFinish/myTestFinish.impl.xml</file>
+        <file>4-ComponentImplementations/myTestComponent/myTestComponent.impl.xml</file>
+    </componentImplementations>
+
+    <implementationAssembly>5-Integration/demo.impl.composite</implementationAssembly>
+    <deploymentSchema>5-Integration/demo.deployment.xml</deploymentSchema>
+    <logicalSystem>5-Integration/cs1.logical-system.xml</logicalSystem>
+
+    <outputDirectory>6-output</outputDirectory>
+</ECOAProject>
+

@@ -1,0 +1,36 @@
+#if !defined({{mname.upper()}}_USER_CONTEXT_HPP)
+#define {{mname.upper()}}_USER_CONTEXT_HPP
+
+/*Standaard types*/
+#include <ECOA.hpp>
+
+/*Additionnaly created types*/
+{% for lib in libraries%}
+#include "{{fix_libname(lib)}}.hpp"
+{% endfor %}
+
+/*Container types*/
+#include "{{mname}}_container_types.hpp"
+
+namespace {{mname}}
+{
+
+	{% if mtype.has_user_context() == True %}
+	typedef struct
+	{
+
+	} user_context;
+	{% endif %}
+
+	{% if mtype.has_warm_start_context() == True %}
+	//Warm start Module Context structure example
+	typedef struct
+	{
+		/* declare the Warm Start Module Context data here */
+
+	} warm_start_context;
+	{% endif %}
+
+} /* {{mname}} */
+
+#endif /* {{mname.upper()}}_USER_CONTEXT_HPP */
