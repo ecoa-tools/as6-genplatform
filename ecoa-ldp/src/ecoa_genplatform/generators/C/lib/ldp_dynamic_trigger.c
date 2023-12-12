@@ -112,10 +112,12 @@ void shutdown_life(ldp_dyn_trigger_context* ctx, apr_thread_t** tid0) {
 
 /*SonarQube : function for the fifth case of ldp_start_module_dynamic_trigger*/
 void kill_life(ldp_dyn_trigger_context* ctx, apr_thread_t** tid0) {
-	ldp_log_PF_log_var(ECOA_LOG_INFO_PF,"INFO", ctx->logger_PF, "[%s]: KILL", ctx->name);
+	if(ctx->state != IDLE) {
+		ldp_log_PF_log_var(ECOA_LOG_INFO_PF,"INFO", ctx->logger_PF, "[%s]: KILL", ctx->name);
+		stop_trigger_thread(ctx, tid0);
+	}
 	ctx->state = IDLE;
 	ldp_fifo_manager_clean(ctx->fifo_manager, ctx->state, NULL);
-	stop_trigger_thread(ctx, tid0);
 }
 
 

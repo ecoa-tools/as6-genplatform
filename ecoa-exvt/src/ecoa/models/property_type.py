@@ -29,15 +29,21 @@ class Property_Type:
         return self.name
 
     def get_type(self):
+        if self.data_type is None:
+            return None
         if self.data_type.data_category == 'CONSTANT':
             return self.data_type.data_type
         else:
             return self.type
 
     def __str__(self):
+        if self.type is None:
+            return self.name
         return self.name + ", "+self.type
 
     def __update_type(self, libraries):
+        if self.type is None:
+            return
         if self.type.find(":") == -1:
             self.type = 'ECOA:'+self.type
         library_name, type_name = self.type.split(":", 1)

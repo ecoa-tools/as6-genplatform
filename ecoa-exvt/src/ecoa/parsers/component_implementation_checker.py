@@ -8,7 +8,7 @@ def __comp_impl_check_param_type(libraries, comp_impl, dtype):
     lib_name, type_name = dtype.split(':')
     if (lib_name not in comp_impl.libraries) \
             or (not libraries[lib_name][0].is_datatype_defined(type_name)):
-        error("I component implementation %s,  unknow type %s" % (comp_impl.name, dtype))
+        error("In component implementation %s, unknown type %s" % (comp_impl.name, dtype))
         return False
     return True
 
@@ -92,9 +92,14 @@ def __check_module_pinfo(mod_inst, mod_type, component):
 
     # If pinfo is defined by a reference, it should be defined by the component
     for pinfo in mod_inst.pinfo.values():
+        if pinfo.pinfo_value is None:
+            error("In component implementation '%s' and module instance '%s', Pinfo '%s' needs a value"\
+                %(component.component_implementation, mod_inst.name, pinfo.name))
+            success = False
+            continue
         if pinfo.pinfo_value[0] == '$':
             if pinfo.pinfo_value[1:] not in component.properties:
-                error("In component implementation '%s' and module instance '%s', Pinfo '%s' refers to unkown reference '%s'"\
+                error("In component implementation '%s' and module instance '%s', Pinfo '%s' refers to unknown reference '%s'"\
                     %(component.component_implementation, mod_inst.name, pinfo.name,pinfo.pinfo_value))
                 success = False
     return success
@@ -110,9 +115,14 @@ def __check_module_properties(mod_inst, mod_type, component):
 
     # property references should be defined in component
     for prop in mod_inst.property_values.values():
+        if prop.value is None:
+            error("In component implementation '%s' and module instance '%s', property '%s' needs a value"\
+                    %(component.component_implementation, mod_inst.name, prop.name))
+            success = False
+            continue
         if prop.value[0] == '$':
             if prop.value[1:] not in component.properties:
-                error("In component implementation '%s' and module instance '%s', property '%s' refers to unkown reference '%s'"\
+                error("In component implementation '%s' and module instance '%s', property '%s' refers to unknown reference '%s'"\
                     %(component.component_implementation, mod_inst.name, prop.name,prop.value))
                 success = False
 
@@ -180,10 +190,52 @@ def __check_serv_link_edge(serv_name, op_name, link, comp, serv_definition, is_t
         success = False
     return success, parameter_types
 
+def __check_trigger_target_module_operation(component_impl, link, src=None):
+    success = True
+    target_module_inst_name = component_impl.get_instance(link.target)
+    target_module_impl_name = component_impl.get_module_implementation(target_module_inst_name.get_implementation())
+    target_module_type_name = component_impl.get_module_type(target_module_impl_name.get_type())
+    target_operation = target_module_type_name.operations[link.target_operation]
+    if target_operation.params:
+        if src:
+            error("In component impl '%s', invalid link : trigger instance '%s' should not be linked by services to the operation '%s' that contains parameters in component impl '%s'" % (src[0].name, src[1].source, link.target_operation, component_impl.name))
+        else:
+            error("In component impl '%s', invalid link : trigger instance '%s' should not be linked to the operation '%s' that contains parameters" % (component_impl.name, link.source, link.target_operation))
+        success = False
+    return success
+
+def __check_trigger_target_service_operation(composite, component, component_impls, component_impl, link):
+    success = True
+    if link.target in component.services + component.references:
+        target_service_name = None
+        target_component_name = None
+        for wire in composite.wires:
+            if wire.target_component == component.name and wire.target_service == link.target:
+                target_service_name = wire.source_service
+                target_component_name = wire.source_component
+                break
+            elif wire.source_component == component.name and wire.source_service == link.target:
+                target_service_name = wire.target_service
+                target_component_name = wire.target_component
+                break
+        if target_service_name and target_component_name:
+            target_component = composite.components[target_component_name]
+            target_component_impl = component_impls[target_component.component_implementation][0]
+            for target_component_impl_link in target_component_impl.links:
+                if target_component_impl_link.source == target_service_name:
+                    if target_component_impl.is_generic_module_instance(target_component_impl_link.target):
+                        if not __check_trigger_target_module_operation(target_component_impl, target_component_impl_link, src=(component_impl, link)):
+                            success = False
+        else:
+            success = False
+    else:
+        success = False
+    return success
+
 ## Check if component implementation is consistent to the previously defined module, trigger,
 # service_definitions and operations defined
 def check_component_implementation(component, component_impl, component_type,
-                                    service_definitions, libraries):
+                                    service_definitions, libraries, composite, component_impls):
     """ Check the consistency of a component implementation definition
     """
 
@@ -274,6 +326,15 @@ def check_component_implementation(component, component_impl, component_type,
                     %(component_impl.name, link.target))
             success = False
             continue
+
+        ## check that events linked to triggers do not contain parameters
+        if component_impl.is_generic_module_instance(link.source) and component_impl.is_trigger_instance(link.source):
+            if component_impl.is_generic_module_instance(link.target):
+                if not __check_trigger_target_module_operation(component_impl, link):
+                    success = False
+            else:
+                if not __check_trigger_target_service_operation(composite, component, component_impls, component_impl, link):
+                    success = False
 
         ## check source/target parameters
         if len(source_param_types) == len(target_param_types):

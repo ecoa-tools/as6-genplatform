@@ -385,10 +385,11 @@ class Protection_Domain:
                 # (ie: if a side of a wire has no link)
                 comp_list = self.get_all_component_names()
                 if w.target_component not in comp_list or w.source_component not in comp_list:
-                    if comp_impl_target.find_connected_links(w.target_service) == [] or\
-                       comp_impl_source.find_connected_links(w.source_service) == []:
-                        self.external_wires_connection[w] = []
-                        warning("wire "+str(w)+" is connected to a service/reference with no link")
+                    if comp_impl_source and comp_impl_target:
+                        if comp_impl_target.find_connected_links(w.target_service) == [] or\
+                           comp_impl_source.find_connected_links(w.source_service) == []:
+                            self.external_wires_connection[w] = []
+                            warning("wire "+str(w)+" is connected to a service/reference with no link")
             else:
                 # External PF wires
                 self.external_PF_wires[w] = internal_links

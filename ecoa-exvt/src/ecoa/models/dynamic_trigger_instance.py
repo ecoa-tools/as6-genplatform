@@ -34,7 +34,7 @@ class Dynamic_Trigger_Instance(Gen_Module_Instance):
         Attributes:
             parameters (list): new list of :class:`.Parameter`
         """
-        self.params.append(Parameter("delayDuration", "ECOA:duration", "input", is_complex=True))
+        self.params.append(Parameter("delayDuration", "ECOA:global_time", "input", is_complex=True))
         self.params += parameters
         self.event_in = Module_Event_Operation("out", "ES", self.params)
 

@@ -1271,7 +1271,7 @@ This section aims to show how to build and run an example of ECOA application us
 :ref:`installation<installation>`.
 
 .. warning::
-    The ECOA_DEPS_DIR environment variable must be set
+    The ECOA_DEPS_DIR environment variable must be set and docker environment must be available
 
 Build and run the example of an ECOA application (marx_brothers)
 
@@ -1279,16 +1279,30 @@ Build and run the example of an ECOA application (marx_brothers)
 
 .. code-block:: bash
 
-    cd ecoa-genplatform/centos
+    cd centos
     make all_ecoa
     make run_ecoa
 
     Or
 
-    cd ecoa-genplatform/centos
+    cd centos
     make all_ecoa
     cd app.rootfs/6-Output/bin
     ./platform
+
+**Docker**
+
+.. code-block:: bash
+
+    cd centos
+    make build_docker
+    make run_docker
+
+Docker container can be stopped using
+
+.. code-block:: bash
+
+    docker stop marx_brothers
 
 Running multi-nodes example
 ###########################
@@ -1319,7 +1333,7 @@ Build and run the multi-nodes example of an ECOA application (marx_brothers)
 
 .. code-block:: bash
 
-    cd ecoa-genplatform/centos
+    cd centos
     make all_ecoa
     cd app.rootfs/marx_brothers/6-Output/bin
     ./multi-nodes.py -d $ECOA_DEPS_DIR
@@ -1331,7 +1345,7 @@ This section aims to show how to build and run a cross-platform example of ECOA 
 :ref:`installation<installation>`.
 
 .. warning::
-    The ECOA_DEPS_DIR environment variable must be set
+    The ECOA_DEPS_DIR environment variable must be set and docker environment must be available
 
 Build the PF_reader and PF_writer platform  (test_multiPF_VD).
 
@@ -1339,9 +1353,17 @@ Build the PF_reader and PF_writer platform  (test_multiPF_VD).
 
 .. code-block:: bash
 
-    cd ecoa-genplatform/centos
+    cd centos
     make distclean all_ecoa APPS_DIR=../ecoa-ldp/tests/data ECOA_PROJECT=test_multiPF_VD ECOA_PROJECT_XML_NAME=test_PF_reader
     make all_ecoa ECOA_USERID=1 APPS_DIR=../ecoa-ldp/tests/data ECOA_PROJECT=test_multiPF_VD ECOA_PROJECT_XML_NAME=test_PF_writer
+
+**Docker**
+
+.. code-block:: bash
+
+    cd centos
+    make build_docker APPS_DIR=../ecoa-ldp/tests/data ECOA_PROJECT=test_multiPF_VD ECOA_CONTAINER_LOGS=logs_reader ECOA_PROJECT_XML_NAME=test_PF_reader
+    make build_docker APPS_DIR=../ecoa-ldp/tests/data ECOA_PROJECT=test_multiPF_VD ECOA_CONTAINER_LOGS=logs_writer ECOA_PROJECT_XML_NAME=test_PF_writer
 
 Run the PF_reader and PF_writer platform  (test_multiPF_VD).
 
@@ -1349,11 +1371,25 @@ Run the PF_reader and PF_writer platform  (test_multiPF_VD).
 
 .. code-block:: bash
 
-    cd ecoa-genplatform/centos/app.rootfs/test_multiPF_VD/PFW_output/bin
+    cd centos/app.rootfs/test_multiPF_VD/PFW_output/bin
     ./platform
 
-    cd ecoa-genplatform/centos/app.rootfs/test_multiPF_VD/PFR_output/bin
+    cd centos/app.rootfs/test_multiPF_VD/PFR_output/bin
     ./platform)
+
+**Docker**
+
+.. code-block:: bash
+
+    cd centos
+    make run_docker APPS_DIR=../ecoa-ldp/tests/data ECOA_PROJECT=test_multiPF_VD ECOA_CONTAINER_LOGS=logs_reader ECOA_PROJECT_XML_NAME=test_PF_reader
+    make run_docker APPS_DIR=../ecoa-ldp/tests/data ECOA_PROJECT=test_multiPF_VD ECOA_CONTAINER_LOGS=logs_writer ECOA_PROJECT_XML_NAME=test_PF_writer
+
+Docker containers can be stopped using
+
+.. code-block:: bash
+
+    docker stop test_pf_reader test_pf_writer
 
 Changing ECOA application loggger
 #################################
@@ -1369,7 +1405,7 @@ The selection of the logger used by an ECOA application can be done by changing 
 
 .. code-block:: bash
 
-    cd ecoa-genplatform/centos
+    cd centos
     cat cmake_config.cmake
         ...
         set ( LDP_LOG_USE "log4cplus" CACHE STRING "Use log4cplus, zlog or console for logging")

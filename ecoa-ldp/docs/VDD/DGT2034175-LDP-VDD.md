@@ -2,7 +2,7 @@
 
 Reference: DGT 2034175  
 Version: A  
-Copyright 2023 Dassault Aviation
+Copyright 2023 Dassault Aviation  
 MIT License (see LICENSE.txt)
 
 ## 1. Version Description

@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: MIT
 
 import os
+if os.name == "nt":
+    import posixpath
 import re
 import shutil
 import difflib
@@ -15,6 +17,8 @@ def save_to(file, content):
         content = ""
     else:
         content = content.decode("utf-8")
+        if os.name == "nt":
+            content = content.replace(os.sep, posixpath.sep).replace("\r", "")
     with open(file, 'w') as f:
         f.write(content)
 
@@ -70,6 +74,8 @@ class RunTool:
         self.m_parsing_out = os.path.join(self.m_output, "parsing%s.out" % output_suffix)
         self.m_parsing_err = os.path.join(self.m_output, "parsing%s.err" % output_suffix)
         self.m_root_path = os.path.dirname(os.path.dirname(working_directory))
+        if os.name == "nt":
+            self.m_root_path = self.m_root_path.replace(os.sep, posixpath.sep)
 
     def copy_dir(self):
         if os.path.exists(self.m_output):
@@ -103,6 +109,8 @@ class RunTool:
                 lines1[:] = filter(lambda line: not filter_platform_CMakeLists(line), lines1)
 
             lines2 = open(os.path.join(self.m_output, c_file), "r").readlines()
+            if os.name == "nt":
+                lines2 = list(map(lambda a: str(a).replace(os.sep, posixpath.sep).replace("\r", ""), lines2))
             lines2[:] = filter(lambda line: not exclude_date_and_PARSEC(line), lines2)
             if '6-Output/platform/CMakeLists.txt' == c_file:
                 lines2[:] = filter(lambda line: not filter_platform_CMakeLists(line), lines2)

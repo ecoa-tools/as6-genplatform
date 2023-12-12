@@ -8,6 +8,7 @@ from ..models.library import Library
 from ..utilities.namespaces import NameSpaces, ECOS_TYPES
 from ..utilities.xml_utils import validate_XML_file
 from ..utilities.logs import error, info
+from ..utilities.library_utils import LibrariesReferencesCycles
 
 __library_initialized = False
 
@@ -48,7 +49,7 @@ def __check_type_name(libraries, library, data_type_name):
     if data_type_name.find(':') != -1:
         namespaces,_ = data_type_name.split(":")
         if namespaces not in libraries:
-            error("Types %s, unkown namespaces %s" % (data_type_name, namespaces))
+            error("Types %s, unknown namespaces %s" % (data_type_name, namespaces))
 
     if not __is_type_defines(ECOA_library, library, data_type_name):
         #check in included libraries
@@ -285,6 +286,13 @@ def parse_all_libraries(xsd_directory, lib_files, libraries):
               (ln, ll[0].get_id(), len(ll[0].datatypes)))
 
     if not check_libraries(libraries):
+        retval = False
+
+    # Compute references cycles between libraries
+    cycles = LibrariesReferencesCycles(libraries).compute()
+    if cycles:
+        cycles_formated = "; ".join(["->".join(cycle) for cycle in cycles])
+        error("Cyclic references between libraries detected: %s" % cycles_formated)
         retval = False
 
     return retval

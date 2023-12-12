@@ -223,13 +223,13 @@ def parse_comp_impl(xsd_directory, comp_filename, component_implementations, lib
                 for prop_val in prop_val_node.iterfind(ECOS_CI + "propertyValue"):
                     p_name = prop_val.get("name")
                     # remove whitespace at the begining and at the end
-                    p_val = prop_val.text.lstrip().rstrip()
+                    p_val = prop_val.text.lstrip().rstrip() if prop_val.text else None
                     mod_inst.add_property_value(mod_type, p_name, p_val)
 
             for pinfo_node in mi_node.iterfind(ECOS_CI + "pinfo"):
                 for public_pinfo in pinfo_node.iterfind(ECOS_CI+"publicPinfo"):
                     pub_pinfo_name = public_pinfo.get("name")
-                    pub_pinfo_val = public_pinfo.text.lstrip().rstrip()
+                    pub_pinfo_val = public_pinfo.text.lstrip().rstrip() if public_pinfo.text else None
                     component_implementation.add_module_inst_pinfo_value(name,
                                                                          mod_type,
                                                                          pub_pinfo_name,
@@ -237,7 +237,7 @@ def parse_comp_impl(xsd_directory, comp_filename, component_implementations, lib
                                                                          False)
                 for private_pinfo in pinfo_node.iterfind(ECOS_CI+"privatePinfo"):
                     pri_pinfo_name = private_pinfo.get("name")
-                    pri_pinfo_val = private_pinfo.text.lstrip().rstrip()
+                    pri_pinfo_val = private_pinfo.text.lstrip().rstrip() if private_pinfo.text else None
                     component_implementation.add_module_inst_pinfo_value(name, mod_type,
                                                                          pri_pinfo_name,
                                                                          pri_pinfo_val, True)
@@ -499,7 +499,7 @@ def parse_module_behaviour(filename):
 ## Check if component implementation is consistent to the previously defined module, trigger,
 # service_definitions and operations defined
 def check_all_component_implementations(components, component_implementations, component_types,
-                                    service_definitions, libraries):
+                                    service_definitions, libraries, composite):
     """ Check the consistency of component implementation definitions
     """
 
@@ -507,6 +507,9 @@ def check_all_component_implementations(components, component_implementations, c
     # TODO for loop with component implementation instead of component instance
     for comp_instance in components.values():
         cimpl_name = components[comp_instance.name].get_component_implementation()
+        if comp_instance.get_component_type() not in component_types:
+            warning("Type of component '" + comp_instance.name + "' is undefined : '" + comp_instance.get_component_type() + "'")
+            continue
         component_type = component_types[comp_instance.get_component_type()][0]
 
         if component_type is None:
@@ -525,7 +528,7 @@ def check_all_component_implementations(components, component_implementations, c
             # check component implementation
             component_impl = component_implementations[cimpl_name][0]
             if not check_component_implementation(comp_instance, component_impl, component_type,
-                                        service_definitions, libraries):
+                                        service_definitions, libraries, composite, component_implementations):
                 success = False
 
 

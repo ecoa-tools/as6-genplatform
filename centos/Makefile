@@ -19,6 +19,8 @@ ECOA_OUTPUT_DIR=$(ECOA_PROJECT_XML_DIR)/$(shell sed -n -e 's/.*<\outputDirectory
 ECOA_USERID=0
 FMK_TESTS_DIR=../ecoa-ldp/tests/fmk_tests
 ECOA_FMK_TESTS=app.fmk_tests
+ECOA_CONTAINER_NAME=$(shell echo $(ECOA_PROJECT_XML_NAME) | tr '[:upper:]' '[:lower:]')
+ECOA_CONTAINER_LOGS=logs
 
 all:
 
@@ -76,6 +78,16 @@ distclean_ecoa:
 run_ecoa: all_ecoa
 	@echo "Running ECOA $(ECOA_PROJECT) app"
 	@make --no-print-directory -C $(ECOA_OUTPUT_DIR) run
+
+build_docker: all_ecoa
+	@echo "Building docker container for ECOA $(ECOA_PROJECT) app"
+	@mkdir -p $(ECOA_OUTPUT_DIR)/deps && cp -rp $(ECOA_DEPS_DIR)/lib $(ECOA_OUTPUT_DIR)/deps
+	@docker build -t $(ECOA_CONTAINER_NAME) --build-arg builddir=$(ECOA_OUTPUT_DIR) .
+
+run_docker: build_docker
+	@echo "Running docker container for ECOA $(ECOA_PROJECT) app"
+	@mkdir -p $(ECOA_CONTAINER_LOGS)
+	@docker run --network=host --rm -d -v $(PWD)/$(ECOA_CONTAINER_LOGS):/usr/local/bin/logs -u $(shell id -u ${USER}):$(shell id -g ${USER}) --name $(ECOA_CONTAINER_NAME) $(ECOA_CONTAINER_NAME)
 
 #
 #  Functionnal tests

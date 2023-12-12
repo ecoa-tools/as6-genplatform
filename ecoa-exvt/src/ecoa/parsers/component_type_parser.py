@@ -77,7 +77,7 @@ def check_component_types(component_types, service_definitions, libraries):
     for comp_type,_ in component_types.values():
         for serv_ref in comp_type.services + comp_type.references:
             if serv_ref.syntax not in service_definitions:
-                error("in component_type '"+comp_type.name+"', reference or service '"+serv_ref.name+"'' has an unkown syntax '"+ serv_ref.syntax+"'")
+                error("In component_type '"+comp_type.name+"', reference or service '"+serv_ref.name+"'' has an unknown syntax '"+ serv_ref.syntax+"'")
                 ret_val=False
 
     # Check if property types exist
@@ -87,6 +87,6 @@ def check_component_types(component_types, service_definitions, libraries):
 
             if pty_type_lib not in libraries \
                 or not libraries[pty_type_lib][0].is_datatype_defined(pty_type_name):
-                    warning("in component_type '"+comp_type.name+"', property '"+pty.name+"' uses an unkown type '"+pty.type+"'")
+                    warning("In component_type '"+comp_type.name+"', property '"+pty.name+"' uses an unknown type '"+pty.type+"'")
 
     return ret_val

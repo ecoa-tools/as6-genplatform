@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: MIT
 
 import os
+if os.name == "posix":
+    import ntpath
 from xml.etree.ElementTree import ElementTree
 from ..utilities.logs import error
 from ..utilities.xml_utils import validate_XML_file
@@ -72,6 +74,12 @@ class ECOAProject:
                 self.output_dir = os.path.abspath(self.directory)
             return True
 
+    def _normalize_path(self, path: str):
+        new_path = os.path.normpath(path)
+        if os.name == "posix":
+            new_path = new_path.replace(ntpath.sep, os.sep)
+        return new_path
+
     def parse_project(self, xsd_directory):
         if os.path.exists(self.filename) is False:
             error("File does not exist for %s" % self.filename)
@@ -94,49 +102,49 @@ class ECOAProject:
         types_root = tree.find(ECOA_PROJECT+"types")
         if types_root != None:
             for type_file in types_root.iterfind(ECOA_PROJECT+"file"):
-                self.type_files.add(os.path.join(self.directory, type_file.text))
+                self.type_files.add(self._normalize_path(os.path.join(self.directory, type_file.text)))
 
         #Find service files
         service_root = tree.find(ECOA_PROJECT+"serviceDefinitions")
         if service_root != None:
             for serv_file in service_root.iterfind(ECOA_PROJECT+"file"):
-                self.service_files.add(os.path.join(self.directory, serv_file.text))
+                self.service_files.add(self._normalize_path(os.path.join(self.directory, serv_file.text)))
 
         #Find component files
         component_root = tree.find(ECOA_PROJECT+"componentDefinitions")
         if component_root != None:
             for comp_file in component_root.iterfind(ECOA_PROJECT+"file"):
-                self.component_files.add(os.path.join(self.directory, comp_file.text))
+                self.component_files.add(self._normalize_path(os.path.join(self.directory, comp_file.text)))
 
         #Find component implementation files
         comp_impl_root = tree.find(ECOA_PROJECT+"componentImplementations")
         if comp_impl_root != None:
             for comp_impl_file in comp_impl_root.iterfind(ECOA_PROJECT+"file"):
-                self.comp_impl_files.add(os.path.join(self.directory, comp_impl_file.text))
+                self.comp_impl_files.add(self._normalize_path(os.path.join(self.directory, comp_impl_file.text)))
 
         #Find initial assembly files
-        self.init_assembly_files = set([os.path.join(self.directory, e.text) \
+        self.init_assembly_files = set([self._normalize_path(os.path.join(self.directory, e.text)) \
                                     for e in tree.findall(ECOA_PROJECT+"initialAssembly") if e.text != None])
 
         #Find implementation assembly files
-        self.impl_assembly_files = set([os.path.join(self.directory, e.text) \
+        self.impl_assembly_files = set([self._normalize_path(os.path.join(self.directory, e.text)) \
                                     for e in tree.findall(ECOA_PROJECT+"implementationAssembly") if e.text != None])
 
         #Find deployment files
-        self.deployment_files = set([os.path.join(self.directory, e.text) \
+        self.deployment_files = set([self._normalize_path(os.path.join(self.directory, e.text)) \
                                     for e in tree.findall(ECOA_PROJECT+"deploymentSchema") if e.text != None])
 
         #find logical system files
-        self.logical_system_files = set([os.path.join(self.directory, e.text) \
+        self.logical_system_files = set([self._normalize_path(os.path.join(self.directory, e.text)) \
                                     for e in tree.findall(ECOA_PROJECT+"logicalSystem") if e.text != None])
 
         # find cross platform view files:
-        self.crossplatform_files = set([os.path.join(self.directory, e.text )\
+        self.crossplatform_files = set([self._normalize_path(os.path.join(self.directory, e.text)) \
                                     for e in tree.findall(ECOA_PROJECT+"crossPlatformsView") if e.text != None])
 
         # Find EUIDS files
         for euids in tree.iterfind(ECOA_PROJECT+"EUIDs"):
-            self.EUID_files.update(set([os.path.join(self.directory, e.text) \
+            self.EUID_files.update(set([self._normalize_path(os.path.join(self.directory, e.text)) \
                                         for e in euids.findall(ECOA_PROJECT+"EUID") if e.text != None]))
 
         return True

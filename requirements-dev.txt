@@ -4,3 +4,4 @@ MarkupSafe==2.0.1
 pytest
 pytest-check
 paramiko==2.12.0
+urllib3==1.26.6

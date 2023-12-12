@@ -46,7 +46,7 @@
         <input name="param" type="uint32"/>
       </eventReceived>
       <eventSent name="set">
-        <input name="expiryTime" type="ECOA:duration"/>
+        <input name="expiryTime" type="ECOA:global_time"/>
         <input name="param" type="int32"/>
       </eventSent>
       <eventSent name="internal_report">

@@ -65,7 +65,7 @@ If you obtain this error when installing the tool :
 
 .. code-block:: bash
 
-    ERROR: File "setup.py" not found. Directory cannot be installed in editable mode: /path/to/ecoa-genplatform/ecoa-exvt
+    ERROR: File "setup.py" not found. Directory cannot be installed in editable mode: /path/to/ecoa-exvt
     (A "pyproject.toml" file was found, but editable mode currently requires a setup.py based build.)
 
     Solution:

@@ -107,7 +107,7 @@ class ECOA_Global_Config:
 
     def do_external_validation(self, checker, project):
         code, output, _ = execute("{} -p {}".format(checker, project))
-        print(output.decode("utf-8"))
+        print(output.decode("utf-8", "ignore"))
         sys.stdout.flush()
         return code == 0
 
@@ -184,7 +184,8 @@ class ECOA_Global_Config:
                                             self.component_implementations,
                                             self.component_types,
                                             self.service_definitions,
-                                            self.libraries)
+                                            self.libraries,
+                                            self.final_assembly_composite)
 
         info(" == Check wire mapping of logical system '%s'"
              % self.logical_system.name)

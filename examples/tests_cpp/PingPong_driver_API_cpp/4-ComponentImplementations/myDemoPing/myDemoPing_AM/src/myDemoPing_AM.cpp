@@ -26,7 +26,7 @@ void Module::START__received(){
   apr_sleep(200000);
   myDemoPing__Start_extern(60223, 31415);
 
-  ECOA__duration delayDuration;
+  ECOA__global_time delayDuration;
   delayDuration.seconds = 1;
   delayDuration.nanoseconds = 0;
   myDemoPing__Set_trigger_extern(&delayDuration, 60223, 31415);

@@ -14,6 +14,7 @@ Copyright 2023 Dassault Aviation
 ## Structure
 
     .
+    +-- CHANGELOG.md       # Changelog
     +-- conftest.py        # Configuration file for functional tests
     +-- docs               # Documentation
         +-- source         # Sphinx documentation

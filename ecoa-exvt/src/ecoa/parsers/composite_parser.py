@@ -244,9 +244,12 @@ def check_wires(components, wires):
 
 def check_composite_property(composite_properties, libraries):
     for pty in composite_properties.values():
+        if pty.property_type.type is None:
+            warning("Composite property '%s' type is not set" % pty.name)
+            continue
         library_name, type_name = pty.property_type.type.split(":", 1)
         if not(library_name in libraries and libraries[library_name][0].is_datatype_defined(type_name)):
-            warning("Composite property '%s' type is unkown : '%s'" % (pty.name, pty.property_type.type))
+            warning("Composite property '%s' type is unknown : '%s'" % (pty.name, pty.property_type.type))
 
 def check_component_consistency(component, component_type):
     # check service
@@ -290,7 +293,7 @@ def check_component_propety(component, component_type, composite_properties):
         if prop.source != None:
             ## Check if property reference exists
             if prop.source[1:] not in composite_properties:
-                error("In component '%s', property '%s' refers to an unkown composite property '%s'"\
+                error("In component '%s', property '%s' refers to an unknown composite property '%s'"\
                         %(component.name, prop.name, prop.source))
                 continue
 
@@ -309,7 +312,7 @@ def check_final_composite(components, components_types, wires, composite_propert
     for comp in components.values():
         # check if component type exist
         if comp.component_type not in components_types:
-            warning("Type of component '%s' is unkown : '%s'" % (comp.name, comp.component_type))
+            warning("Type of component '%s' is unknown : '%s'" % (comp.name, comp.component_type))
         else:
             comp_type,_ = components_types[comp.component_type]
             check_component_consistency(comp, comp_type)
@@ -324,7 +327,7 @@ def check_intial_composite(composite, components_types,  libraries):
     for comp in composite.components.values():
         # check if component type exist
         if comp.component_type not in components_types:
-            warning("Type of component '%s' is unkown : '%s'" % (comp.name, comp.component_type))
+            warning("Type of component '%s' is unknown : '%s'" % (comp.name, comp.component_type))
         else:
             comp_type,_ = components_types[comp.component_type]
             check_component_consistency(comp, comp_type)

@@ -12,7 +12,11 @@ def execute(cmd, cwd=None):
     """
     if not cwd:
         cwd = os.getcwd()
-    proc = subprocess.Popen(cmd, stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True, cwd=cwd, preexec_fn=os.setsid)
+    try:
+        preexec_fn = os.setsid
+    except AttributeError:
+        preexec_fn = None
+    proc = subprocess.Popen(cmd, stderr=subprocess.STDOUT, stdout=subprocess.PIPE, shell=True, cwd=cwd, preexec_fn=preexec_fn)
     output, error = proc.communicate()
     code = proc.returncode
     return code, output, error
